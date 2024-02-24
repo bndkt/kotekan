@@ -7,6 +7,6 @@
     "dev": "bun --hot run src/index.ts"
   },
   "dependencies": {
-    "kotekan": "workspace:*"
+    "kotekan": "0.0.1"
   }
 }
