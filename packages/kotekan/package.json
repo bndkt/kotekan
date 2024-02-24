@@ -1,0 +1,5 @@
+{
+  "name": "kotekan",
+  "module": "src/index.ts",
+  "type": "module"
+}
