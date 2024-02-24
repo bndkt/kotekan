@@ -1,7 +1,7 @@
 import path from "node:path";
 
 export const router = () => {
-	const dir = path.dirname(Bun.resolveSync("./src/pages", process.cwd()));
+	const dir = path.dirname(Bun.resolveSync("./src/pages", process.cwd())); // @todo
 
 	console.log({ dir });
 
