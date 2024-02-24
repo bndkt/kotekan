@@ -2,16 +2,22 @@
   "name": "kotekan",
   "version": "0.0.1",
   "type": "module",
+  "bin": "./src/cli/index.ts",
   "exports": {
     ".": {
       "import": "./src/index.ts"
     }
   },
   "scripts": {
-    "lint": "biome lint ./src"
+    "lint": "biome lint ./src",
+    "compile": "bun build ./src/cli/index.ts --compile --outfile kotekan"
+  },
+  "dependencies": {
+    "react": "18.3.0-canary-98b8359f6-20240223"
   },
   "devDependencies": {
     "@biomejs/biome": "1.5.3",
-    "@types/bun": "1.0.7"
+    "@types/bun": "1.0.7",
+    "@types/react": "18.2.58"
   }
 }

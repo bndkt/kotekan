@@ -4,9 +4,11 @@
   "type": "module",
   "scripts": {
     "lint": "biome lint ./src",
-    "dev": "bun --hot run src/index.ts"
+    "dev2": "bun --hot run src/index.ts",
+    "dev": "kotekan dev"
   },
   "dependencies": {
-    "kotekan": "0.0.1"
+    "kotekan": "workspace:*",
+    "react": "18.3.0-canary-98b8359f6-20240223"
   }
 }
