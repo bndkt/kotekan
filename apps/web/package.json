@@ -1,5 +1,12 @@
 {
   "name": "kotekan-web",
-  "module": "src/index.ts",
-  "type": "module"
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "lint": "biome lint ./src",
+    "dev": "bun --watch run src/index.ts"
+  },
+  "dependencies": {
+    "kotekan": "workspace:*"
+  }
 }

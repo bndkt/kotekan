@@ -1,14 +1,15 @@
 {
-  "name": "kotekan-monorepo",
+  "name": "monorepo",
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
-  "devDependencies": {
-    "@biomejs/biome": "^1.5.3",
-    "@types/bun": "latest"
+  "scripts": {
+    "clean": "rm -rf node_modules && rm bun.lockb",
+    "biome": "biome"
   },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
+  "devDependencies": {
+    "@biomejs/biome": "1.5.3",
+    "@types/bun": "1.0.7"
   }
 }
