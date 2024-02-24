@@ -9,5 +9,9 @@
   },
   "scripts": {
     "lint": "biome lint ./src"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.5.3",
+    "@types/bun": "1.0.7"
   }
 }

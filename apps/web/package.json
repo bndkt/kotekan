@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "lint": "biome lint ./src",
-    "dev": "bun --watch run src/index.ts"
+    "dev": "bun --hot run src/index.ts"
   },
   "dependencies": {
     "kotekan": "workspace:*"
