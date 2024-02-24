@@ -1,14 +1,10 @@
 import path from "node:path";
 
-export const router = () => {
-	const dir = path.dirname(Bun.resolveSync("./src/pages", process.cwd())); // @todo
-
-	console.log({ dir });
-
+export const router = (dir: string) => {
 	return new Bun.FileSystemRouter({
 		style: "nextjs",
 		dir,
-		origin: "http://localhost:3000",
-		assetPrefix: "_next/static/",
+		// origin: "http://localhost:3000",
+		// assetPrefix: "_next/static/",
 	});
 };
