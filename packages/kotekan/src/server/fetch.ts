@@ -2,35 +2,38 @@ import path from "node:path";
 import { renderToReadableStream } from "react-dom/server";
 
 import { router } from "./router";
+import type { BuildOutputs } from "./build";
 
-export const fetch = async (request: Request): Promise<Response> => {
+export const fetch = async (
+	request: Request,
+	buildOutputs: BuildOutputs,
+): Promise<Response> => {
 	const pagesDir = path.join(process.cwd(), "src", "pages");
 	const rootPath = path.join(process.cwd(), "src", "root.tsx");
-	const hydratePath = path.join(import.meta.dir, "..", "client", "hydrate.tsx");
-
-	console.log(request.url);
+	const buildDir = "_build";
 
 	const url = new URL(request.url);
 	console.log(url.pathname);
+
+	// Favicon
 	if (url.pathname === "/favicon.ico") {
 		return new Response(null, { status: 404 });
 	}
 
-	if (url.pathname === "/root.js") {
-		const rootBundle = await Bun.build({
-			entrypoints: [hydratePath],
-			target: "browser",
-			// outdir: "./build",
-			sourcemap: "inline",
-			minify: false,
-		});
+	// Build files
+	const pathSegments = url.pathname.split("/").filter(Boolean);
+	console.log("pathSegments", pathSegments, buildOutputs.keys());
+	if (pathSegments[0] === buildDir) {
+		const buildOutput = buildOutputs.get(pathSegments[1]);
 
-		return new Response(rootBundle.outputs[0]);
+		if (buildOutput) {
+			return buildOutput();
+		}
 	}
 
 	const r = router(pagesDir);
 	const match = r.match(request.url);
-	console.log(match);
+	// console.log(match);
 
 	// const content = match?.filePath
 	// 	? await Bun.file(match.filePath).text()
@@ -40,20 +43,10 @@ export const fetch = async (request: Request): Promise<Response> => {
 		return new Response("Not found");
 	}
 
-	// const rootBundle = await Bun.build({
-	// 	entrypoints: [rootPath, match.filePath],
-	// 	target: "browser",
-	// 	// outdir: "./build",
-	// 	sourcemap: "inline",
-	// 	minify: false,
-	// });
-
-	// console.log(rootBundle);
-
 	const root = await import(rootPath);
 
 	const stream = await renderToReadableStream(root.default(), {
-		bootstrapModules: ["/root.js"],
+		bootstrapModules: [`${buildDir}/${buildOutputs.keys().next().value}`],
 	});
 
 	return new Response(stream, {

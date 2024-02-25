@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Counter } from "./counter";
 
 export default function Root() {
@@ -9,7 +10,9 @@ export default function Root() {
 			<body>
 				{/* <App /> */}
 				<h1>Kotekan Web</h1>
-				<Counter />
+				<Suspense fallback={<div>Loading ...</div>}>
+					<Counter />
+				</Suspense>
 			</body>
 		</html>
 	);

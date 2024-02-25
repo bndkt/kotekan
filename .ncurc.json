@@ -1,0 +1,8 @@
+{
+	"interactive": true,
+	"packageManager": "bun",
+	"reject": [],
+	"root": true,
+	"upgrade": true,
+	"workspaces": true
+}

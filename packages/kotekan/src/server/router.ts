@@ -5,6 +5,6 @@ export const router = (dir: string) => {
 		style: "nextjs",
 		dir,
 		// origin: "http://localhost:3000",
-		// assetPrefix: "_next/static/",
+		// assetPrefix: "_kotekan/static/",
 	});
 };
