@@ -14,11 +14,18 @@
     "compile": "bun build ./src/cli/index.ts --compile --outfile kotekan"
   },
   "dependencies": {
+    "@babel/core": "^7.23.9",
+    "@babel/plugin-syntax-jsx": "^7.23.3",
+    "@babel/plugin-syntax-typescript": "^7.23.3",
+    "add": "^2.0.6",
+    "bun": "^1.0.29",
     "react": "18.3.0-canary-98b8359f6-20240223",
     "react-dom": "18.3.0-canary-98b8359f6-20240223"
   },
   "devDependencies": {
     "@biomejs/biome": "1.5.3",
+    "@stylexjs/esbuild-plugin": "0.5.1",
+    "@types/babel__core": "^7.20.5",
     "@types/bun": "1.0.7",
     "@types/react": "18.2.58",
     "@types/react-dom": "18.2.19"

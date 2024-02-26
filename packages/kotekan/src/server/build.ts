@@ -1,5 +1,7 @@
 import path from "node:path";
 
+// import { stylexPlugin } from "../plugins/stylexPlugin";
+
 export type BuildOutputs = Map<string, () => Response>;
 
 export const build = async (development = false) => {
@@ -16,6 +18,11 @@ export const build = async (development = false) => {
 		// splitting: true,
 		// publicPath: "/_kotekan/static/",
 		naming: "[name]-[hash].[ext]",
+		plugins: [
+			// stylexPlugin({
+			// 	development,
+			// }),
+		],
 	});
 
 	if (!build.success) {

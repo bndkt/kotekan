@@ -8,7 +8,10 @@
     "ncu": "ncu",
     "clean": "rm -rf node_modules && rm bun.lockb",
     "manypkg": "manypkg check",
-    "biome": "biome"
+    "biome": "biome",
+    "docker": "bun run docker:build && bun run docker:run",
+    "docker:build": "docker build -t kotekan .",
+    "docker:run": "docker run -d -p 3000:3000 kotekan"
   },
   "dependencies": {
     "@biomejs/biome": "1.5.3",
