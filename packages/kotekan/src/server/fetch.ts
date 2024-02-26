@@ -13,7 +13,6 @@ export const fetch = async (
 	const buildDir = "_build";
 
 	const url = new URL(request.url);
-	console.log(url.pathname);
 
 	// Favicon
 	if (url.pathname === "/favicon.ico") {
@@ -22,7 +21,6 @@ export const fetch = async (
 
 	// Build files
 	const pathSegments = url.pathname.split("/").filter(Boolean);
-	console.log("pathSegments", pathSegments, buildOutputs.keys());
 	if (pathSegments[0] === buildDir) {
 		const buildOutput = buildOutputs.get(pathSegments[1]);
 
