@@ -1,5 +1,6 @@
 import path from "node:path";
 
+import { reactRefreshPlugin } from "../plugins/reactRefreshPlugin";
 // import { stylexPlugin } from "../plugins/stylexPlugin";
 
 export type BuildOutputs = Map<string, () => Response>;
@@ -19,6 +20,7 @@ export const build = async (development = false) => {
 		// publicPath: "/_kotekan/static/",
 		naming: "[name]-[hash].[ext]",
 		plugins: [
+			// reactRefreshPlugin({ development }),
 			// stylexPlugin({
 			// 	development,
 			// }),
