@@ -1,7 +1,7 @@
 # Adapted from https://bun.sh/guides/ecosystem/docker
 # use the official Bun image
 # see all versions at https://hub.docker.com/r/oven/bun/tags
-FROM oven/bun:latest as base
+FROM oven/bun:1.0.29-alpine as base
 WORKDIR /usr/src/app
 
 # install dependencies into temp directory
@@ -32,6 +32,7 @@ ENV NODE_ENV=production
 
 # copy production dependencies and source code into final image
 FROM base AS release
+# FROM oven/bun:1.0.29-distroless as release
 COPY --from=install /temp/prod/node_modules node_modules
 COPY --from=prerelease /usr/src/app .
 

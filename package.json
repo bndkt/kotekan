@@ -9,9 +9,11 @@
     "clean": "rm -rf node_modules && rm bun.lockb",
     "manypkg": "manypkg check",
     "biome": "biome",
-    "docker": "bun run docker:build && bun run docker:run",
+    "docker": "bun run docker:build && bun run docker:remove && bun run docker:run",
     "docker:build": "docker build -t kotekan .",
-    "docker:run": "docker run -d -p 3000:3000 kotekan"
+    "docker:remove": "docker rm -f kotekan",
+    "docker:run": "docker run -d -p 3000:3000 --name kotekan kotekan",
+    "docker:stop": "docker stop kotekan"
   },
   "dependencies": {
     "@biomejs/biome": "1.5.3",

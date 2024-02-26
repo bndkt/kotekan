@@ -7,7 +7,8 @@
     "lint": "biome lint ./src",
     "run": "bun --hot run src/index.ts",
     "dev": "kotekan dev",
-    "start": "kotekan serve"
+    "start": "kotekan serve",
+    "compile": "bun build --compile"
   },
   "dependencies": {
     "@stylexjs/stylex": "0.5.1",
