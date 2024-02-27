@@ -19,6 +19,7 @@
     "@biomejs/biome": "1.5.3",
     "@manypkg/cli": "0.21.2",
     "@types/bun": "1.0.7",
-    "npm-check-updates": "16.14.15"
+    "npm-check-updates": "16.14.15",
+    "typescript": "5.3.3"
   }
 }

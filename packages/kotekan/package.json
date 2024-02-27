@@ -17,17 +17,18 @@
     "@babel/core": "7.23.9",
     "@babel/plugin-syntax-jsx": "7.23.3",
     "@babel/plugin-syntax-typescript": "7.23.3",
-    "react": "18.3.0-canary-98b8359f6-20240223",
-    "react-dom": "18.3.0-canary-98b8359f6-20240223"
+    "react": "18.3.0-canary-6c3b8dbfe-20240226",
+    "react-dom": "18.3.0-canary-6c3b8dbfe-20240226"
   },
   "devDependencies": {
     "@biomejs/biome": "1.5.3",
-    "@stylexjs/esbuild-plugin": "0.5.1",
+    "@jacob-ebey/react-server-dom-esm": "0.0.0-experimental-910045696-20230607",
     "@types/babel__core": "7.20.5",
     "@types/bun": "1.0.7",
     "@types/react": "18.2.58",
     "@types/react-dom": "18.2.19",
     "@types/react-refresh": "0.14.5",
-    "react-refresh": "0.14.0"
+    "react-refresh": "0.14.0",
+    "typescript": "5.3.3"
   }
 }
