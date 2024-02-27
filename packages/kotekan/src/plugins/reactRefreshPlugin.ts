@@ -1,4 +1,3 @@
-// Adapted from https://github.com/facebook/stylex/blob/main/packages/esbuild-plugin/src/index.js
 import type { BunPlugin } from "bun";
 import { transformAsync } from "@babel/core";
 import typescriptSyntaxPlugin from "@babel/plugin-syntax-typescript";
@@ -23,6 +22,9 @@ export const reactRefreshPlugin: (config: PluginConfig) => BunPlugin = (
 				},
 				async (args) => {
 					const currFilePath = args.path;
+
+					if (currFilePath.includes("node_modules/")) return;
+
 					const file = Bun.file(currFilePath);
 					const inputCode = await file.text();
 
@@ -33,8 +35,9 @@ export const reactRefreshPlugin: (config: PluginConfig) => BunPlugin = (
 						plugins: [
 							[typescriptSyntaxPlugin, { isTSX: true }],
 							jsxSyntaxPlugin,
-							reactRefreshBabelPlugin,
+							[reactRefreshBabelPlugin, { skipEnvCheck: true }],
 						],
+						exclude: "node_modules/**",
 					});
 
 					const loader = args.loader;
@@ -44,15 +47,13 @@ export const reactRefreshPlugin: (config: PluginConfig) => BunPlugin = (
 						return { contents: inputCode, loader };
 					}
 
-					const { code, metadata } = transformResult;
-
-					if (!code) {
+					if (!transformResult.code) {
 						console.warn("StyleX: transformAsync returned no code");
 						return { contents: inputCode, loader };
 					}
 
 					return {
-						contents: code,
+						contents: transformResult.code,
 						loader,
 					};
 				},

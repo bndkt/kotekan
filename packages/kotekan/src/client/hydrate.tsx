@@ -1,3 +1,4 @@
+/// <reference lib="dom" />
 import { StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
 
