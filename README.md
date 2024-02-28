@@ -2,13 +2,13 @@
 
 > Back to basics.
 
-Supported React rendering strategies:
+## Supported React rendering strategies:
 - [x] CSR
 - [x] SSR
 - [x] SSG
 - [ ] RSC 👷
 
-Major dependencies:
+## Major dependencies:
 - [Bun](https://bun.sh/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Biome](https://biomejs.dev/)
@@ -16,18 +16,18 @@ Major dependencies:
 - [StyleX](https://stylexjs.com/)
 - [SQLite](https://www.sqlite.org/) (via Bun)
 
-Smaller dependencies:
+## Smaller dependencies:
 - [react-error-boundary](https://github.com/bvaughn/react-error-boundary)
 - [isbot](https://github.com/omrilotan/isbot)
 
-Goals
+## Goals
 - As simple as possible
 - As few dependencies as possible
 
-Ideas
+## Ideas
 - [x] react-strict-dom
 
-- Major missing pieces
+## Major missing pieces
 - [ ] [Bundle splitting](https://github.com/bndkt/kotekan/issues/7)
 - [ ] [Generate CSS file for StyleX](https://github.com/bndkt/kotekan/issues/2) (currently working via debug-mode)
 - [ ] [RSC](https://github.com/bndkt/kotekan/issues/9)
