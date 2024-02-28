@@ -1,6 +1,12 @@
-# Kotekan
+# 🥁 Kotekan
 
-Back to basics.
+> Back to basics.
+
+Supported React rendering strategies:
+- [x] CSR
+- [x] SSR
+- [x] SSG
+- [ ] RSC 👷
 
 Major dependencies:
 - [Bun](https://bun.sh/)
@@ -8,6 +14,10 @@ Major dependencies:
 - [Biome](https://biomejs.dev/)
 - [React](https://react.dev/)
 - [SQLite](https://www.sqlite.org/) (via Bun)
+
+Smaller dependencies:
+- [react-error-boundary](https://github.com/bvaughn/react-error-boundary)
+- [isbot](https://github.com/omrilotan/isbot)
 
 Goals
 - As simple as possible
