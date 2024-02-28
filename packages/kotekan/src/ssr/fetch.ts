@@ -2,6 +2,7 @@ import path from "node:path";
 import { type FileSystemRouter } from "bun";
 // @ts-expect-error Untyped import
 import { renderToReadableStream } from "react-dom/server.browser"; // @todo
+import { isbot } from "isbot";
 
 import type { RouteBuilds } from "./build";
 import { createElement } from "react";
@@ -25,6 +26,8 @@ export const fetch = async (
 	}: FetchProps,
 ): Promise<Response> => {
 	hydrationEnabled ??= true;
+	const userAgent = request.headers.get("user-agent");
+	const bot = isbot(userAgent); // @todo
 
 	const buildUrlSegment = "_build";
 	const url = new URL(request.url);

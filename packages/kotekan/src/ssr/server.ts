@@ -25,8 +25,6 @@ export const ssrServer = async ({
 	const hydrationEnabled = mode === "ssr";
 	const serverRenderingEnabled = mode !== "csr";
 
-	console.log({ hydrationEnabled, serverRenderingEnabled });
-
 	// Router
 	const pagesDir = path.join(process.cwd(), "src", "pages");
 	const router = routerFn(pagesDir);
