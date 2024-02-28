@@ -32,6 +32,7 @@
 - [ ] [Generate CSS file for StyleX](https://github.com/bndkt/kotekan/issues/2) (currently working via debug-mode)
 - [ ] [RSC](https://github.com/bndkt/kotekan/issues/9)
 - [ ] [Fast Refresh/HMR](https://github.com/bndkt/kotekan/issues/4)
+- [ ] [Remove last Babel transpilations](https://github.com/bndkt/kotekan/issues/10)
 
 Anti-goals/indicators that things are going into the wrong direction:
 - Bundling via esbuild or other tools
