@@ -13,6 +13,7 @@ Major dependencies:
 - [TypeScript](https://www.typescriptlang.org/)
 - [Biome](https://biomejs.dev/)
 - [React](https://react.dev/)
+- [StyleX](https://stylexjs.com/)
 - [SQLite](https://www.sqlite.org/) (via Bun)
 
 Smaller dependencies:
@@ -24,8 +25,13 @@ Goals
 - As few dependencies as possible
 
 Ideas
-- react-strict-dom?
+- [x] react-strict-dom
 
+- Major missing pieces
+- [ ] [Bundle splitting](https://github.com/bndkt/kotekan/issues/7)
+- [ ] [Generate CSS file for StyleX](https://github.com/bndkt/kotekan/issues/2) (currently working via debug-mode)
+- [ ] [RSC](https://github.com/bndkt/kotekan/issues/9)
+- [ ] [Fast Refresh/HMR](https://github.com/bndkt/kotekan/issues/4)
 
 Anti-goals/indicators that things are going into the wrong direction:
 - Bundling via esbuild or other tools
