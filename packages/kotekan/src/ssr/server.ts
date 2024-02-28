@@ -5,20 +5,27 @@ import { build } from "./build";
 import { fetch } from "./fetch";
 
 interface ServerArgs {
+	mode?: "csr" | "ssr" | "ssg";
 	buildDir?: string;
 	port?: number;
 	development?: boolean;
 }
 
 export const ssrServer = async ({
+	mode,
 	buildDir,
 	port,
 	development,
 }: ServerArgs = {}) => {
+	mode ??= "ssr";
 	port ??= 3000;
 	buildDir ??= "./build";
 
 	const buildPath = path.join(process.cwd(), buildDir);
+	const hydrationEnabled = mode === "ssr";
+	const serverRenderingEnabled = mode !== "csr";
+
+	console.log({ hydrationEnabled, serverRenderingEnabled });
 
 	// Router
 	const pagesDir = path.join(process.cwd(), "src", "pages");
@@ -26,12 +33,24 @@ export const ssrServer = async ({
 	const { routes } = router;
 
 	// Build
-	const routeBuilds = await build({ routes, buildPath, development });
+	const routeBuilds = await build({
+		routes,
+		buildPath,
+		development,
+		serverRenderingEnabled,
+	});
 
 	// Serve
 	return Bun.serve({
 		port,
 		development,
-		fetch: (request) => fetch(request, { routeBuilds, router }),
+		fetch: (request) =>
+			fetch(request, {
+				routeBuilds,
+				router,
+				buildPath,
+				serverRenderingEnabled,
+				hydrationEnabled,
+			}),
 	});
 };

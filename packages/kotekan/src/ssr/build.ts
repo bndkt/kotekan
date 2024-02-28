@@ -6,33 +6,38 @@ import { buildRoute } from "./lib/buildRoute";
 export type RouteBuilds = Map<
 	string,
 	{
-		appBuildFilePath: string;
-		hydrateBuildFileName: string;
+		serverBuildFilePath: string;
+		bootstrapBuildFileName: string;
 	}
 >;
+
+interface BuildProps {
+	routes: Record<string, string>;
+	buildPath: string;
+	serverRenderingEnabled: boolean;
+	development?: boolean;
+}
 
 export const build = async ({
 	routes,
 	buildPath,
+	serverRenderingEnabled,
 	development,
-}: {
-	routes: Record<string, string>;
-	buildPath: string;
-	development?: boolean;
-}) => {
+}: BuildProps) => {
 	const routeBuilds: RouteBuilds = new Map();
 
 	for (const [key, val] of Object.entries(routes)) {
 		const name = key === "/" ? "index" : key.substring(1);
 
-		const { appBuildFilePath, hydrateBuildFileName } = await buildRoute({
+		const { serverBuildFilePath, bootstrapBuildFileName } = await buildRoute({
 			name,
 			location: key,
 			buildPath,
+			serverRenderingEnabled,
 			development,
 		});
 
-		routeBuilds.set(name, { appBuildFilePath, hydrateBuildFileName });
+		routeBuilds.set(name, { serverBuildFilePath, bootstrapBuildFileName });
 	}
 
 	return routeBuilds;

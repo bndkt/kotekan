@@ -1,12 +1,37 @@
-import { lazy, type LazyExoticComponent, type ReactNode } from "react";
+import {
+	lazy,
+	Suspense,
+	type LazyExoticComponent,
+	type ReactNode,
+} from "react";
 
-import Root from "../../../../apps/web/src/root";
 import { NotFound } from "./NotFound";
 
-const Index = lazy(() => import("../../../../apps/web/src/pages/index"));
-const About = lazy(() => import("../../../../apps/web/src/pages/about"));
+const LOCATION = process.env.LOCATION as string | undefined;
+const timeout = 2000;
 
-export function Router({ location }: { location: string }) {
+// const Index = lazy(() => import("../../../../apps/web/src/pages/index"));
+const Index = lazy(() =>
+	Promise.all([
+		import("../../../../apps/web/src/pages/index"),
+		new Promise((resolve) => setTimeout(resolve, timeout)),
+	]).then(([moduleExports]) => {
+		return moduleExports;
+	}),
+);
+// const About = lazy(() => import("../../../../apps/web/src/pages/about"));
+const About = lazy(() =>
+	Promise.all([
+		import("../../../../apps/web/src/pages/about"),
+		new Promise((resolve) => setTimeout(resolve, timeout)),
+	]).then(([moduleExports]) => {
+		return moduleExports;
+	}),
+);
+
+export function Router({ location }: { location?: string }) {
+	location = location ?? LOCATION ?? "/";
+
 	const routes = new Map<string, LazyExoticComponent<() => ReactNode>>();
 	routes.set("/", Index);
 	routes.set("/about", About);
@@ -14,9 +39,11 @@ export function Router({ location }: { location: string }) {
 	const RouteComponent = routes.get(location) ?? NotFound;
 
 	return (
-		<Root>
+		<>
 			<div>Router: {location}</div>
-			<RouteComponent />
-		</Root>
+			<Suspense fallback={<div>Loading...</div>}>
+				<RouteComponent />
+			</Suspense>
+		</>
 	);
 }

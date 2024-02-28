@@ -1,14 +1,8 @@
 /// <reference lib="dom" />
-import { StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
 
 import { App } from "./App";
 
-console.log("Location", process.env.LOCATION);
+console.log("HYDRATE");
 
-hydrateRoot(
-	document,
-	<StrictMode>
-		<App />
-	</StrictMode>,
-);
+hydrateRoot(document, <App />);
