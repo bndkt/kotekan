@@ -22,7 +22,7 @@ export const fetch = async (
 	hydrationEnabled ??= true;
 	const userAgent = request.headers.get("user-agent");
 	const bot = isbot(userAgent); // @todo
-	console.log("Bot?", bot, userAgent);
+	// console.log("Bot?", bot, userAgent);
 
 	const buildUrlSegment = "_build";
 	const url = new URL(request.url);

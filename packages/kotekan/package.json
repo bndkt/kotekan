@@ -16,6 +16,7 @@
   "dependencies": {
     "react": "18.3.0-canary-6c3b8dbfe-20240226",
     "react-dom": "18.3.0-canary-6c3b8dbfe-20240226",
+    "react-error-boundary": "^4.0.12",
     "react-server-dom-esm": "workspace:*"
   },
   "devDependencies": {

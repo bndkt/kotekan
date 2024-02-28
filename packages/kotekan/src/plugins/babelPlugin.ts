@@ -1,9 +1,9 @@
 // Adapted from https://github.com/facebook/stylex/blob/main/packages/esbuild-plugin/src/index.js
 import type { BunPlugin } from "bun";
 import { transformAsync } from "@babel/core";
-// @ts-ignore
+// @ts-expect-error Missing types
 import typescriptSyntaxPlugin from "@babel/plugin-syntax-typescript";
-// @ts-ignore
+// @ts-expect-error Missing types
 import jsxSyntaxPlugin from "@babel/plugin-syntax-jsx";
 import stylexBabelPlugin from "@stylexjs/babel-plugin";
 import type { Rule } from "@stylexjs/babel-plugin";
@@ -18,7 +18,7 @@ const BABEL_PLUGIN_ONLOAD_FILTER = /\.(jsx|js|tsx|ts|mjs|cjs|mts|cts)$/;
 export const babelPlugin: (config: PluginConfig) => BunPlugin = (
 	config = {},
 ) => {
-	const stylexImports = ["@stylexjs/stylex"];
+	// const stylexImports = ["@stylexjs/stylex", "react-strict-dom"];
 
 	return {
 		name: "babelPlugin",
@@ -49,7 +49,11 @@ export const babelPlugin: (config: PluginConfig) => BunPlugin = (
 					// 	return;
 					// }
 
-					if (currFilePath.includes("node_modules/")) return;
+					if (
+						currFilePath.includes("node_modules/") &&
+						!currFilePath.includes("react-strict-dom")
+					)
+						return;
 
 					const transformResult = await transformAsync(inputCode, {
 						filename: currFilePath,
@@ -57,10 +61,17 @@ export const babelPlugin: (config: PluginConfig) => BunPlugin = (
 							[typescriptSyntaxPlugin, { isTSX: true }],
 							jsxSyntaxPlugin,
 							stylexBabelPlugin.withOptions({
-								treeshakeCompensation: true,
+								// https://stylexjs.com/docs/api/configuration/babel-plugin/
 								dev: config.development,
-								runtimeInjection: true,
-								// importSources: [{ from: "react-strict-dom", as: "css " }],
+								test: false,
+								runtimeInjection: config.development,
+								// classNamePrefix
+								// useRemForFontSize
+								// styleResolution
+								importSources: [{ from: "react-strict-dom", as: "css" }],
+								genConditionalClasses: true,
+								treeshakeCompensation: false,
+								// unstable_moduleResolution
 							}),
 							// [reactRefreshBabelPlugin, { skipEnvCheck: true }],
 						],

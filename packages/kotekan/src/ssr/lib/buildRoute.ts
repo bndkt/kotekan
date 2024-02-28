@@ -31,6 +31,7 @@ const build = async (props: BuildProps) => {
 		entrypoints: [entrypoint],
 		// root: process.cwd(),
 		target,
+		// splitting: true,
 		sourcemap,
 		minify,
 		// naming: "[name]-[hash].[ext]",

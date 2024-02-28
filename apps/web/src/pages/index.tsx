@@ -1,9 +1,10 @@
 import { Suspense } from "react";
-import stylex from "@stylexjs/stylex";
+// @ts-expect-error Missing types
+import { css, html as h } from "react-strict-dom";
 
-import { ServerComponent } from "../ServerComponent";
+import { ServerComponent } from "../components/ServerComponent";
 
-const styles = stylex.create({
+const styles = css.create({
 	red: {
 		color: "red",
 	},
@@ -12,10 +13,12 @@ const styles = stylex.create({
 export default function Index() {
 	return (
 		<>
-			<h1 {...stylex.props(styles.red)}>Kotekan - Index</h1>
-			<a href="/about">About</a>
+			<h.h1 {...css.props(styles.red)}>Kotekan - Index</h.h1>
+			<h.a href="/about">About</h.a>
 
-			<Suspense fallback={<div>Loading...</div>}>
+			<h.div>Hello from react-strict-dom</h.div>
+
+			<Suspense fallback={<h.div>Loading...</h.div>}>
 				{/* @ts-expect-error Async component */}
 				{/* <ServerComponent /> */}
 			</Suspense>

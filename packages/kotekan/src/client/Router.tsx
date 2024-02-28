@@ -6,9 +6,10 @@ import {
 } from "react";
 
 import { NotFound } from "./NotFound";
+import { ErrorBoundary } from "./ErrorBoundary";
 
 const LOCATION = process.env.LOCATION as string | undefined;
-const timeout = 2000;
+const timeout = 0;
 
 // const Index = lazy(() => import("../../../../apps/web/src/pages/index"));
 const Index = lazy(() =>
@@ -39,11 +40,11 @@ export function Router({ location }: { location?: string }) {
 	const RouteComponent = routes.get(location) ?? NotFound;
 
 	return (
-		<>
+		<ErrorBoundary>
 			<div>Router: {location}</div>
 			<Suspense fallback={<div>Loading...</div>}>
 				<RouteComponent />
 			</Suspense>
-		</>
+		</ErrorBoundary>
 	);
 }
