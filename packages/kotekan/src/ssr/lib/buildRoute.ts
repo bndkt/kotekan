@@ -1,5 +1,7 @@
 import { resolveSync } from "bun";
+
 import { createBuildFile } from "./createBuildFile";
+import { babelPlugin } from "../../plugins/babelPlugin";
 
 const appFilePath = resolveSync("./../../client/App.tsx", import.meta.dir);
 const hydrateFilePath = resolveSync("./../../client/hydrate", import.meta.dir);
@@ -38,6 +40,11 @@ const build = async (props: BuildProps) => {
 			"process.env.RENDER": JSON.stringify(props.mode === "hydrate"),
 			"process.env.LOCATION": JSON.stringify(props.location),
 		},
+		plugins: [
+			babelPlugin({
+				development: props.development,
+			}),
+		],
 	});
 
 	if (!build.success || build.outputs.length === 0) {

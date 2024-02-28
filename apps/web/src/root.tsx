@@ -5,8 +5,14 @@
 // 	window.$RefreshSig$ = () => (type) => type;
 // 	console.log("Fast Refresh setup complete");
 // }
-
 import type { ReactNode } from "react";
+import stylex from "@stylexjs/stylex";
+
+const styles = stylex.create({
+	blue: {
+		color: "blue",
+	},
+});
 
 export default function Root({ children }: { children?: ReactNode }) {
 	return (
@@ -15,7 +21,7 @@ export default function Root({ children }: { children?: ReactNode }) {
 				<title>Kotekan</title>
 			</head>
 			<body>
-				<h1>Kotekan Web</h1>
+				<h1 {...stylex.props(styles.blue)}>Kotekan Web</h1>
 				{children}
 			</body>
 		</html>
