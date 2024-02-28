@@ -40,7 +40,7 @@ export const fetch = async (
 		console.log("appFile", App);
 
 		const stream = await renderToReadableStream(App, {
-			// bootstrapModules: [`${buildPathname}/${routeBuild.hydrateBuildFileName}`],
+			bootstrapModules: [`${buildPathname}/${routeBuild.hydrateBuildFileName}`],
 		});
 
 		return new Response(stream, {

@@ -2,13 +2,13 @@
 import { StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
 
-import { default as Root } from "../../../../apps/web/src/root";
+import { App } from "./App";
 
-// import { Root } from "virtual-root";
+console.log("Location", process.env.LOCATION);
 
 hydrateRoot(
 	document,
 	<StrictMode>
-		<Root />
+		<App />
 	</StrictMode>,
 );
