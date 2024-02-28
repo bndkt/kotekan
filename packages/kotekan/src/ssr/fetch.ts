@@ -11,23 +11,18 @@ interface FetchProps {
 	router: FileSystemRouter;
 	routeBuilds: RouteBuilds;
 	buildPath: string;
-	serverRenderingEnabled?: boolean;
+	ssrEnabled?: boolean;
 	hydrationEnabled?: boolean;
 }
 
 export const fetch = async (
 	request: Request,
-	{
-		router,
-		routeBuilds,
-		buildPath,
-		serverRenderingEnabled,
-		hydrationEnabled,
-	}: FetchProps,
+	{ router, routeBuilds, buildPath, ssrEnabled, hydrationEnabled }: FetchProps,
 ): Promise<Response> => {
 	hydrationEnabled ??= true;
 	const userAgent = request.headers.get("user-agent");
 	const bot = isbot(userAgent); // @todo
+	console.log("Bot?", bot, userAgent);
 
 	const buildUrlSegment = "_build";
 	const url = new URL(request.url);
@@ -44,17 +39,19 @@ export const fetch = async (
 			return new Response(null, { status: 500 });
 		}
 
-		console.log("Requested route:", routeBuild.serverBuildFilePath);
+		const routeFile =
+			ssrEnabled || bot || !routeBuild.csrBuildFilePath
+				? routeBuild.ssrBuildFilePath
+				: routeBuild.csrBuildFilePath;
+		console.log("Requested route:", routeFile);
 
-		const appFile = await import(routeBuild.serverBuildFilePath);
+		const appFile = await import(routeFile);
 		const App = createElement(appFile.App);
 
+		const includeBootstrap = hydrationEnabled || !ssrEnabled;
 		const bootstrapFilePath = `${buildUrlSegment}/${routeBuild.bootstrapBuildFileName}`;
 		const stream = await renderToReadableStream(App, {
-			bootstrapModules:
-				hydrationEnabled || !serverRenderingEnabled
-					? [bootstrapFilePath]
-					: undefined,
+			bootstrapModules: includeBootstrap ? [bootstrapFilePath] : undefined,
 		});
 
 		return new Response(stream, {

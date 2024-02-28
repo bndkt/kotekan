@@ -10,6 +10,7 @@ import { ssrServer } from "../ssr/server";
 // });
 
 const ssr = await ssrServer({
+	mode: "csr",
 	development: Bun.env.NODE_ENV === "development",
 });
 

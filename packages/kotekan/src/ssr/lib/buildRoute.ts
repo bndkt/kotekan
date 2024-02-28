@@ -25,7 +25,7 @@ const build = async (props: BuildProps) => {
 	const sourcemap = props.development ? "inline" : "none";
 	const minify = props.development ? false : true;
 
-	return await Bun.build({
+	const build = await Bun.build({
 		entrypoints: [entrypoint],
 		// root: process.cwd(),
 		target,
@@ -39,52 +39,67 @@ const build = async (props: BuildProps) => {
 			"process.env.LOCATION": JSON.stringify(props.location),
 		},
 	});
+
+	if (!build.success || build.outputs.length === 0) {
+		throw new Error("Build failed or no outputs");
+	}
+
+	return build.outputs[0];
 };
+
+interface BuildRouteProps {
+	name: string;
+	location: string;
+	buildPath: string;
+	ssrEnabled: boolean;
+	development?: boolean;
+}
 
 export const buildRoute = async ({
 	name,
 	location,
 	buildPath,
-	serverRenderingEnabled,
+	ssrEnabled,
 	development,
-}: {
-	name: string;
-	location: string;
-	buildPath: string;
-	serverRenderingEnabled: boolean;
-	development?: boolean;
-}) => {
-	const serverBuild = await build({
+}: BuildRouteProps) => {
+	let csrBuildFilePath: string | undefined;
+
+	// SSR/SSG
+	const ssrBuildArtifact = await build({
 		location,
 		target: "server",
-		mode: serverRenderingEnabled ? "hydrate" : "render",
+		mode: "hydrate",
 		development,
 	});
-
-	if (!serverBuild.success || serverBuild.outputs.length === 0) {
-		throw new Error("Failed to build app or no outputs");
-	}
-
-	const serverBuildArtifact = serverBuild.outputs[0];
-
-	const { filePath: serverBuildFilePath } = await createBuildFile({
-		name,
+	const { filePath: ssrBuildFilePath } = await createBuildFile({
+		name: `${name}-ssr`,
 		buildPath,
-		buildArtifact: serverBuildArtifact,
+		buildArtifact: ssrBuildArtifact,
 	});
 
-	const bootstrapBuild = await build({
+	// CSR
+	if (!ssrEnabled) {
+		const csrBuildArtifact = await build({
+			location,
+			target: "server",
+			mode: "render",
+			development,
+		});
+		const csrBuildFile = await createBuildFile({
+			name: `${name}-csr`,
+			buildPath,
+			buildArtifact: csrBuildArtifact,
+		});
+		csrBuildFilePath = csrBuildFile.filePath;
+	}
+
+	// Boostrap (for either SSR or CSR)
+	const bootstrapBuildArtifact = await build({
 		location,
 		target: "client",
-		mode: serverRenderingEnabled ? "hydrate" : "render",
+		mode: ssrEnabled ? "hydrate" : "render",
 		development,
 	});
-
-	if (!bootstrapBuild.success || bootstrapBuild.outputs.length === 0) {
-		throw new Error("Failed to build hydrate or no outputs");
-	}
-
-	const bootstrapBuildArtifact = bootstrapBuild.outputs[0];
 
 	const { fileName: bootstrapBuildFileName } = await createBuildFile({
 		name: `${name}-bootstrap`,
@@ -92,5 +107,9 @@ export const buildRoute = async ({
 		buildArtifact: bootstrapBuildArtifact,
 	});
 
-	return { serverBuildFilePath, bootstrapBuildFileName };
+	return {
+		ssrBuildFilePath,
+		csrBuildFilePath,
+		bootstrapBuildFileName,
+	};
 };

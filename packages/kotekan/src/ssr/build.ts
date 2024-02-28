@@ -6,7 +6,8 @@ import { buildRoute } from "./lib/buildRoute";
 export type RouteBuilds = Map<
 	string,
 	{
-		serverBuildFilePath: string;
+		ssrBuildFilePath: string;
+		csrBuildFilePath?: string;
 		bootstrapBuildFileName: string;
 	}
 >;
@@ -14,14 +15,14 @@ export type RouteBuilds = Map<
 interface BuildProps {
 	routes: Record<string, string>;
 	buildPath: string;
-	serverRenderingEnabled: boolean;
+	ssrEnabled: boolean;
 	development?: boolean;
 }
 
 export const build = async ({
 	routes,
 	buildPath,
-	serverRenderingEnabled,
+	ssrEnabled,
 	development,
 }: BuildProps) => {
 	const routeBuilds: RouteBuilds = new Map();
@@ -29,15 +30,20 @@ export const build = async ({
 	for (const [key, val] of Object.entries(routes)) {
 		const name = key === "/" ? "index" : key.substring(1);
 
-		const { serverBuildFilePath, bootstrapBuildFileName } = await buildRoute({
-			name,
-			location: key,
-			buildPath,
-			serverRenderingEnabled,
-			development,
-		});
+		const { ssrBuildFilePath, csrBuildFilePath, bootstrapBuildFileName } =
+			await buildRoute({
+				name,
+				location: key,
+				buildPath,
+				ssrEnabled,
+				development,
+			});
 
-		routeBuilds.set(name, { serverBuildFilePath, bootstrapBuildFileName });
+		routeBuilds.set(name, {
+			ssrBuildFilePath,
+			csrBuildFilePath,
+			bootstrapBuildFileName,
+		});
 	}
 
 	return routeBuilds;
