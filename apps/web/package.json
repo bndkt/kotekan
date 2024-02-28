@@ -14,12 +14,12 @@
     "kotekan": "workspace:*",
     "react": "18.3.0-canary-6c3b8dbfe-20240226",
     "react-dom": "18.3.0-canary-6c3b8dbfe-20240226",
-    "react-strict-dom": "0.0.1"
+    "react-strict-dom": "0.0.2"
   },
   "devDependencies": {
     "@stylexjs/stylex": "0.5.1",
     "@types/bun": "1.0.7",
-    "@types/react": "18.2.58",
+    "@types/react": "18.2.59",
     "@types/react-dom": "18.2.19",
     "typescript": "5.3.3"
   }
