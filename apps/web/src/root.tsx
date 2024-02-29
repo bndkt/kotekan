@@ -6,9 +6,10 @@
 // 	console.log("Fast Refresh setup complete");
 // }
 import type { ReactNode } from "react";
-import stylex from "@stylexjs/stylex";
+// @ts-expect-error Missing types
+import { css, html as h } from "react-strict-dom";
 
-const styles = stylex.create({
+const styles = css.create({
 	blue: {
 		color: "blue",
 	},
@@ -21,7 +22,7 @@ export default function Root({ children }: { children?: ReactNode }) {
 				<title>Kotekan</title>
 			</head>
 			<body>
-				<h1 {...stylex.props(styles.blue)}>Kotekan Web</h1>
+				<h.h1 style={styles.blue}>Kotekan Web</h.h1>
 				{children}
 			</body>
 		</html>

@@ -13,13 +13,13 @@ const styles = css.create({
 export default function Index() {
 	return (
 		<>
-			<h.h1 {...css.props(styles.red)}>Kotekan - Index</h.h1>
+			<h.h1 style={styles.red}>Kotekan - Index</h.h1>
 			<h.a href="/about">About</h.a>
 
 			<h.div>Hello from react-strict-dom</h.div>
 
 			<Suspense fallback={<h.div>Loading...</h.div>}>
-				{/* @ts-expect-error Async component */}
+				{/* @ ts-expect-error Async component */}
 				{/* <ServerComponent /> */}
 			</Suspense>
 		</>

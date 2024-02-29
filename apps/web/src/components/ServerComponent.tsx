@@ -2,7 +2,7 @@
 // @ts-expect-error Missing types
 import { css, html as h } from "react-strict-dom";
 
-// const styles = stylex.create({
+// const styles = css.create({
 // 	red: {
 // 		color: "red",
 // 	},
@@ -17,7 +17,7 @@ export async function ServerComponent() {
 
 	return (
 		<>
-			<h.div /* {...stylex.props(styles.red)} */>Hello from the server!</h.div>
+			<h.div /* style={styles.red} */>Hello from the server!</h.div>
 			<h.ul>
 				<h.li>Before: {msBefore}</h.li>
 				<h.li>After: {msAfter}</h.li>
