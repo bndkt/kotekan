@@ -2,6 +2,10 @@
   "name": "kotekan-mobile",
   "module": "index.ts",
   "type": "module",
+  "dependencies": {
+    "react": "18.3.0-canary-6c3b8dbfe-20240226",
+    "react-native": "0.74.0-rc.1"
+  },
   "devDependencies": {
     "@types/bun": "1.0.8"
   }
