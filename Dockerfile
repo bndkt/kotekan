@@ -13,7 +13,8 @@ COPY apps/web/package.json /temp/dev/apps/web/
 COPY packages/kotekan/package.json /temp/dev/packages/kotekan/
 # TMP
 COPY packages/react-server-dom-esm/package.json /temp/dev/packages/react-server-dom-esm/
-RUN cd /temp/dev && bun install --frozen-lockfile
+RUN cd /temp/dev && bun install 
+# --frozen-lockfile
 
 # install with --production (exclude devDependencies)
 RUN mkdir -p /temp/prod
@@ -22,7 +23,8 @@ COPY apps/web/package.json /temp/prod/apps/web/
 COPY packages/kotekan/package.json /temp/prod/packages/kotekan/
 # TMP
 COPY packages/react-server-dom-esm/package.json /temp/prod/packages/react-server-dom-esm/
-RUN cd /temp/prod && bun install --frozen-lockfile --production
+# RUN cd /temp/prod && bun install --frozen-lockfile --production
+RUN cd /temp/prod && bun install
 
 # copy node_modules from temp directory
 # then copy all (non-ignored) project files into the image

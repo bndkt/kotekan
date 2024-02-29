@@ -20,7 +20,7 @@ export default function Index() {
 
 			<Suspense fallback={<h.div>Loading...</h.div>}>
 				{/* @ts-expect-error Async component */}
-				<ServerComponent />
+				{/* <ServerComponent /> */}
 			</Suspense>
 		</>
 	);
