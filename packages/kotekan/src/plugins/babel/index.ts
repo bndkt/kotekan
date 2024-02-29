@@ -5,8 +5,8 @@ import { transformAsync } from "@babel/core";
 import typescriptSyntaxPlugin from "@babel/plugin-syntax-typescript";
 // @ts-expect-error Missing types
 import jsxSyntaxPlugin from "@babel/plugin-syntax-jsx";
-import stylexBabelPlugin from "@stylexjs/babel-plugin";
 import type { Rule } from "@stylexjs/babel-plugin";
+import { stylexPlugin } from "./stylex";
 // import reactRefreshBabelPlugin from "react-refresh/babel";
 
 interface PluginConfig {
@@ -19,6 +19,7 @@ export const babelPlugin: (config: PluginConfig) => BunPlugin = (
 	config = {},
 ) => {
 	// const stylexImports = ["@stylexjs/stylex", "react-strict-dom"];
+	const development = config.development ?? false;
 
 	return {
 		name: "babelPlugin",
@@ -60,19 +61,7 @@ export const babelPlugin: (config: PluginConfig) => BunPlugin = (
 						plugins: [
 							[typescriptSyntaxPlugin, { isTSX: true }],
 							jsxSyntaxPlugin,
-							stylexBabelPlugin.withOptions({
-								// https://stylexjs.com/docs/api/configuration/babel-plugin/
-								dev: config.development,
-								test: false,
-								runtimeInjection: config.development,
-								// classNamePrefix
-								// useRemForFontSize
-								// styleResolution
-								importSources: [{ from: "react-strict-dom", as: "css" }],
-								genConditionalClasses: true,
-								treeshakeCompensation: false,
-								// unstable_moduleResolution
-							}),
+							stylexPlugin(development),
 							// [reactRefreshBabelPlugin, { skipEnvCheck: true }],
 						],
 						exclude: "node_modules/**",

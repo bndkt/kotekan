@@ -1,59 +1,5 @@
-import { resolveSync } from "bun";
-
+import { bundle } from "./bundle";
 import { createBuildFile } from "./createBuildFile";
-import { babelPlugin } from "../../plugins/babelPlugin";
-
-const appFilePath = resolveSync("./../../client/App.tsx", import.meta.dir);
-const hydrateFilePath = resolveSync("./../../client/hydrate", import.meta.dir);
-const renderFilePath = resolveSync("./../../client/render", import.meta.dir);
-
-type BuildProps = {
-	location: string;
-	target: "server" | "client";
-	mode: "render" | "hydrate";
-	development?: boolean;
-};
-
-const build = async (props: BuildProps) => {
-	const entrypoint =
-		props.target === "server"
-			? appFilePath
-			: props.mode === "render"
-			  ? renderFilePath
-			  : hydrateFilePath;
-	const target = props.target === "server" ? "bun" : "browser";
-	const external =
-		props.target === "server" ? ["react", "react-dom"] : undefined;
-	const sourcemap = props.development ? "inline" : "none";
-	const minify = props.development ? false : true;
-
-	const build = await Bun.build({
-		entrypoints: [entrypoint],
-		// root: process.cwd(),
-		target,
-		// splitting: true,
-		sourcemap,
-		minify,
-		// naming: "[name]-[hash].[ext]",
-		// outdir: hydrate ? "./build" : undefined,
-		external,
-		define: {
-			"process.env.RENDER": JSON.stringify(props.mode === "hydrate"),
-			"process.env.LOCATION": JSON.stringify(props.location),
-		},
-		plugins: [
-			babelPlugin({
-				development: props.development,
-			}),
-		],
-	});
-
-	if (!build.success || build.outputs.length === 0) {
-		throw new Error("Build failed or no outputs");
-	}
-
-	return build.outputs[0];
-};
 
 interface BuildRouteProps {
 	name: string;
@@ -73,7 +19,7 @@ export const buildRoute = async ({
 	let csrBuildFilePath: string | undefined;
 
 	// SSR/SSG
-	const ssrBuildArtifact = await build({
+	const ssrBuildArtifact = await bundle({
 		location,
 		target: "server",
 		mode: "hydrate",
@@ -87,7 +33,7 @@ export const buildRoute = async ({
 
 	// CSR
 	if (!ssrEnabled) {
-		const csrBuildArtifact = await build({
+		const csrBuildArtifact = await bundle({
 			location,
 			target: "server",
 			mode: "render",
@@ -102,7 +48,7 @@ export const buildRoute = async ({
 	}
 
 	// Boostrap (for either SSR or CSR)
-	const bootstrapBuildArtifact = await build({
+	const bootstrapBuildArtifact = await bundle({
 		location,
 		target: "client",
 		mode: ssrEnabled ? "hydrate" : "render",
