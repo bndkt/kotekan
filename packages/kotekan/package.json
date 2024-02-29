@@ -30,7 +30,7 @@
     "@stylexjs/babel-plugin": "0.5.1",
     "@types/babel__core": "7.20.5",
     "@types/bun": "1.0.8",
-    "@types/react": "18.2.60",
+    "@types/react": "18.2.61",
     "@types/react-dom": "18.2.19",
     "@types/react-refresh": "0.14.5",
     "isbot": "5.1.1",
