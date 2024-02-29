@@ -3,8 +3,8 @@ import type { BunPlugin } from "bun";
 import { transformAsync } from "@babel/core";
 // @ts-expect-error Missing types
 import typescriptSyntaxPlugin from "@babel/plugin-syntax-typescript";
-// @ts-expect-error Missing types
-import jsxSyntaxPlugin from "@babel/plugin-syntax-jsx";
+// @ ts-expect-error Missing types
+// import jsxSyntaxPlugin from "@babel/plugin-syntax-jsx";
 import type { Rule } from "@stylexjs/babel-plugin";
 import { stylexPlugin } from "./stylex";
 // import reactRefreshBabelPlugin from "react-refresh/babel";
@@ -60,8 +60,8 @@ export const babelPlugin: (config: PluginConfig) => BunPlugin = (
 						filename: currFilePath,
 						plugins: [
 							[typescriptSyntaxPlugin, { isTSX: true }],
-							jsxSyntaxPlugin,
-							stylexPlugin(development),
+							// jsxSyntaxPlugin,
+							stylexPlugin({ development }),
 							// [reactRefreshBabelPlugin, { skipEnvCheck: true }],
 						],
 						exclude: "node_modules/**",

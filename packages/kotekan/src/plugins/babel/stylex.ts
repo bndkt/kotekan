@@ -1,11 +1,11 @@
 import stylexBabelPlugin from "@stylexjs/babel-plugin";
 
-export const stylexPlugin = (dev: boolean) => {
+export const stylexPlugin = ({ development }: { development: boolean }) => {
 	return stylexBabelPlugin.withOptions({
 		// https://stylexjs.com/docs/api/configuration/babel-plugin/
-		dev,
+		dev: development,
 		test: false,
-		runtimeInjection: dev,
+		runtimeInjection: development,
 		// classNamePrefix
 		// useRemForFontSize
 		// styleResolution
