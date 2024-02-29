@@ -14,7 +14,6 @@ registry:
   server: ghcr.io # registry.digitalocean.com # / ghcr.io / ...
   username:
     - KAMAL_REGISTRY_USERNAME
-
   # Always use an access token rather than real password when possible.
   password:
     - KAMAL_REGISTRY_PASSWORD

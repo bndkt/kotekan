@@ -28,6 +28,10 @@ export const fetch = async (
 	const url = new URL(request.url);
 	const pathSegments = url.pathname.split("/").filter(Boolean);
 
+	if (url.pathname === "/up") {
+		return new Response("OK", { status: 200 });
+	}
+
 	// Router
 	const match = router.match(request.url);
 	if (match) {
