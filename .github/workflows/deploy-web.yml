@@ -9,6 +9,8 @@ jobs:
         permissions:
             contents: read
             packages: write
+        env:
+          BUILDX_NO_DEFAULT_ATTESTATIONS: 1
         steps:
             - name: Checkout
               uses: actions/checkout@v4
