@@ -1,18 +1,18 @@
 # Name of your application. Used to uniquely configure containers.
-service: my-app
+service: kotekan-web
 
 # Name of the container image.
-image: user/my-app
+image: kotekan/web
 
 # Deploy to these servers.
 servers:
-  - 192.168.0.1
+  - 159.223.193.53
 
 # Credentials for your image host.
 registry:
   # Specify the registry server, if you're not using Docker Hub
-  # server: registry.digitalocean.com / ghcr.io / ...
-  username: my-user
+  server: ghcr.io # registry.digitalocean.com # / ghcr.io / ...
+  username: bndkt
 
   # Always use an access token rather than real password when possible.
   password:
