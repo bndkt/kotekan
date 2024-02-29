@@ -1,6 +1,10 @@
 import { bundleServer } from "./bundleServer";
 import { bundleClient } from "./bundleClient";
 import { createBuildFile } from "./createBuildFile";
+import type { Rule } from "@stylexjs/babel-plugin";
+import { stylexCss } from "./stylexCss";
+
+export type StylexRules = Record<string, Rule[]>;
 
 interface BuildRouteProps {
 	name: string;
@@ -19,10 +23,13 @@ export const buildRoute = async ({
 }: BuildRouteProps) => {
 	let csrBuildFilePath: string | undefined;
 
+	const stylexRules: StylexRules = {};
+
 	// SSR/SSG
 	const ssrBuild = await bundleServer({
 		location,
 		mode: "hydrate",
+		stylexRules,
 		development,
 	});
 	const { filePath: ssrBuildFilePath } = await createBuildFile({
@@ -36,6 +43,7 @@ export const buildRoute = async ({
 		const csrBuild = await bundleServer({
 			location,
 			mode: "render",
+			stylexRules,
 			development,
 		});
 		const csrBuildFile = await createBuildFile({
@@ -50,11 +58,12 @@ export const buildRoute = async ({
 	const clientBuild = await bundleClient({
 		location,
 		mode: ssrEnabled ? "hydrate" : "render",
+		stylexRules,
 		clientEntryPoints: ssrBuild.clientEntryPoints,
 		development,
 	});
 
-	const { fileName: clientBuildFileName } = await createBuildFile({
+	const { fileName: bootstrapFileName } = await createBuildFile({
 		name: `${name}-client`,
 		buildPath,
 		buildArtifact: clientBuild.buildOutputs[0],
@@ -69,9 +78,14 @@ export const buildRoute = async ({
 		});
 	}
 
+	const stylexCssFile = await stylexCss({ stylexRules, buildPath });
+
+	console.log({ bootstrapFileName, stylexCssFile });
+
 	return {
 		ssrBuildFilePath,
 		csrBuildFilePath,
-		clientBuildFileName,
+		bootstrapFileName,
+		stylexCssFileName: stylexCssFile?.fileName
 	};
 };

@@ -1,11 +1,11 @@
 import path from "node:path";
 import { type FileSystemRouter } from "bun";
+import { createElement } from "react";
 // @ts-expect-error Untyped import
 import { renderToReadableStream } from "react-dom/server.browser"; // @todo
 import { isbot } from "isbot";
 
 import type { RouteBuilds } from "./build";
-import { createElement } from "react";
 
 interface FetchProps {
 	router: FileSystemRouter;
@@ -44,12 +44,13 @@ export const fetch = async (
 				? routeBuild.ssrBuildFilePath
 				: routeBuild.csrBuildFilePath;
 		console.log("Requested route:", routeFile);
+		const stylexCssFile = routeBuild.stylexCssFileName;
 
 		const appFile = await import(routeFile);
 		const App = createElement(appFile.App);
 
 		const includeBootstrap = hydrationEnabled || !ssrEnabled;
-		const bootstrapFilePath = `${buildUrlSegment}/${routeBuild.bootstrapBuildFileName}`;
+		const bootstrapFilePath = `${buildUrlSegment}/${routeBuild.bootstrapFileName}`;
 		const stream = await renderToReadableStream(App, {
 			bootstrapModules: includeBootstrap ? [bootstrapFilePath] : undefined,
 		});

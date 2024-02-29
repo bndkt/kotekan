@@ -20,6 +20,7 @@ export default function Root({ children }: { children?: ReactNode }) {
 		<html lang="en">
 			<head>
 				<title>Kotekan</title>
+				<link href="/_build/stylex.css" rel="stylesheet" />
 			</head>
 			<body>
 				<h.h1 style={styles.blue}>Kotekan Web</h.h1>

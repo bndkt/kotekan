@@ -1,0 +1,23 @@
+{
+  "name": "react-server-dom-esm",
+  "version": "0.0.0-experimental-910045696-20230607",
+  "exports": {
+    ".": "./index.js",
+    "./client": {
+      "node": "./client.node.js",
+      "default": "./client.browser.js"
+    },
+    "./client.browser": "./client.browser.js",
+    "./client.node": "./client.node.js",
+    "./server": {
+      "react-server": "./server.node.js",
+      "default": "./server.js"
+    },
+    "./server.node": "./server.node.js",
+    "./node-loader": "./esm/react-server-dom-esm-node-loader.production.min.js",
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "acorn-loose": "^8.3.0"
+  }
+}

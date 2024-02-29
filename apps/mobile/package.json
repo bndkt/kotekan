@@ -2,11 +2,13 @@
   "name": "kotekan-mobile",
   "type": "module",
   "scripts": {
-    "start": "bun run ./src/index.ts"
+    "dev": "kotekan dev"
   },
   "dependencies": {
+    "kotekan": "workspace:*",
     "react": "18.3.0-canary-6c3b8dbfe-20240226",
-    "react-native": "0.74.0-rc.1"
+    "react-native": "0.74.0-rc.1",
+    "react-strict-dom": "0.0.2"
   },
   "devDependencies": {
     "@types/bun": "1.0.8"

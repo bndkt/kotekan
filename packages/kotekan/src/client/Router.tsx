@@ -30,7 +30,7 @@ const About = lazy(() =>
 	}),
 );
 
-export function Router({ location }: { location?: string }) {
+export const Router = ({ location }: { location?: string }) => {
 	location = location ?? LOCATION ?? "/";
 
 	const routes = new Map<string, LazyExoticComponent<() => ReactNode>>();
@@ -47,4 +47,4 @@ export function Router({ location }: { location?: string }) {
 			</Suspense>
 		</ErrorBoundary>
 	);
-}
+};

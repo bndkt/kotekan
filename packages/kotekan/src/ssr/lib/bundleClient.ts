@@ -3,6 +3,7 @@ import { resolveSync, type BunPlugin } from "bun";
 import { babelPlugin } from "../../plugins/babel";
 import { rscPlugin } from "../../plugins/rsc";
 import type { ClientEntryPoints } from "./bundleServer";
+import type { StylexRules } from "./buildRoute";
 
 const appFilePath = resolveSync("./../../client/App", import.meta.dir);
 const hydrateFilePath = resolveSync("./../../client/hydrate", import.meta.dir);
@@ -11,23 +12,29 @@ const renderFilePath = resolveSync("./../../client/render", import.meta.dir);
 type BundleProps = {
 	location: string;
 	mode: "render" | "hydrate";
+	stylexRules: StylexRules;
 	clientEntryPoints: ClientEntryPoints;
 	development?: boolean;
 };
 
-export const bundleClient = async (props: BundleProps) => {
-	const { development } = props;
-
-	const entrypoint = props.mode === "render" ? renderFilePath : hydrateFilePath;
+export const bundleClient = async ({
+	location,
+	mode,
+	stylexRules,
+	clientEntryPoints,
+	development,
+}: BundleProps) => {
+	const entrypoint = mode === "render" ? renderFilePath : hydrateFilePath;
 
 	const plugins: BunPlugin[] = [
-		// babelPlugin({
-		// 	development,
-		// }),
+		babelPlugin({
+			stylexRules,
+			development,
+		}),
 	];
 
 	const build = await Bun.build({
-		entrypoints: [entrypoint, ...props.clientEntryPoints],
+		entrypoints: [entrypoint, ...clientEntryPoints],
 		// root: process.cwd(),
 		target: "browser",
 		// splitting: true,
@@ -35,10 +42,10 @@ export const bundleClient = async (props: BundleProps) => {
 		minify: development ? false : true,
 		// naming: "[name]-[hash].[ext]",
 		// outdir: hydrate ? "./build" : undefined,
-		external: ["react", "react-dom"],
+		// external: [],
 		define: {
-			"process.env.RENDER": JSON.stringify(props.mode === "hydrate"),
-			"process.env.LOCATION": JSON.stringify(props.location),
+			"process.env.RENDER": JSON.stringify(mode === "hydrate"),
+			"process.env.LOCATION": JSON.stringify(location),
 		},
 		plugins,
 	});

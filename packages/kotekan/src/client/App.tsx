@@ -6,8 +6,6 @@ import { ErrorBoundary } from "./ErrorBoundary";
 
 const RENDER = process.env.RENDER as string;
 
-console.log({ RENDER });
-
 export const App = () => {
 	return (
 		<StrictMode>

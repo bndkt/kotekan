@@ -1,14 +1,12 @@
 import { buildRoute } from "./lib/buildRoute";
 
-// import { ssrPlugin } from "../plugins/ssrPlugin";
-// import { babelPlugin } from "../plugins/babelPlugin";
-
 export type RouteBuilds = Map<
 	string,
 	{
 		ssrBuildFilePath: string;
+		bootstrapFileName: string;
 		csrBuildFilePath?: string;
-		clientBuildFileName: string;
+		stylexCssFileName?: string;
 	}
 >;
 
@@ -30,20 +28,15 @@ export const build = async ({
 	for (const [key, val] of Object.entries(routes)) {
 		const name = key === "/" ? "index" : key.substring(1);
 
-		const { ssrBuildFilePath, csrBuildFilePath, clientBuildFileName } =
-			await buildRoute({
-				name,
-				location: key,
-				buildPath,
-				ssrEnabled,
-				development,
-			});
-
-		routeBuilds.set(name, {
-			ssrBuildFilePath,
-			csrBuildFilePath,
-			clientBuildFileName,
+		const routBuild = await buildRoute({
+			name,
+			location: key,
+			buildPath,
+			ssrEnabled,
+			development,
 		});
+
+		routeBuilds.set(name, routBuild);
 	}
 
 	return routeBuilds;

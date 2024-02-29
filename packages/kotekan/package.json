@@ -16,13 +16,17 @@
   "dependencies": {
     "react": "18.3.0-canary-6c3b8dbfe-20240226",
     "react-dom": "18.3.0-canary-6c3b8dbfe-20240226",
+    "react-native": "0.74.0-rc.1",
     "react-server-dom-esm": "workspace:*"
   },
   "devDependencies": {
     "@babel/core": "7.24.0",
     "@babel/plugin-syntax-jsx": "7.23.3",
     "@babel/plugin-syntax-typescript": "7.23.3",
+    "@babel/runtime": "7.24.0",
     "@biomejs/biome": "1.5.3",
+    "@react-native/babel-preset": "0.74.1",
+    "@react-native/metro-config": "0.74.1",
     "@stylexjs/babel-plugin": "0.5.1",
     "@types/babel__core": "7.20.5",
     "@types/bun": "1.0.8",
@@ -30,6 +34,8 @@
     "@types/react-dom": "18.2.19",
     "@types/react-refresh": "0.14.5",
     "isbot": "5.1.1",
+    "metro": "0.80.6",
+    "metro-core": "0.80.6",
     "react-refresh": "0.14.0",
     "typescript": "5.3.3"
   }

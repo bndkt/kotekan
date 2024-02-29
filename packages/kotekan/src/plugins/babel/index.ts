@@ -7,17 +7,17 @@ import typescriptSyntaxPlugin from "@babel/plugin-syntax-typescript";
 // import jsxSyntaxPlugin from "@babel/plugin-syntax-jsx";
 import type { Rule } from "@stylexjs/babel-plugin";
 import { stylexPlugin } from "./stylex";
+import type { StylexRules } from "../../ssr/lib/buildRoute";
 // import reactRefreshBabelPlugin from "react-refresh/babel";
 
 interface PluginConfig {
+	stylexRules: StylexRules;
 	development?: boolean;
 }
 
 const BABEL_PLUGIN_ONLOAD_FILTER = /\.(jsx|js|tsx|ts|mjs|cjs|mts|cts)$/;
 
-export const babelPlugin: (config: PluginConfig) => BunPlugin = (
-	config = {},
-) => {
+export const babelPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 	// const stylexImports = ["@stylexjs/stylex", "react-strict-dom"];
 	const development = config.development ?? false;
 
@@ -26,7 +26,7 @@ export const babelPlugin: (config: PluginConfig) => BunPlugin = (
 		setup(builder) {
 			// console.log(builder.config, config);
 
-			const stylexRules: Record<string, Rule[]> = {};
+			// const stylexRules: Record<string, Rule[]> = {};
 
 			// builder.onResolve(
 			// 	{ filter: /node_modules\/underscore/ },
@@ -74,21 +74,21 @@ export const babelPlugin: (config: PluginConfig) => BunPlugin = (
 						return { contents: inputCode, loader };
 					}
 
-					// const { code, metadata } = transformResult;
-					const { code } = transformResult;
+					const { code, metadata } = transformResult;
+					// const { code } = transformResult;
 
 					if (!code) {
 						console.warn("StyleX: transformAsync returned null");
 						return { contents: inputCode, loader };
 					}
 
-					// const typedMetadata = metadata as unknown as { stylex: Rule[] };
-					// if (
-					// 	typedMetadata.stylex !== null &&
-					// 	typedMetadata.stylex.length > 0
-					// ) {
-					// 	stylexRules[args.path] = typedMetadata.stylex;
-					// }
+					const typedMetadata = metadata as unknown as { stylex: Rule[] };
+					if (
+						typedMetadata.stylex !== null &&
+						typedMetadata.stylex.length > 0
+					) {
+						config.stylexRules[args.path] = typedMetadata.stylex;
+					}
 
 					return {
 						contents: code,
