@@ -1,0 +1,8 @@
+{
+  "name": "kotekan-mobile",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "1.0.8"
+  }
+}
