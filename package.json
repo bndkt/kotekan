@@ -6,7 +6,7 @@
   ],
   "scripts": {
     "ncu": "ncu",
-    "clean": "rm -rf node_modules && rm bun.lockb",
+    "clean": "rm -rf node_modules && rm bun.lockb && bun install --force",
     "manypkg": "manypkg check",
     "biome": "biome",
     "docker": "bun run docker:build && bun run docker:remove && bun run docker:run",
