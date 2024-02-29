@@ -8,7 +8,7 @@ export type RouteBuilds = Map<
 	{
 		ssrBuildFilePath: string;
 		csrBuildFilePath?: string;
-		bootstrapBuildFileName: string;
+		clientBuildFileName: string;
 	}
 >;
 
@@ -30,7 +30,7 @@ export const build = async ({
 	for (const [key, val] of Object.entries(routes)) {
 		const name = key === "/" ? "index" : key.substring(1);
 
-		const { ssrBuildFilePath, csrBuildFilePath, bootstrapBuildFileName } =
+		const { ssrBuildFilePath, csrBuildFilePath, clientBuildFileName } =
 			await buildRoute({
 				name,
 				location: key,
@@ -42,7 +42,7 @@ export const build = async ({
 		routeBuilds.set(name, {
 			ssrBuildFilePath,
 			csrBuildFilePath,
-			bootstrapBuildFileName,
+			clientBuildFileName,
 		});
 	}
 

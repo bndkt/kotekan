@@ -1,4 +1,5 @@
-import { bundle } from "./bundle";
+import { bundleServer } from "./bundleServer";
+import { bundleClient } from "./bundleClient";
 import { createBuildFile } from "./createBuildFile";
 
 interface BuildRouteProps {
@@ -19,51 +20,58 @@ export const buildRoute = async ({
 	let csrBuildFilePath: string | undefined;
 
 	// SSR/SSG
-	const ssrBuildArtifact = await bundle({
+	const ssrBuild = await bundleServer({
 		location,
-		target: "server",
 		mode: "hydrate",
 		development,
 	});
 	const { filePath: ssrBuildFilePath } = await createBuildFile({
 		name: `${name}-ssr`,
 		buildPath,
-		buildArtifact: ssrBuildArtifact,
+		buildArtifact: ssrBuild.buildOutputs[0],
 	});
 
 	// CSR
 	if (!ssrEnabled) {
-		const csrBuildArtifact = await bundle({
+		const csrBuild = await bundleServer({
 			location,
-			target: "server",
 			mode: "render",
 			development,
 		});
 		const csrBuildFile = await createBuildFile({
 			name: `${name}-csr`,
 			buildPath,
-			buildArtifact: csrBuildArtifact,
+			buildArtifact: csrBuild.buildOutputs[0],
 		});
 		csrBuildFilePath = csrBuildFile.filePath;
 	}
 
-	// Boostrap (for either SSR or CSR)
-	const bootstrapBuildArtifact = await bundle({
+	// Client (for SSR/CSR/RSC)
+	const clientBuild = await bundleClient({
 		location,
-		target: "client",
 		mode: ssrEnabled ? "hydrate" : "render",
+		clientEntryPoints: ssrBuild.clientEntryPoints,
 		development,
 	});
 
-	const { fileName: bootstrapBuildFileName } = await createBuildFile({
-		name: `${name}-bootstrap`,
+	const { fileName: clientBuildFileName } = await createBuildFile({
+		name: `${name}-client`,
 		buildPath,
-		buildArtifact: bootstrapBuildArtifact,
+		buildArtifact: clientBuild.buildOutputs[0],
 	});
+
+	for (const buildArtifact of clientBuild.buildOutputs) {
+		console.log("buildArtifact", buildArtifact.path, buildArtifact.name);
+		const { fileName: clientBuildFileName } = await createBuildFile({
+			name: `${name}-client`,
+			buildPath,
+			buildArtifact,
+		});
+	}
 
 	return {
 		ssrBuildFilePath,
 		csrBuildFilePath,
-		bootstrapBuildFileName,
+		clientBuildFileName,
 	};
 };
