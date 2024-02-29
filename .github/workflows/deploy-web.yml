@@ -1,0 +1,29 @@
+name: Deploy Web
+
+on:
+  workflow_dispatch
+
+jobs:
+    Deploy:
+        runs-on: ubuntu-latest
+        env:
+          KAMAL_REGISTRY_USERNAME: ${{ secrets.KAMAL_REGISTRY_USERNAME }}
+          KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+            - name: Set up Ruby
+              uses: ruby/setup-ruby@v1
+              with:
+                ruby-version: 3.3
+                bundler-cache: true
+            - name: Set up Kamal
+              run: gem install kamal
+            - name: Set up SSH
+              uses: webfactory/ssh-agent@v0.7.0
+              with:
+                ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+            - name: Set up Bun
+              run: |
+                curl -fsSL https://bun.sh/install | bash
+                echo "~/.bun/bin" >> $GITHUB_PATH
