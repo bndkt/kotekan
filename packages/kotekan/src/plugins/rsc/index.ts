@@ -11,9 +11,6 @@ interface PluginConfig {
 const PLUGIN_FILTER = /\.(jsx|js|tsx|ts|mjs|cjs|mts|cts)$/;
 
 export const rscPlugin: (config: PluginConfig) => BunPlugin = (config) => {
-	// const clientManifestFilename = "react-client-manifest.json";
-	// const ssrManifestFilename = "react-ssr-manifest.json";
-
 	return {
 		name: "rscPlugin",
 		setup(builder) {

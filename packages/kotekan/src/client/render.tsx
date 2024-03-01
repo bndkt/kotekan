@@ -6,16 +6,12 @@ import { createFromFetch } from "react-server-dom-esm/client";
 import { Router } from "./Router";
 import type { ReactNode } from "react";
 
-const RSC_ENABLED = process.env.RSC_ENABLED;
-
-console.log("RENDER", { RSC_ENABLED });
+console.log("RENDER");
 
 const root = createRoot(document.body);
 
-if (RSC_ENABLED) {
-	createFromFetch(fetch("/rsc")).then((response: ReactNode) =>
-		root.render(response),
-	);
-} else {
-	root.render(<Router />);
-}
+// createFromFetch(fetch("?jsx")).then((response: ReactNode) =>
+// 	root.render(response),
+// );
+
+root.render(<Router />);

@@ -1,11 +1,9 @@
 import { resolveSync, type BunPlugin } from "bun";
 
 import { babelPlugin } from "../../plugins/babel";
-import { rscPlugin } from "../../plugins/rsc";
 import type { ClientEntryPoints } from "./bundleServer";
 import type { StylexRules } from "./buildRoute";
 
-const appFilePath = resolveSync("./../../client/App", import.meta.dir);
 const hydrateFilePath = resolveSync("./../../client/hydrate", import.meta.dir);
 const renderFilePath = resolveSync("./../../client/render", import.meta.dir);
 
@@ -22,7 +20,6 @@ type BundleProps = {
 export const bundleClient = async ({
 	location,
 	mode,
-	rscEnabled,
 	stylexRules,
 	clientEntryPoints,
 	stylexCssFile,
@@ -49,7 +46,6 @@ export const bundleClient = async ({
 		// external: [],
 		define: {
 			"process.env.RENDER": JSON.stringify(mode === "hydrate"),
-			"process.env.RSC_ENABLED": JSON.stringify(rscEnabled),
 			"process.env.LOCATION": JSON.stringify(location),
 			"process.env.STYLESHEET": JSON.stringify(stylexCssFile),
 		},

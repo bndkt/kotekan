@@ -8,7 +8,7 @@ const RENDER = process.env.RENDER as string;
 export const App = ({ stylesheet }: { stylesheet: string }) => {
 	return (
 		<StrictMode>
-			{/* <link rel="stylesheet" href={stylesheet} precedence="default" /> */}
+			<link rel="stylesheet" href={stylesheet} />
 			<Root>{RENDER && <Router />}</Root>
 		</StrictMode>
 	);

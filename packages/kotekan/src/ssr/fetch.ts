@@ -53,7 +53,7 @@ export const fetch = async (
 		// JSX (for RSC)
 		if (searchParams.has("jsx")) {
 			console.log("RSC!");
-			const routeFile = routeBuild.rscBuildFilePath;
+			const routeFile = routeBuild.csrBuildFilePath ?? "";
 			const appFile = await import(routeFile);
 			const App = createElement(appFile.App, { stylesheet });
 
