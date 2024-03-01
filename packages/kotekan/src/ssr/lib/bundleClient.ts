@@ -10,7 +10,6 @@ const renderFilePath = resolveSync("./../../client/render", import.meta.dir);
 type BundleProps = {
 	location: string;
 	mode: "render" | "hydrate";
-	rscEnabled: boolean;
 	stylexRules?: StylexRules;
 	clientEntryPoints: ClientEntryPoints;
 	stylexCssFile?: string;

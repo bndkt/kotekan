@@ -5,6 +5,7 @@ import { rscPlugin } from "../../plugins/rsc";
 import type { StylexRules } from "./buildRoute";
 
 const appFilePath = resolveSync("./../../client/App", import.meta.dir);
+const routerFilePath = resolveSync("./../../client/Router", import.meta.dir);
 
 type BundleServerProps = {
 	location: string;
@@ -34,8 +35,10 @@ export const bundleServer = async ({
 		plugins.push(rscPlugin({ clientEntryPoints, development }));
 	}
 
+	const entrypoint = mode === "rsc" ? routerFilePath : appFilePath;
+
 	const build = await Bun.build({
-		entrypoints: [appFilePath],
+		entrypoints: [entrypoint],
 		// root: process.cwd(),
 		target: "bun",
 		// splitting: true,

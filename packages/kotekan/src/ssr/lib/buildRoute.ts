@@ -23,7 +23,6 @@ interface BuildRouteProps {
 	location: string;
 	buildPath: string;
 	ssrEnabled: boolean;
-	rscEnabled: boolean;
 	development: boolean;
 }
 
@@ -32,7 +31,6 @@ export const buildRoute = async ({
 	location,
 	buildPath,
 	ssrEnabled,
-	rscEnabled,
 	development,
 }: BuildRouteProps) => {
 	let csrBuildFilePath: string | undefined;
@@ -88,7 +86,6 @@ export const buildRoute = async ({
 	const clientBuild = await bundleClient({
 		location,
 		mode: ssrEnabled ? "hydrate" : "render",
-		rscEnabled,
 		// stylexRules,
 		clientEntryPoints: rscBuild.clientEntryPoints,
 		stylexCssFile: stylexCssFile?.fileName,

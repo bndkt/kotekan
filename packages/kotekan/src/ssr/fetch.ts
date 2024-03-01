@@ -33,8 +33,22 @@ export const fetch = async (
 	const pathSegments = url.pathname.split("/").filter(Boolean);
 	const searchParams = url.searchParams;
 
+	// Health check
 	if (url.pathname === "/up") {
 		return new Response("OK", { status: 200 });
+	}
+
+	// Build files
+	if (pathSegments[0] === buildUrlSegment) {
+		const buildFilePath = path.join(buildPath, pathSegments[1]);
+		console.log("Requested build file:", buildFilePath);
+		const buildFile = Bun.file(buildFilePath);
+
+		if (await buildFile.exists()) {
+			return new Response(buildFile);
+		}
+
+		return new Response(null, { status: 404 });
 	}
 
 	// Router
@@ -52,18 +66,18 @@ export const fetch = async (
 
 		// JSX (for RSC)
 		if (searchParams.has("jsx")) {
-			console.log("RSC!");
-			const routeFile = routeBuild.csrBuildFilePath ?? "";
-			const appFile = await import(routeFile);
-			const App = createElement(appFile.App, { stylesheet });
+			// const rsrouteFile = routeBuild.rscBuildFilePath ?? "";
+			const rscAppFile = await import(routeBuild.rscBuildFilePath);
+			const rscApp = createElement(rscAppFile.App, { stylesheet });
 
 			const { pipe } = await renderToPipeableStream(
-				App,
+				rscApp,
 				routeBuild.clientComponentMap,
 			);
-			const stream = createReadableStreamFromReadable(pipe(new PassThrough()));
-
-			return new Response(stream);
+			const rscStream = createReadableStreamFromReadable(
+				pipe(new PassThrough()),
+			);
+			return new Response(rscStream);
 		}
 
 		const routeFile =
@@ -80,24 +94,12 @@ export const fetch = async (
 		const bootstrapFilePath = `${buildUrlSegment}/${routeBuild.bootstrapFileName}`;
 		const stream = await renderToReadableStream(App, {
 			bootstrapModules: includeBootstrap ? [bootstrapFilePath] : undefined,
+			// bootstrapScriptContent: "alert('Hello SSR!')",
 		});
 
 		return new Response(stream, {
 			headers: { "Content-Type": "text/html" },
 		});
-	}
-
-	// Build files
-	if (pathSegments[0] === buildUrlSegment) {
-		const buildFilePath = path.join(buildPath, pathSegments[1]);
-		console.log("Requested build file:", buildFilePath);
-		const buildFile = Bun.file(buildFilePath);
-
-		if (await buildFile.exists()) {
-			return new Response(buildFile);
-		}
-
-		return new Response(null, { status: 404 });
 	}
 
 	return new Response(null, { status: 404 });
