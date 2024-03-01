@@ -1,8 +1,20 @@
 /// <reference lib="dom" />
 import { createRoot } from "react-dom/client";
+// @ts-ignore
+import { createFromFetch } from "react-server-dom-esm/client";
 
 import { Router } from "./Router";
+import type { ReactNode } from "react";
 
-console.log("RENDER");
+const RSC_ENABLED = process.env.RSC_ENABLED;
 
-createRoot(document.body).render(<Router />);
+console.log("RENDER", { RSC_ENABLED });
+
+const root = createRoot(document.body);
+root.render(<Router />);
+
+if (RSC_ENABLED) {
+	createFromFetch(fetch("/rsc")).then((response: ReactNode) =>
+		root.render(response),
+	);
+}

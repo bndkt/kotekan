@@ -12,14 +12,16 @@ const renderFilePath = resolveSync("./../../client/render", import.meta.dir);
 type BundleProps = {
 	location: string;
 	mode: "render" | "hydrate";
+	rscEnabled: boolean;
 	stylexRules: StylexRules;
 	clientEntryPoints: ClientEntryPoints;
-	development?: boolean;
+	development: boolean;
 };
 
 export const bundleClient = async ({
 	location,
 	mode,
+	rscEnabled,
 	stylexRules,
 	clientEntryPoints,
 	development,
@@ -45,6 +47,7 @@ export const bundleClient = async ({
 		// external: [],
 		define: {
 			"process.env.RENDER": JSON.stringify(mode === "hydrate"),
+			"process.env.RSC_ENABLED": JSON.stringify(rscEnabled),
 			"process.env.LOCATION": JSON.stringify(location),
 		},
 		plugins,

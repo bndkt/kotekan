@@ -9,8 +9,6 @@ export const stylexCss = async ({
 }: { stylexRules: StylexRules; buildPath: string }) => {
 	const rules: Array<Rule> = Object.values(stylexRules).flat();
 
-	console.log(rules);
-
 	if (rules.length === 0) {
 		return;
 	}

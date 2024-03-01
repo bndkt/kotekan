@@ -14,13 +14,15 @@ interface BuildProps {
 	routes: Record<string, string>;
 	buildPath: string;
 	ssrEnabled: boolean;
-	development?: boolean;
+	rscEnabled: boolean;
+	development: boolean;
 }
 
 export const build = async ({
 	routes,
 	buildPath,
 	ssrEnabled,
+	rscEnabled,
 	development,
 }: BuildProps) => {
 	const routeBuilds: RouteBuilds = new Map();
@@ -33,6 +35,7 @@ export const build = async ({
 			location: key,
 			buildPath,
 			ssrEnabled,
+			rscEnabled,
 			development,
 		});
 
