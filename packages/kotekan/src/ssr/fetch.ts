@@ -44,11 +44,11 @@ export const fetch = async (
 		console.log("Requested build file:", buildFilePath);
 		const buildFile = Bun.file(buildFilePath);
 
-		if (await buildFile.exists()) {
-			return new Response(buildFile);
-		}
+		// if (await buildFile.exists()) {
+		// 	return new Response(buildFile);
+		// }
 
-		return new Response(null, { status: 404 });
+		return new Response(Bun.file(buildFilePath));
 	}
 
 	// Router

@@ -51,5 +51,9 @@ export const ssrServer = async ({
 				ssrEnabled,
 				hydrationEnabled,
 			}),
+		error: (error) => {
+			console.error(error);
+			return new Response(null, { status: 404 });
+		},
 	});
 };
