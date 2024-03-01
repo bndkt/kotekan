@@ -15,6 +15,7 @@ interface FetchProps {
 	router: FileSystemRouter;
 	routeBuilds: RouteBuilds;
 	buildPath: string;
+	buildUrlSegment: string;
 	ssrEnabled?: boolean;
 	hydrationEnabled?: boolean;
 	development?: boolean;
@@ -26,6 +27,7 @@ export const fetch = async (
 		router,
 		routeBuilds,
 		buildPath,
+		buildUrlSegment,
 		ssrEnabled,
 		hydrationEnabled,
 		development,
@@ -35,7 +37,6 @@ export const fetch = async (
 	const userAgent = request.headers.get("user-agent");
 	const bot = isbot(userAgent); // @todo
 
-	const buildUrlSegment = "_build";
 	const url = new URL(request.url);
 	const pathSegments = url.pathname.split("/").filter(Boolean);
 	const searchParams = url.searchParams;
@@ -67,14 +68,12 @@ export const fetch = async (
 			return new Response(null, { status: 500 });
 		}
 
-		const stylesheet = `${buildUrlSegment}/${routeBuild.stylexCssFileName}`;
-
 		// JSX (for RSC)
 		if (searchParams.has("jsx")) {
 			// const rsrouteFile = routeBuild.rscBuildFilePath ?? "";
 			const rscDocumentFile = await import(routeBuild.rscBuildFilePath);
 			const rscDocument = createElement(rscDocumentFile.Document, {
-				stylesheet,
+				stylesheet: routeBuild.stylexCssUrl,
 			});
 
 			const { pipe } = await renderToPipeableStream(
@@ -94,13 +93,15 @@ export const fetch = async (
 		development && console.log("🥁 Route file:", path.basename(routeFile));
 
 		const documentFile = await import(routeFile);
-		const Document = createElement(documentFile.Document, { stylesheet });
+		const Document = createElement(documentFile.Document, {
+			stylesheet: routeBuild.stylexCssUrl,
+		});
 
 		// HTML
 		const includeBootstrap = hydrationEnabled || !ssrEnabled;
-		const bootstrapFilePath = `${buildUrlSegment}/${routeBuild.bootstrapFileName}`;
+		// const bootstrapFilePath = `${buildUrlSegment}/${routeBuild.bootstrapFileUrl}`;
 		const stream = await renderToReadableStream(Document, {
-			bootstrapModules: includeBootstrap ? [bootstrapFilePath] : undefined,
+			bootstrapModules: includeBootstrap ? [routeBuild.bootstrapFileUrl] : [],
 			// bootstrapScriptContent: "alert('Hello SSR!')",
 		});
 
@@ -109,6 +110,7 @@ export const fetch = async (
 		});
 	}
 
+	// Public files
 	const publicFileName = path.join(process.cwd(), "public", url.pathname);
 	const publicFile = Bun.file(publicFileName);
 	return new Response(publicFile);

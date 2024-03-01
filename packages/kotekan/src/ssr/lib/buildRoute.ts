@@ -22,6 +22,7 @@ interface BuildRouteProps {
 	name: string;
 	location: string;
 	buildPath: string;
+	buildUrlSegment: string;
 	ssrEnabled: boolean;
 	development: boolean;
 }
@@ -30,6 +31,7 @@ export const buildRoute = async ({
 	name,
 	location,
 	buildPath,
+	buildUrlSegment,
 	ssrEnabled,
 	development,
 }: BuildRouteProps) => {
@@ -79,7 +81,10 @@ export const buildRoute = async ({
 		content: rscBuild.buildOutputs[0],
 	});
 
-	const stylexCssFile = await createStylexCss({ stylexRules, buildPath });
+	const stylexCss = await createStylexCss({ stylexRules, buildPath });
+	const stylexCssUrl = stylexCss
+		? `${buildUrlSegment}/${stylexCss.fileName}`
+		: undefined;
 
 	// Client (for SSR/CSR/RSC)
 	console.log("Client entry points", ssrBuild.clientEntryPoints);
@@ -88,17 +93,11 @@ export const buildRoute = async ({
 		mode: ssrEnabled ? "hydrate" : "render",
 		// stylexRules,
 		clientEntryPoints: rscBuild.clientEntryPoints,
-		stylexCssFile: stylexCssFile?.fileName,
+		stylexCssUrl,
 		development,
 	});
 
 	const clientComponentMap: ClientComponentMap = new Map();
-
-	// const { fileName: bootstrapFileName } = await createBuildFile({
-	// 	name: `${name}-client`,
-	// 	buildPath,
-	// 	buildArtifact: clientBuild.buildOutputs[0],
-	// });
 
 	const [bootstrapOutput, ...restOutput] = clientBuild.buildOutputs;
 	const { fileName: bootstrapFileName } = await createClientFile({
@@ -109,23 +108,15 @@ export const buildRoute = async ({
 	for (const buildOutput of restOutput) {
 		await createClientFile({ buildOutput, buildPath, clientComponentMap });
 	}
-
-	// // console.log("buildArtifact", buildArtifact.path, buildArtifact.name);
-	// const { fileName: clientBuildFileName } = await createBuildFile({
-	// 	name: `${name}-client`,
-	// 	buildPath,
-	// 	buildArtifact,
-	// });
-
-	// console.log({ bootstrapFileName, stylexCssFile });
-	console.log({ clientComponentMap });
+	const bootstrapFileUrl = `${buildUrlSegment}/${bootstrapFileName}`;
+	console.log("🥁 clientComponentMap", clientComponentMap);
 
 	return {
 		ssrBuildFilePath,
 		rscBuildFilePath,
 		csrBuildFilePath,
-		bootstrapFileName,
-		stylexCssFileName: stylexCssFile?.fileName,
+		bootstrapFileUrl,
+		stylexCssUrl,
 		clientComponentMap,
 	};
 };

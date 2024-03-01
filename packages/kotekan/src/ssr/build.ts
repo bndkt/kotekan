@@ -5,24 +5,26 @@ export type RouteBuilds = Map<
 	{
 		ssrBuildFilePath: string;
 		rscBuildFilePath: string;
-		bootstrapFileName: string;
 		csrBuildFilePath?: string;
-		stylexCssFileName?: string;
+		bootstrapFileUrl: string;
+		stylexCssUrl?: string;
 		clientComponentMap: ClientComponentMap;
 	}
 >;
 
 interface BuildProps {
 	routes: Record<string, string>;
-	buildPath: string;
 	ssrEnabled: boolean;
+	buildPath: string;
+	buildUrlSegment: string;
 	development: boolean;
 }
 
 export const build = async ({
 	routes,
-	buildPath,
 	ssrEnabled,
+	buildPath,
+	buildUrlSegment,
 	development,
 }: BuildProps) => {
 	const routeBuilds: RouteBuilds = new Map();
@@ -34,6 +36,7 @@ export const build = async ({
 			name,
 			location: key,
 			buildPath,
+			buildUrlSegment,
 			ssrEnabled,
 			development,
 		});

@@ -5,10 +5,13 @@ import { rscPlugin } from "../../plugins/rsc";
 import type { StylexRules } from "./buildRoute";
 
 const documentFilePath = resolveSync(
-	"./../../client/Document",
+	"./../../client/Document.tsx",
 	import.meta.dir,
 );
-const routerFilePath = resolveSync("./../../client/Router", import.meta.dir);
+const routerFilePath = resolveSync(
+	"./../../client/Router.tsx",
+	import.meta.dir,
+);
 
 type BundleServerProps = {
 	location: string;
@@ -51,8 +54,8 @@ export const bundleServer = async ({
 		// outdir: hydrate ? "./build" : undefined,
 		external: ["react", "react-dom"],
 		define: {
-			"process.env.RENDER": JSON.stringify(mode === "hydrate"),
 			"process.env.LOCATION": JSON.stringify(location),
+			"process.env.HYDRATE": JSON.stringify(mode === "hydrate"),
 		},
 		plugins,
 	});

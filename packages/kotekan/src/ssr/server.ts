@@ -25,6 +25,7 @@ export const ssrServer = async ({
 	const buildPath = path.join(process.cwd(), buildDir);
 	const hydrationEnabled = mode === "ssr";
 	const ssrEnabled = mode !== "csr";
+	const buildUrlSegment = "_build";
 
 	// Router
 	const pagesDir = path.join(process.cwd(), "src", "pages");
@@ -34,9 +35,10 @@ export const ssrServer = async ({
 	// Build
 	const routeBuilds = await build({
 		routes,
-		buildPath,
-		development,
 		ssrEnabled,
+		buildPath,
+		buildUrlSegment,
+		development,
 	});
 
 	// Serve
@@ -48,6 +50,7 @@ export const ssrServer = async ({
 				routeBuilds,
 				router,
 				buildPath,
+				buildUrlSegment,
 				ssrEnabled,
 				hydrationEnabled,
 				development,

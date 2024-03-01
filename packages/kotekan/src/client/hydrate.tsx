@@ -1,5 +1,5 @@
 /// <reference lib="dom" />
-import type { ReactNode } from "react";
+import { StrictMode, type ReactNode } from "react";
 import { hydrateRoot } from "react-dom/client";
 // @ts-ignore
 import { createFromFetch } from "react-server-dom-esm/client";
@@ -14,4 +14,9 @@ console.log("HYDRATE", { STYLESHEET });
 // 	hydrateRoot(document, response),
 // );
 
-hydrateRoot(document, <Document stylesheet={STYLESHEET} />);
+hydrateRoot(
+	document,
+	<StrictMode>
+		<Document stylesheet={STYLESHEET} />
+	</StrictMode>,
+);

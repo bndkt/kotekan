@@ -12,7 +12,7 @@ type BundleProps = {
 	mode: "render" | "hydrate";
 	stylexRules?: StylexRules;
 	clientEntryPoints: ClientEntryPoints;
-	stylexCssFile?: string;
+	stylexCssUrl?: string;
 	development: boolean;
 };
 
@@ -21,7 +21,7 @@ export const bundleClient = async ({
 	mode,
 	stylexRules,
 	clientEntryPoints,
-	stylexCssFile,
+	stylexCssUrl,
 	development,
 }: BundleProps) => {
 	const entrypoint = mode === "render" ? renderFilePath : hydrateFilePath;
@@ -35,7 +35,6 @@ export const bundleClient = async ({
 
 	const build = await Bun.build({
 		entrypoints: [entrypoint, ...clientEntryPoints],
-		// root: process.cwd(),
 		target: "browser",
 		// splitting: true,
 		sourcemap: development ? "inline" : "none",
@@ -44,9 +43,9 @@ export const bundleClient = async ({
 		// outdir: hydrate ? "./build" : undefined,
 		// external: [],
 		define: {
-			"process.env.RENDER": JSON.stringify(mode === "hydrate"),
 			"process.env.LOCATION": JSON.stringify(location),
-			"process.env.STYLESHEET": JSON.stringify(stylexCssFile),
+			"process.env.HYDRATE": JSON.stringify(mode === "hydrate"),
+			"process.env.STYLESHEET": JSON.stringify(stylexCssUrl),
 		},
 		plugins,
 	});

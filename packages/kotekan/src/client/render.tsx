@@ -1,5 +1,5 @@
 /// <reference lib="dom" />
-import type { ReactNode } from "react";
+import { StrictMode, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
 // @ts-ignore
 import { createFromFetch } from "react-server-dom-esm/client";
@@ -14,4 +14,8 @@ const root = createRoot(document.body);
 // 	root.render(response),
 // );
 
-root.render(<Router />);
+root.render(
+	<StrictMode>
+		<Router />
+	</StrictMode>,
+);
