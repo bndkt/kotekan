@@ -1,11 +1,11 @@
-#!/usr/bin/env bun
+#!/usr/bin/env bun --hot
 import { ssrServer } from "../ssr/server";
 // import { rnServer } from "../rn/server";
 
 const development = Bun.env.NODE_ENV === "development";
 
 // const ssr = await ssrServer({
-// 	mode: "csr",
+// 	mode: "ssr",
 // 	development,
 // });
 
@@ -15,6 +15,7 @@ const development = Bun.env.NODE_ENV === "development";
 // });
 
 const ssr = Bun.serve({
+	port: 3000,
 	fetch(req) {
 		return new Response("Bun!");
 	},
