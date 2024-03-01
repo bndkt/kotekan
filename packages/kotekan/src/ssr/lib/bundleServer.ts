@@ -9,7 +9,7 @@ const appFilePath = resolveSync("./../../client/App", import.meta.dir);
 type BundleServerProps = {
 	location: string;
 	mode: "rsc" | "render" | "hydrate";
-	stylexRules: StylexRules;
+	stylexRules?: StylexRules;
 	development?: boolean;
 };
 

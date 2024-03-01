@@ -11,7 +11,7 @@ import type { StylexRules } from "../../ssr/lib/buildRoute";
 // import reactRefreshBabelPlugin from "react-refresh/babel";
 
 interface PluginConfig {
-	stylexRules: StylexRules;
+	stylexRules?: StylexRules;
 	development?: boolean;
 }
 
@@ -82,12 +82,14 @@ export const babelPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 						return { contents: inputCode, loader };
 					}
 
-					const typedMetadata = metadata as unknown as { stylex: Rule[] };
-					if (
-						typedMetadata.stylex !== null &&
-						typedMetadata.stylex.length > 0
-					) {
-						config.stylexRules[args.path] = typedMetadata.stylex;
+					if (config.stylexRules) {
+						const typedMetadata = metadata as unknown as { stylex: Rule[] };
+						if (
+							typedMetadata.stylex !== null &&
+							typedMetadata.stylex.length > 0
+						) {
+							config.stylexRules[args.path] = typedMetadata.stylex;
+						}
 					}
 
 					return {

@@ -3,7 +3,7 @@ import stylexBabelPlugin, { type Rule } from "@stylexjs/babel-plugin";
 
 import type { StylexRules } from "./buildRoute";
 
-export const stylexCss = async ({
+export const createStylexCss = async ({
 	stylexRules,
 	buildPath,
 }: { stylexRules: StylexRules; buildPath: string }) => {

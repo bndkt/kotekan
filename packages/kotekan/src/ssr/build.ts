@@ -4,6 +4,7 @@ export type RouteBuilds = Map<
 	string,
 	{
 		ssrBuildFilePath: string;
+		rscBuildFilePath: string;
 		bootstrapFileName: string;
 		csrBuildFilePath?: string;
 		stylexCssFileName?: string;

@@ -13,8 +13,9 @@ type BundleProps = {
 	location: string;
 	mode: "render" | "hydrate";
 	rscEnabled: boolean;
-	stylexRules: StylexRules;
+	stylexRules?: StylexRules;
 	clientEntryPoints: ClientEntryPoints;
+	stylexCssFile?: string;
 	development: boolean;
 };
 
@@ -24,6 +25,7 @@ export const bundleClient = async ({
 	rscEnabled,
 	stylexRules,
 	clientEntryPoints,
+	stylexCssFile,
 	development,
 }: BundleProps) => {
 	const entrypoint = mode === "render" ? renderFilePath : hydrateFilePath;
@@ -49,6 +51,7 @@ export const bundleClient = async ({
 			"process.env.RENDER": JSON.stringify(mode === "hydrate"),
 			"process.env.RSC_ENABLED": JSON.stringify(rscEnabled),
 			"process.env.LOCATION": JSON.stringify(location),
+			"process.env.STYLESHEET": JSON.stringify(stylexCssFile),
 		},
 		plugins,
 	});

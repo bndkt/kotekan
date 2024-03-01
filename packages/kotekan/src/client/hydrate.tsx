@@ -7,13 +7,12 @@ import { createFromFetch } from "react-server-dom-esm/client";
 import { App } from "./App";
 
 const RSC_ENABLED = process.env.RSC_ENABLED;
+const STYLESHEET = process.env.RSC_ENABLED as string;
 
-console.log("HYDRATE", { RSC_ENABLED });
+console.log("HYDRATE", { RSC_ENABLED, STYLESHEET });
 
-if (RSC_ENABLED) {
-	createFromFetch(fetch("?jsx")).then((response: ReactNode) =>
-		hydrateRoot(document, response),
-	);
-} else {
-	hydrateRoot(document, <App />);
-}
+createFromFetch(fetch("?jsx")).then((response: ReactNode) =>
+	hydrateRoot(document, response),
+);
+
+// hydrateRoot(document, <App stylesheet={STYLESHEET} />);

@@ -5,15 +5,17 @@ import { parse } from "es-module-lexer";
 import { createBuildFile } from "./createBuildFile";
 import type { ClientComponentMap } from "./buildRoute";
 
+type CreateClientFileProps = {
+	buildOutput: BuildArtifact;
+	buildPath: string;
+	clientComponentMap: ClientComponentMap;
+};
+
 export const createClientFile = async ({
 	buildOutput,
 	buildPath,
 	clientComponentMap,
-}: {
-	buildOutput: BuildArtifact;
-	buildPath: string;
-	clientComponentMap: ClientComponentMap;
-}) => {
+}: CreateClientFileProps) => {
 	let content = await buildOutput.text();
 	// console.log(content);
 

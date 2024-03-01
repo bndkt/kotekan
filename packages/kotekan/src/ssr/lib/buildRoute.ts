@@ -4,7 +4,7 @@ import type { Rule } from "@stylexjs/babel-plugin";
 import { bundleServer } from "./bundleServer";
 import { bundleClient } from "./bundleClient";
 import { createBuildFile } from "./createBuildFile";
-import { stylexCss } from "./stylexCss";
+import { createStylexCss } from "./createStylexCss";
 import { createClientFile } from "./createClientFile";
 
 export type StylexRules = Record<string, Rule[]>;
@@ -47,7 +47,7 @@ export const buildRoute = async ({
 		development,
 	});
 	const { filePath: ssrBuildFilePath } = await createBuildFile({
-		name: `${name}-ssr`,
+		name: `${name}-ssr-${ssrBuild.buildOutputs[0].hash}`,
 		buildPath,
 		content: ssrBuild.buildOutputs[0],
 	});
@@ -57,11 +57,11 @@ export const buildRoute = async ({
 		const csrBuild = await bundleServer({
 			location,
 			mode: "render",
-			stylexRules,
+			// stylexRules,
 			development,
 		});
 		const csrBuildFile = await createBuildFile({
-			name: `${name}-csr`,
+			name: `${name}-csr-${csrBuild.buildOutputs[0].hash}`,
 			buildPath,
 			content: csrBuild.buildOutputs[0],
 		});
@@ -76,10 +76,12 @@ export const buildRoute = async ({
 		development,
 	});
 	const { filePath: rscBuildFilePath } = await createBuildFile({
-		name: `${name}-ssr`,
+		name: `${name}-rsc-${rscBuild.buildOutputs[0].hash}`,
 		buildPath,
-		content: ssrBuild.buildOutputs[0],
+		content: rscBuild.buildOutputs[0],
 	});
+
+	const stylexCssFile = await createStylexCss({ stylexRules, buildPath });
 
 	// Client (for SSR/CSR/RSC)
 	console.log("Client entry points", ssrBuild.clientEntryPoints);
@@ -87,8 +89,9 @@ export const buildRoute = async ({
 		location,
 		mode: ssrEnabled ? "hydrate" : "render",
 		rscEnabled,
-		stylexRules,
+		// stylexRules,
 		clientEntryPoints: rscBuild.clientEntryPoints,
+		stylexCssFile: stylexCssFile?.fileName,
 		development,
 	});
 
@@ -117,13 +120,12 @@ export const buildRoute = async ({
 	// 	buildArtifact,
 	// });
 
-	const stylexCssFile = await stylexCss({ stylexRules, buildPath });
-
 	// console.log({ bootstrapFileName, stylexCssFile });
 	console.log({ clientComponentMap });
 
 	return {
 		ssrBuildFilePath,
+		rscBuildFilePath,
 		csrBuildFilePath,
 		bootstrapFileName,
 		stylexCssFileName: stylexCssFile?.fileName,
