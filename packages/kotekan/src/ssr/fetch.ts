@@ -67,11 +67,13 @@ export const fetch = async (
 		// JSX (for RSC)
 		if (searchParams.has("jsx")) {
 			// const rsrouteFile = routeBuild.rscBuildFilePath ?? "";
-			const rscAppFile = await import(routeBuild.rscBuildFilePath);
-			const rscApp = createElement(rscAppFile.App, { stylesheet });
+			const rscDocumentFile = await import(routeBuild.rscBuildFilePath);
+			const rscDocument = createElement(rscDocumentFile.Document, {
+				stylesheet,
+			});
 
 			const { pipe } = await renderToPipeableStream(
-				rscApp,
+				rscDocument,
 				routeBuild.clientComponentMap,
 			);
 			const rscStream = createReadableStreamFromReadable(
@@ -86,13 +88,13 @@ export const fetch = async (
 				: routeBuild.csrBuildFilePath;
 		console.log("Requested route:", routeFile);
 
-		const appFile = await import(routeFile);
-		const App = createElement(appFile.App, { stylesheet });
+		const documentFile = await import(routeFile);
+		const Document = createElement(documentFile.Document, { stylesheet });
 
 		// HTML
 		const includeBootstrap = hydrationEnabled || !ssrEnabled;
 		const bootstrapFilePath = `${buildUrlSegment}/${routeBuild.bootstrapFileName}`;
-		const stream = await renderToReadableStream(App, {
+		const stream = await renderToReadableStream(Document, {
 			bootstrapModules: includeBootstrap ? [bootstrapFilePath] : undefined,
 			// bootstrapScriptContent: "alert('Hello SSR!')",
 		});

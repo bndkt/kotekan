@@ -4,9 +4,9 @@ import { hydrateRoot } from "react-dom/client";
 // @ts-ignore
 import { createFromFetch } from "react-server-dom-esm/client";
 
-import { App } from "./App";
+import { Document } from "./Document";
 
-const STYLESHEET = process.env.RSC_ENABLED as string;
+const STYLESHEET = process.env.STYLESHEET as string;
 
 console.log("HYDRATE", { STYLESHEET });
 
@@ -14,4 +14,4 @@ console.log("HYDRATE", { STYLESHEET });
 // 	hydrateRoot(document, response),
 // );
 
-hydrateRoot(document, <App stylesheet={STYLESHEET} />);
+hydrateRoot(document, <Document stylesheet={STYLESHEET} />);

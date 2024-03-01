@@ -1,10 +1,10 @@
 /// <reference lib="dom" />
+import type { ReactNode } from "react";
 import { createRoot } from "react-dom/client";
 // @ts-ignore
 import { createFromFetch } from "react-server-dom-esm/client";
 
 import { Router } from "./Router";
-import type { ReactNode } from "react";
 
 console.log("RENDER");
 

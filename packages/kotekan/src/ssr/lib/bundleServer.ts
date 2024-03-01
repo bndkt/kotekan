@@ -4,7 +4,10 @@ import { babelPlugin } from "../../plugins/babel";
 import { rscPlugin } from "../../plugins/rsc";
 import type { StylexRules } from "./buildRoute";
 
-const appFilePath = resolveSync("./../../client/App", import.meta.dir);
+const documentFilePath = resolveSync(
+	"./../../client/Document",
+	import.meta.dir,
+);
 const routerFilePath = resolveSync("./../../client/Router", import.meta.dir);
 
 type BundleServerProps = {
@@ -35,7 +38,7 @@ export const bundleServer = async ({
 		plugins.push(rscPlugin({ clientEntryPoints, development }));
 	}
 
-	const entrypoint = mode === "rsc" ? routerFilePath : appFilePath;
+	const entrypoint = mode === "rsc" ? routerFilePath : documentFilePath;
 
 	const build = await Bun.build({
 		entrypoints: [entrypoint],

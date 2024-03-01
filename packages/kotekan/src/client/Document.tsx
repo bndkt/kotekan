@@ -5,10 +5,10 @@ import { Router } from "./Router";
 
 const RENDER = process.env.RENDER as string;
 
-export const App = ({ stylesheet }: { stylesheet: string }) => {
+export const Document = ({ stylesheet }: { stylesheet: string }) => {
 	return (
 		<StrictMode>
-			<link rel="stylesheet" href={stylesheet} />
+			{/* <link rel="stylesheet" href={stylesheet} /> */}
 			<Root>{RENDER && <Router />}</Root>
 		</StrictMode>
 	);
