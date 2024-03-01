@@ -77,7 +77,7 @@ registry:
 # Bridge fingerprinted assets, like JS and CSS, between versions to avoid
 # hitting 404 on in-flight requests. Combines all files from new and old
 # version inside the asset_path.
-# asset_path: /rails/public/assets
+asset_path: /usr/src/app/apps/web/build
 
 # Configure rolling deploys by setting a wait time between batches of restarts.
 # boot:
