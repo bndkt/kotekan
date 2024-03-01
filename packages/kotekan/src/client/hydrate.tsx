@@ -10,10 +10,10 @@ const RSC_ENABLED = process.env.RSC_ENABLED;
 
 console.log("HYDRATE", { RSC_ENABLED });
 
-hydrateRoot(document, <App />);
-
 if (RSC_ENABLED) {
-	createFromFetch(fetch("/rsc")).then((response: ReactNode) =>
+	createFromFetch(fetch("?jsx")).then((response: ReactNode) =>
 		hydrateRoot(document, response),
 	);
+} else {
+	hydrateRoot(document, <App />);
 }

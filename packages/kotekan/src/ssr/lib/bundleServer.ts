@@ -8,7 +8,7 @@ const appFilePath = resolveSync("./../../client/App", import.meta.dir);
 
 type BundleServerProps = {
 	location: string;
-	mode: "render" | "hydrate";
+	mode: "rsc" | "render" | "hydrate";
 	stylexRules: StylexRules;
 	development?: boolean;
 };
@@ -24,12 +24,15 @@ export const bundleServer = async ({
 	const clientEntryPoints: ClientEntryPoints = new Set<string>();
 
 	const plugins: BunPlugin[] = [
-		rscPlugin({ clientEntryPoints, development }),
 		babelPlugin({
 			stylexRules,
 			development,
 		}),
 	];
+
+	if (mode === "rsc") {
+		plugins.push(rscPlugin({ clientEntryPoints, development }));
+	}
 
 	const build = await Bun.build({
 		entrypoints: [appFilePath],

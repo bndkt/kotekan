@@ -26,10 +26,10 @@ export const rscPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 				// Check for file extensions
 				// if (!PLUGIN_FILTER.test(args.importer)) return;
 
-				console.log(args);
+				// console.log(args);
 
 				const importPath = resolveSync(args.path, path.dirname(args.importer));
-				console.log(importPath);
+				console.log("Import:", importPath);
 				const file = Bun.file(importPath);
 				const inputCode = await file.text();
 
@@ -39,7 +39,8 @@ export const rscPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 				) {
 					config.clientEntryPoints.add(importPath);
 
-					const path = importPath.replace(/\.tsx?$/, ".client.js");
+					const path = args.path.replace(/\.tsx?$/, ".client.js");
+					console.log("New path:", path);
 
 					return {
 						path,

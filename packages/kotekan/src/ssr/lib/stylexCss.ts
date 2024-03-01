@@ -23,7 +23,7 @@ export const stylexCss = async ({
 
 	const file = Bun.file(filePath);
 	if (!(await file.exists())) {
-		Bun.write(file, collectedCSS);
+		await Bun.write(file, collectedCSS);
 	}
 
 	return { fileName, filePath };

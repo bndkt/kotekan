@@ -1,11 +1,15 @@
 import path from "node:path";
+import { PassThrough } from "node:stream";
 import { type FileSystemRouter } from "bun";
 import { createElement } from "react";
 // @ts-expect-error Untyped import
 import { renderToReadableStream } from "react-dom/server.browser"; // @todo
+// @ts-expect-error Untyped import
+import { renderToPipeableStream } from "react-server-dom-esm/server.node";
 import { isbot } from "isbot";
 
 import type { RouteBuilds } from "./build";
+import { createReadableStreamFromReadable } from "../lib/createReadableStreamFromReadable";
 
 interface FetchProps {
 	router: FileSystemRouter;
@@ -27,6 +31,7 @@ export const fetch = async (
 	const buildUrlSegment = "_build";
 	const url = new URL(request.url);
 	const pathSegments = url.pathname.split("/").filter(Boolean);
+	const searchParams = url.searchParams;
 
 	if (url.pathname === "/up") {
 		return new Response("OK", { status: 200 });
@@ -53,6 +58,20 @@ export const fetch = async (
 		const appFile = await import(routeFile);
 		const App = createElement(appFile.App);
 
+		// JSX (for RSC)
+		if (searchParams.has("jsx")) {
+			console.log("RSC!");
+
+			const { pipe } = await renderToPipeableStream(
+				App,
+				routeBuild.clientComponentMap,
+			);
+			const stream = createReadableStreamFromReadable(pipe(new PassThrough()));
+
+			return new Response(stream);
+		}
+
+		// HTML
 		const includeBootstrap = hydrationEnabled || !ssrEnabled;
 		const bootstrapFilePath = `${buildUrlSegment}/${routeBuild.bootstrapFileName}`;
 		const stream = await renderToReadableStream(App, {

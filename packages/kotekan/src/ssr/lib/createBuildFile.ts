@@ -4,20 +4,18 @@ import type { BuildArtifact } from "bun";
 export const createBuildFile = async ({
 	name,
 	buildPath,
-	buildArtifact,
+	content,
 }: {
 	name: string;
 	buildPath: string;
-	buildArtifact: BuildArtifact;
+	content: BuildArtifact | string;
 }) => {
-	const fileName = `${name}-${buildArtifact.hash}.js`;
+	const fileName = `${name}.js`;
 	const filePath = path.join(buildPath, fileName);
 
-	console.log("Build file:", fileName);
-
 	const file = Bun.file(filePath);
-	if (!(await file.exists())) {
-		Bun.write(file, buildArtifact);
+	if (true || !(await file.exists())) {
+		await Bun.write(file, content);
 	}
 
 	return { fileName, filePath };

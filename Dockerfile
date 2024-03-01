@@ -13,8 +13,8 @@ COPY apps/web/package.json /temp/dev/apps/web/
 COPY packages/kotekan/package.json /temp/dev/packages/kotekan/
 # TMP
 COPY packages/react-server-dom-esm/package.json /temp/dev/packages/react-server-dom-esm/
-RUN cd /temp/dev && bun install 
-# --frozen-lockfile
+# RUN cd /temp/dev && bun install --frozen-lockfile
+RUN cd /temp/dev && bun install
 
 # install with --production (exclude devDependencies)
 RUN mkdir -p /temp/prod

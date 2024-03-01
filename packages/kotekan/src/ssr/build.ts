@@ -1,4 +1,4 @@
-import { buildRoute } from "./lib/buildRoute";
+import { buildRoute, type ClientComponentMap } from "./lib/buildRoute";
 
 export type RouteBuilds = Map<
 	string,
@@ -7,6 +7,7 @@ export type RouteBuilds = Map<
 		bootstrapFileName: string;
 		csrBuildFilePath?: string;
 		stylexCssFileName?: string;
+		clientComponentMap: ClientComponentMap;
 	}
 >;
 
@@ -30,7 +31,7 @@ export const build = async ({
 	for (const [key, val] of Object.entries(routes)) {
 		const name = key === "/" ? "index" : key.substring(1);
 
-		const routBuild = await buildRoute({
+		const routeBuild = await buildRoute({
 			name,
 			location: key,
 			buildPath,
@@ -39,7 +40,7 @@ export const build = async ({
 			development,
 		});
 
-		routeBuilds.set(name, routBuild);
+		routeBuilds.set(name, routeBuild);
 	}
 
 	return routeBuilds;

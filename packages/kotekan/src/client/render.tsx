@@ -11,10 +11,11 @@ const RSC_ENABLED = process.env.RSC_ENABLED;
 console.log("RENDER", { RSC_ENABLED });
 
 const root = createRoot(document.body);
-root.render(<Router />);
 
 if (RSC_ENABLED) {
 	createFromFetch(fetch("/rsc")).then((response: ReactNode) =>
 		root.render(response),
 	);
+} else {
+	root.render(<Router />);
 }
