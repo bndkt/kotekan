@@ -53,10 +53,10 @@ export const fetch = async (
 				? routeBuild.ssrBuildFilePath
 				: routeBuild.csrBuildFilePath;
 		console.log("Requested route:", routeFile);
-		const stylexCssFile = routeBuild.stylexCssFileName;
+		const stylesheet = `${buildUrlSegment}/${routeBuild.stylexCssFileName}`;
 
 		const appFile = await import(routeFile);
-		const App = createElement(appFile.App);
+		const App = createElement(appFile.App, { stylesheet });
 
 		// JSX (for RSC)
 		if (searchParams.has("jsx")) {

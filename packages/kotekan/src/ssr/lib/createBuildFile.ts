@@ -14,7 +14,7 @@ export const createBuildFile = async ({
 	const filePath = path.join(buildPath, fileName);
 
 	const file = Bun.file(filePath);
-	if (true || !(await file.exists())) {
+	if (!(await file.exists())) {
 		await Bun.write(file, content);
 	}
 

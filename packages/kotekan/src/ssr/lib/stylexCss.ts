@@ -15,8 +15,7 @@ export const stylexCss = async ({
 
 	const collectedCSS = stylexBabelPlugin.processStylexRules(rules, false);
 	const hash = Bun.hash(collectedCSS);
-	// const fileName = `stylex-${hash}.css`;
-	const fileName = "stylex.css";
+	const fileName = `stylex-${hash}.css`;
 	const filePath = path.join(buildPath, fileName);
 
 	console.log("Build file:", fileName);

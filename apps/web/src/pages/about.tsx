@@ -12,7 +12,7 @@ const styles = css.create({
 export default function About() {
 	return (
 		<>
-			<h.h1 css={styles.orange}>Kotekan - About</h.h1>
+			<h.h1 style={styles.orange}>Kotekan - About</h.h1>
 			<h.a href="/">Home</h.a>
 			<Counter />
 		</>
