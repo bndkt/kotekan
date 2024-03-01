@@ -1,4 +1,5 @@
-#!/usr/bin/env bun --hot
+#!/usr/bin/env bun
+// --hot
 // import { server } from "../server/server";
 // import { rscServer } from "../rsc/server";
 import { ssrServer } from "../ssr/server";
