@@ -17,16 +17,23 @@ interface FetchProps {
 	buildPath: string;
 	ssrEnabled?: boolean;
 	hydrationEnabled?: boolean;
+	development?: boolean;
 }
 
 export const fetch = async (
 	request: Request,
-	{ router, routeBuilds, buildPath, ssrEnabled, hydrationEnabled }: FetchProps,
+	{
+		router,
+		routeBuilds,
+		buildPath,
+		ssrEnabled,
+		hydrationEnabled,
+		development,
+	}: FetchProps,
 ): Promise<Response> => {
 	hydrationEnabled ??= true;
 	const userAgent = request.headers.get("user-agent");
 	const bot = isbot(userAgent); // @todo
-	// console.log("Bot?", bot, userAgent);
 
 	const buildUrlSegment = "_build";
 	const url = new URL(request.url);
@@ -35,30 +42,28 @@ export const fetch = async (
 
 	// Health check
 	if (url.pathname === "/up") {
+		console.log("🥁 Health check");
 		return new Response("OK", { status: 200 });
 	}
 
 	// Build files
 	if (pathSegments[0] === buildUrlSegment) {
 		const buildFilePath = path.join(buildPath, pathSegments[1]);
-		console.log("Requested build file:", buildFilePath);
+		development &&
+			console.log("🥁 Requested build file:", path.basename(buildFilePath));
 		const buildFile = Bun.file(buildFilePath);
 
-		// if (await buildFile.exists()) {
-		// 	return new Response(buildFile);
-		// }
-
-		return new Response(Bun.file(buildFilePath));
+		return new Response(buildFile);
 	}
 
 	// Router
 	const match = router.match(request.url);
 	if (match) {
-		const name = match.name === "/" ? "index" : match.name.substring(1);
-
-		const routeBuild = routeBuilds.get(name);
+		const routeName = match.name === "/" ? "index" : match.name.substring(1);
+		const routeBuild = routeBuilds.get(routeName);
 
 		if (!routeBuild) {
+			development && console.log("🥁 Route build not found:", routeName);
 			return new Response(null, { status: 500 });
 		}
 
@@ -86,7 +91,7 @@ export const fetch = async (
 			ssrEnabled || bot || !routeBuild.csrBuildFilePath
 				? routeBuild.ssrBuildFilePath
 				: routeBuild.csrBuildFilePath;
-		console.log("Requested route:", routeFile);
+		development && console.log("🥁 Route file:", path.basename(routeFile));
 
 		const documentFile = await import(routeFile);
 		const Document = createElement(documentFile.Document, { stylesheet });
@@ -104,5 +109,7 @@ export const fetch = async (
 		});
 	}
 
-	return new Response(null, { status: 404 });
+	const publicFileName = path.join(process.cwd(), "public", url.pathname);
+	const publicFile = Bun.file(publicFileName);
+	return new Response(publicFile);
 };

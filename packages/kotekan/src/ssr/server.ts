@@ -50,6 +50,7 @@ export const ssrServer = async ({
 				buildPath,
 				ssrEnabled,
 				hydrationEnabled,
+				development,
 			}),
 		error: (error) => {
 			console.error(error);
