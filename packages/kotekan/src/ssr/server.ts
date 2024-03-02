@@ -4,27 +4,24 @@ import { router as routerFn } from "./router";
 import { build } from "./build";
 import { fetch } from "./fetch";
 
-interface ServerArgs {
-	mode?: "csr" | "ssr" | "ssg";
+export type RenderMode = "csr" | "ssr" | "ssg";
+
+interface ServerProps {
+	mode?: RenderMode;
 	buildDir?: string;
 	port?: number;
 	development?: boolean;
 }
 
-export const ssrServer = async ({
-	mode,
-	buildDir,
-	port,
-	development,
-}: ServerArgs = {}) => {
-	mode ??= "ssr";
-	port ??= 3000;
-	buildDir ??= "./build";
-	development ??= false;
+export const ssrServer = async (props: ServerProps = {}) => {
+	// Defaults
+	const mode = props.mode ?? "ssr";
+	const port = props.port ?? 3000;
+	const buildDir = props.buildDir ?? "./build";
+	const development = props.development ?? false;
 
+	// Paths
 	const buildPath = path.join(process.cwd(), buildDir);
-	const hydrationEnabled = mode === "ssr";
-	const ssrEnabled = mode !== "csr";
 	const buildUrlSegment = "_build";
 
 	// Router
@@ -34,8 +31,8 @@ export const ssrServer = async ({
 
 	// Build
 	const routeBuilds = await build({
+		mode,
 		routes,
-		ssrEnabled,
 		buildPath,
 		buildUrlSegment,
 		development,
@@ -45,14 +42,13 @@ export const ssrServer = async ({
 	return Bun.serve({
 		port,
 		development,
-		fetch: (request) =>
+		fetch: (request: Request) =>
 			fetch(request, {
+				mode,
 				routeBuilds,
 				router,
 				buildPath,
 				buildUrlSegment,
-				ssrEnabled,
-				hydrationEnabled,
 				development,
 			}),
 		error: (error) => {

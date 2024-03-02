@@ -3,13 +3,14 @@ import { resolveSync, type BunPlugin } from "bun";
 import { babelPlugin } from "../../plugins/babel";
 import type { ClientEntryPoints } from "./bundleServer";
 import type { StylexRules } from "./buildRoute";
+import type { RenderMode } from "../server";
 
 const hydrateFilePath = resolveSync("./../../client/hydrate", import.meta.dir);
 const renderFilePath = resolveSync("./../../client/render", import.meta.dir);
 
 type BundleProps = {
 	location: string;
-	mode: "render" | "hydrate";
+	mode: RenderMode;
 	stylexRules?: StylexRules;
 	clientEntryPoints: ClientEntryPoints;
 	stylexCssUrl?: string;
@@ -24,7 +25,7 @@ export const bundleClient = async ({
 	stylexCssUrl,
 	development,
 }: BundleProps) => {
-	const entrypoint = mode === "render" ? renderFilePath : hydrateFilePath;
+	const entrypoint = mode === "csr" ? renderFilePath : hydrateFilePath;
 
 	const plugins: BunPlugin[] = [
 		babelPlugin({
@@ -44,7 +45,7 @@ export const bundleClient = async ({
 		// external: [],
 		define: {
 			"process.env.LOCATION": JSON.stringify(location),
-			"process.env.HYDRATE": JSON.stringify(mode === "hydrate"),
+			"process.env.HYDRATE": JSON.stringify(mode === "ssr"),
 			"process.env.STYLESHEET": JSON.stringify(stylexCssUrl),
 		},
 		plugins,

@@ -6,6 +6,7 @@ import { bundleClient } from "./bundleClient";
 import { createBuildFile } from "./createBuildFile";
 import { createStylexCss } from "./createStylexCss";
 import { createClientFile } from "./createClientFile";
+import type { RenderMode } from "../server";
 
 export type StylexRules = Record<string, Rule[]>;
 
@@ -22,18 +23,18 @@ export type ClientComponentMap = Map<
 interface BuildRouteProps {
 	name: string;
 	location: string;
+	mode: RenderMode;
 	buildPath: string;
 	buildUrlSegment: string;
-	ssrEnabled: boolean;
 	development: boolean;
 }
 
 export const buildRoute = async ({
 	name,
 	location,
+	mode,
 	buildPath,
 	buildUrlSegment,
-	ssrEnabled,
 	development,
 }: BuildRouteProps) => {
 	let csrBuildFilePath: string | undefined;
@@ -54,25 +55,25 @@ export const buildRoute = async ({
 	// });
 
 	// Server for CSR
-	// if (!ssrEnabled) {
-	// 	const csrBuild = await bundleServer({
-	// 		location,
-	// 		mode: "render",
-	// 		// stylexRules,
-	// 		development,
-	// 	});
-	// 	const csrBuildFile = await createBuildFile({
-	// 		name: `${name}-csr-${csrBuild.buildOutputs[0].hash}`,
-	// 		buildPath,
-	// 		content: csrBuild.buildOutputs[0],
-	// 	});
-	// 	csrBuildFilePath = csrBuildFile.filePath;
-	// }
+	if (mode === "csr") {
+		const csrBuild = await bundleServer({
+			location,
+			mode: "csr",
+			// stylexRules,
+			development,
+		});
+		const csrBuildFile = await createBuildFile({
+			name: `${name}-csr-${csrBuild.buildOutputs[0].hash}`,
+			buildPath,
+			content: csrBuild.buildOutputs[0],
+		});
+		csrBuildFilePath = csrBuildFile.filePath;
+	}
 
 	// Server for RSC
 	const rscBuild = await bundleServer({
 		location,
-		mode: "rsc",
+		mode: "ssr",
 		stylexRules,
 		development,
 	});
@@ -91,7 +92,7 @@ export const buildRoute = async ({
 	console.log("Client entry points", rscBuild.clientEntryPoints);
 	const clientBuild = await bundleClient({
 		location,
-		mode: ssrEnabled ? "hydrate" : "render",
+		mode,
 		// stylexRules,
 		clientEntryPoints: rscBuild.clientEntryPoints,
 		stylexCssUrl,

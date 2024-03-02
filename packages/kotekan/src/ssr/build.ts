@@ -1,4 +1,5 @@
 import { buildRoute, type ClientComponentMap } from "./lib/buildRoute";
+import type { RenderMode } from "./server";
 
 export type RouteBuilds = Map<
 	string,
@@ -12,16 +13,16 @@ export type RouteBuilds = Map<
 >;
 
 interface BuildProps {
+	mode: RenderMode;
 	routes: Record<string, string>;
-	ssrEnabled: boolean;
 	buildPath: string;
 	buildUrlSegment: string;
 	development: boolean;
 }
 
 export const build = async ({
+	mode,
 	routes,
-	ssrEnabled,
 	buildPath,
 	buildUrlSegment,
 	development,
@@ -34,9 +35,9 @@ export const build = async ({
 		const routeBuild = await buildRoute({
 			name,
 			location: key,
+			mode,
 			buildPath,
 			buildUrlSegment,
-			ssrEnabled,
 			development,
 		});
 

@@ -11,31 +11,29 @@ import { renderToPipeableStream } from "react-server-dom-esm/server.node";
 import { createFromNodeStream } from "react-server-dom-esm/client.node";
 
 import type { RouteBuilds } from "./build";
+import type { RenderMode } from "./server";
 // import { createReadableStreamFromReadable } from "../lib/createReadableStreamFromReadable";
 
 interface FetchProps {
+	mode: RenderMode;
 	router: FileSystemRouter;
 	routeBuilds: RouteBuilds;
 	buildPath: string;
 	buildUrlSegment: string;
-	ssrEnabled?: boolean;
-	hydrationEnabled?: boolean;
 	development?: boolean;
 }
 
 export const fetch = async (
 	request: Request,
 	{
+		mode,
 		router,
 		routeBuilds,
 		buildPath,
 		buildUrlSegment,
-		ssrEnabled,
-		hydrationEnabled,
 		development,
 	}: FetchProps,
 ): Promise<Response> => {
-	hydrationEnabled ??= true;
 	const userAgent = request.headers.get("user-agent");
 	const bot = isbot(userAgent); // @todo
 
@@ -70,10 +68,12 @@ export const fetch = async (
 			return new Response(null, { status: 500 });
 		}
 
+		const stylesheet = routeBuild.stylexCssUrl;
+
 		// JSX for RSC
 		const rscDocumentBuild = await import(routeBuild.rscBuildFilePath);
 		const rscDocument = createElement(rscDocumentBuild.Document, {
-			stylesheet: routeBuild.stylexCssUrl,
+			stylesheet,
 		});
 
 		const { pipe } = await renderToPipeableStream(
@@ -93,13 +93,25 @@ export const fetch = async (
 		// 		: routeBuild.csrBuildFilePath;
 		// development && console.log("🥁 Route file:", path.basename(routeFile));
 
-		// const documentFile = await import(routeFile);
-		const Document = createFromNodeStream(rscStream, {
-			stylesheet: routeBuild.stylexCssUrl,
-		});
+		const csrDocumentFile = routeBuild.csrBuildFilePath
+			? await import(routeBuild.csrBuildFilePath)
+			: null;
+
+		const Document =
+			mode === "ssr"
+				? createFromNodeStream(rscStream, {
+						stylesheet,
+				  })
+				: createElement(csrDocumentFile.Document, {
+						stylesheet,
+				  });
+
+		if (!Document) {
+			throw new Error("Document not found");
+		}
 
 		// HTML
-		const includeBootstrap = hydrationEnabled || !ssrEnabled;
+		const includeBootstrap = true; // hydrationEnabled || !ssrEnabled;
 		// const bootstrapFilePath = `${buildUrlSegment}/${routeBuild.bootstrapFileUrl}`;
 		const stream = await renderToReadableStream(Document, {
 			bootstrapModules: includeBootstrap ? [routeBuild.bootstrapFileUrl] : [],

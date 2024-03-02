@@ -3,6 +3,7 @@ import { resolveSync, type BunPlugin } from "bun";
 import { babelPlugin } from "../../plugins/babel";
 import { rscPlugin } from "../../plugins/rsc";
 import type { StylexRules } from "./buildRoute";
+import type { RenderMode } from "../server";
 
 const documentFilePath = resolveSync(
 	"./../../client/Document.tsx",
@@ -15,7 +16,7 @@ const routerFilePath = resolveSync(
 
 type BundleServerProps = {
 	location: string;
-	mode: "rsc" | "render" | "hydrate";
+	mode: RenderMode;
 	stylexRules?: StylexRules;
 	development?: boolean;
 };
@@ -31,17 +32,18 @@ export const bundleServer = async ({
 	const clientEntryPoints: ClientEntryPoints = new Set<string>();
 
 	const plugins: BunPlugin[] = [
+		rscPlugin({ clientEntryPoints, development }),
 		babelPlugin({
 			stylexRules,
 			development,
 		}),
 	];
 
-	if (mode === "rsc") {
-		plugins.push(rscPlugin({ clientEntryPoints, development }));
-	}
+	// if (mode === "rsc") {
+	// 	plugins.push(rscPlugin({ clientEntryPoints, development }));
+	// }
 
-	// const entrypoint = mode === "rsc" ? routerFilePath : documentFilePath;
+	// const entrypoint = mode === "csr" ? routerFilePath : documentFilePath;
 	const entrypoint = documentFilePath;
 
 	const build = await Bun.build({
@@ -56,7 +58,7 @@ export const bundleServer = async ({
 		external: ["react", "react-dom"],
 		define: {
 			"process.env.LOCATION": JSON.stringify(location),
-			"process.env.HYDRATE": JSON.stringify(mode !== "render"),
+			"process.env.HYDRATE": JSON.stringify(mode === "ssr"),
 		},
 		plugins,
 	});
