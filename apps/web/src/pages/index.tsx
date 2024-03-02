@@ -2,7 +2,7 @@ import { Suspense } from "react";
 // @ts-expect-error Missing types
 import { css, html as h } from "react-strict-dom";
 
-// import { ServerComponent } from "../components/ServerComponent.tsx";
+import { ServerComponent } from "../components/ServerComponent.tsx";
 
 const styles = css.create({
 	red: {
@@ -20,7 +20,7 @@ export default function Index() {
 
 			<Suspense fallback={<h.div>Loading...</h.div>}>
 				{/* @ts-expect-error Async component */}
-				{/* <ServerComponent /> */}
+				<ServerComponent />
 			</Suspense>
 		</>
 	);

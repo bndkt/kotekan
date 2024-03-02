@@ -5,8 +5,8 @@ import type { ClientEntryPoints } from "./bundleServer";
 import type { StylexRules } from "./buildRoute";
 import type { RenderMode } from "..";
 
-const hydrateFilePath = resolveSync("./../../client/hydrate", import.meta.dir);
 const renderFilePath = resolveSync("./../../client/render", import.meta.dir);
+const hydrateFilePath = resolveSync("./../../client/hydrate", import.meta.dir);
 
 type BundleProps = {
 	location: string;

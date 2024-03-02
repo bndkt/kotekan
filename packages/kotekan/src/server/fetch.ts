@@ -1,7 +1,7 @@
 import path from "node:path";
 import { PassThrough } from "node:stream";
 import { type FileSystemRouter } from "bun";
-import { createElement } from "react";
+import { createElement, type ReactElement } from "react";
 import { isbot } from "isbot";
 // @ts-expect-error Untyped import
 import { renderToReadableStream } from "react-dom/server.browser"; // @todo
@@ -93,29 +93,22 @@ export const fetch = async (
 		// 		: routeBuild.csrBuildFilePath;
 		// development && console.log("🥁 Route file:", path.basename(routeFile));
 
-		const csrDocumentFile = routeBuild.csrBuildFilePath
-			? await import(routeBuild.csrBuildFilePath)
-			: null;
+		let Document: ReactElement | undefined = undefined;
+		if (mode === "csr" && routeBuild.csrBuildFilePath) {
+			const csrDocumentFile = await import(routeBuild.csrBuildFilePath);
 
-		const Document =
-			mode === "ssr"
-				? createFromNodeStream(rscStream, {
-						stylesheet,
-				  })
-				: createElement(csrDocumentFile.Document, {
-						stylesheet,
-				  });
-
-		if (!Document) {
-			throw new Error("Document not found");
+			Document = createElement(csrDocumentFile.Document, { stylesheet });
+			console.log("🥁 CSR document", Document);
+		} else {
+			Document = createFromNodeStream(rscStream, {
+				stylesheet,
+			});
 		}
 
-		// HTML
-		const includeBootstrap = true; // hydrationEnabled || !ssrEnabled;
-		// const bootstrapFilePath = `${buildUrlSegment}/${routeBuild.bootstrapFileUrl}`;
+		// HTML document stream
 		const stream = await renderToReadableStream(Document, {
-			bootstrapModules: includeBootstrap ? [routeBuild.bootstrapFileUrl] : [],
-			// bootstrapScriptContent: "alert('Hello SSR!')",
+			bootstrapModules: [routeBuild.bootstrapFileUrl],
+			// bootstrapScriptContent: "alert('Hello, SSR!')",
 		});
 
 		return new Response(stream, {

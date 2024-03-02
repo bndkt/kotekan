@@ -1,4 +1,3 @@
-import path from "node:path";
 import type { Rule } from "@stylexjs/babel-plugin";
 
 import { bundleServer } from "./bundleServer";
@@ -54,7 +53,7 @@ export const buildRoute = async ({
 	// 	content: ssrBuild.buildOutputs[0],
 	// });
 
-	// Server for CSR
+	// Server build for CSR (shell)
 	if (mode === "csr") {
 		const csrBuild = await bundleServer({
 			location,
