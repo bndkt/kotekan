@@ -11,7 +11,7 @@ const STYLESHEET = process.env.STYLESHEET as string;
 console.log("HYDRATE", { STYLESHEET });
 
 createFromFetch(fetch("?jsx")).then((response: ReactNode) =>
-	hydrateRoot(document, response),
+	hydrateRoot(document, <StrictMode>{response}</StrictMode>),
 );
 
 // hydrateRoot(
