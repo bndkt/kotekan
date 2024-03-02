@@ -9,10 +9,6 @@ const documentFilePath = resolveSync(
 	"./../../client/Document.tsx",
 	import.meta.dir,
 );
-const routerFilePath = resolveSync(
-	"./../../client/Router.tsx",
-	import.meta.dir,
-);
 
 type BundleServerProps = {
 	location: string;

@@ -28,6 +28,14 @@ const About = lazy(() =>
 		return moduleExports;
 	}),
 );
+const Pokemon = lazy(() =>
+	Promise.all([
+		import("../../../../apps/web/src/pages/pokemon"),
+		new Promise((resolve) => setTimeout(resolve, timeout)),
+	]).then(([moduleExports]) => {
+		return moduleExports;
+	}),
+);
 
 export const Router = ({ location }: { location?: string }) => {
 	location = location ?? LOCATION ?? "/";
@@ -35,13 +43,14 @@ export const Router = ({ location }: { location?: string }) => {
 	const routes = new Map<string, LazyExoticComponent<() => ReactNode>>();
 	routes.set("/", Index);
 	routes.set("/about", About);
+	routes.set("/pokemon", Pokemon);
 
 	const RouteComponent = routes.get(location) ?? NotFound;
 
 	return (
 		<>
 			<div>Router: {location}</div>
-			<Suspense fallback={<div>Loading...</div>}>
+			<Suspense fallback={<div>Loading route &hellip;</div>}>
 				<RouteComponent />
 			</Suspense>
 		</>
