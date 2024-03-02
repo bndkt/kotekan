@@ -4,8 +4,12 @@ import { createRoot } from "react-dom/client";
 // @ts-ignore
 import { createFromFetch } from "react-server-dom-esm/client";
 
+import { setupNavigation } from "./setupNavigation";
+
 const root = createRoot(document.body);
 
 createFromFetch(fetch("?jsx")).then((response: ReactNode) =>
 	root.render(<StrictMode>{response}</StrictMode>),
 );
+
+setupNavigation(root);

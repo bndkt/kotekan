@@ -1,9 +1,12 @@
 /// <reference lib="dom" />
-import { StrictMode, type ReactNode } from "react";
+import { StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
 // @ts-ignore
 import { createFromFetch } from "react-server-dom-esm/client";
 
-createFromFetch(fetch("?jsx")).then((response: ReactNode) =>
-	hydrateRoot(document, <StrictMode>{response}</StrictMode>),
-);
+import { setupNavigation } from "./setupNavigation";
+
+const hydrate = await createFromFetch(fetch("?jsx"));
+const root = hydrateRoot(document, <StrictMode>{hydrate}</StrictMode>);
+
+setupNavigation(root);

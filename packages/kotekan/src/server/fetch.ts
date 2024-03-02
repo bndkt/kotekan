@@ -72,19 +72,21 @@ export const fetch = async (
 
 		// JSX for RSC
 		const rscDocumentBuild = await import(routeBuild.rscBuildFilePath);
-		const rscDocument = createElement(rscDocumentBuild.Document, {
+		const RscDocument = createElement(rscDocumentBuild.Document, {
 			stylesheet,
 		});
 
 		const { pipe } = await renderToPipeableStream(
-			rscDocument,
+			RscDocument,
 			routeBuild.clientComponentMap,
 		);
 
 		const rscStream = pipe(new PassThrough());
 
 		if (searchParams.has("jsx")) {
-			return new Response(rscStream);
+			return new Response(rscStream, {
+				headers: { "Content-Type": "application/json" },
+			});
 		}
 
 		let Document: ReactElement | undefined = undefined;
@@ -102,11 +104,12 @@ export const fetch = async (
 		// HTML document stream
 		const stream = await renderToReadableStream(Document, {
 			bootstrapModules: [routeBuild.bootstrapFileUrl],
-			// bootstrapScriptContent: "alert('Hello, SSR!')",
+			// Set JSX for initial hydration
+			// bootstrapScriptContent: `const jsx = ${JSON.stringify(RscDocument)}`,
 		});
 
 		return new Response(stream, {
-			headers: { "Content-Type": "text/html" },
+			headers: { "Content-Type": "text/html; charset=utf-8" },
 		});
 	}
 

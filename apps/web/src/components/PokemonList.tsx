@@ -14,15 +14,13 @@ export const PokemonList = async () => {
 		results: { name: string }[];
 	};
 
-	// console.log(pokemon.results);
-
 	return (
 		<>
 			<h.div style={styles.green}>Hello from the server!</h.div>
 			<h.ul>
 				{pokemon.results.map((pokemon) => {
 					return (
-						<h.li>
+						<h.li key={pokemon.name}>
 							<h.a href={`/pokemon/${pokemon.name}`}>{pokemon.name}</h.a>
 						</h.li>
 					);
