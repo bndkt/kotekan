@@ -7,7 +7,7 @@
     "lint": "biome lint ./src",
     "run": "bun --hot run src/index.ts",
     "dev": "kotekan dev",
-    "start": "kotekan serve",
+    "start": "kotekan start",
     "compile": "bun build --compile"
   },
   "dependencies": {

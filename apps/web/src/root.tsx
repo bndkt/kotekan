@@ -23,7 +23,9 @@ export default function Root({ children }: { children?: ReactNode }) {
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 			</head>
 			<body>
-				<h.h1 style={styles.blue}>Kotekan Web</h.h1>
+				<h.h1 style={styles.blue}>
+					<h.a href="/">Kotekan</h.a>
+				</h.h1>
 				{children}
 			</body>
 		</html>
