@@ -1,7 +1,7 @@
 # Adapted from https://bun.sh/guides/ecosystem/docker
 # use the official Bun image
 # see all versions at https://hub.docker.com/r/oven/bun/tags
-FROM oven/bun:1.0.29-alpine as base
+FROM oven/bun:debian as base
 WORKDIR /usr/src/app
 
 # install dependencies into temp directory
@@ -30,7 +30,7 @@ RUN cd /temp/prod && bun install
 # then copy all (non-ignored) project files into the image
 FROM base AS prerelease
 COPY --from=install /temp/dev/node_modules node_modules
-COPY . .
+COPY --chown=bun . .
 
 # [optional] tests & build
 ENV NODE_ENV=production

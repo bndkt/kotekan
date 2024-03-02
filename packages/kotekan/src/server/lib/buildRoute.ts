@@ -69,7 +69,7 @@ export const buildRoute = async ({
 		csrBuildFilePath = csrBuildFile.filePath;
 	}
 
-	// Server for RSC
+	// Server build for RSC
 	const rscBuild = await bundleServer({
 		location,
 		mode: "ssr",
@@ -100,10 +100,10 @@ export const buildRoute = async ({
 
 	const clientComponentMap: ClientComponentMap = new Map();
 	const [bootstrapOutput, ...restOutput] = clientBuild.buildOutputs;
-	const { fileName: bootstrapFileName } = await createClientFile({
-		buildOutput: bootstrapOutput,
+	const { fileName: bootstrapFileName } = await createBuildFile({
+		name: `bootstrap-${mode}-${bootstrapOutput.hash}`,
 		buildPath,
-		clientComponentMap,
+		content: bootstrapOutput,
 	});
 	console.log("🥁 clientComponentMap", clientComponentMap);
 	for (const buildOutput of restOutput) {

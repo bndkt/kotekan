@@ -87,12 +87,6 @@ export const fetch = async (
 			return new Response(rscStream);
 		}
 
-		// const routeFile =
-		// 	ssrEnabled || bot || !routeBuild.csrBuildFilePath
-		// 		? routeBuild.ssrBuildFilePath
-		// 		: routeBuild.csrBuildFilePath;
-		// development && console.log("🥁 Route file:", path.basename(routeFile));
-
 		let Document: ReactElement | undefined = undefined;
 		if (mode === "csr" && routeBuild.csrBuildFilePath) {
 			const csrDocumentFile = await import(routeBuild.csrBuildFilePath);
