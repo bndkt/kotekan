@@ -1,7 +1,7 @@
 // @ts-expect-error Missing types
 import { css, html as h } from "react-strict-dom";
 
-// import { Counter } from "../components/Counter.tsx";
+import { Counter } from "../components/Counter.tsx";
 
 const styles = css.create({
 	orange: {

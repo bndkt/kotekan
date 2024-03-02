@@ -15,10 +15,11 @@ export default function Index() {
 		<>
 			<h.h1 style={styles.red}>Kotekan - Index</h.h1>
 			<h.a href="/about">About</h.a>
+			<h.a href="/pokemon">Pokémon</h.a>
 
 			<h.div>Hello from react-strict-dom</h.div>
 
-			<Suspense fallback={<h.div>Loading...</h.div>}>
+			<Suspense fallback={<h.div>Loading &hellip;</h.div>}>
 				{/* @ts-expect-error Async component */}
 				<ServerComponent />
 			</Suspense>
