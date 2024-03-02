@@ -6,7 +6,7 @@ import { bundleClient } from "./bundleClient";
 import { createBuildFile } from "./createBuildFile";
 import { createStylexCss } from "./createStylexCss";
 import { createClientFile } from "./createClientFile";
-import type { RenderMode } from "../server";
+import type { RenderMode } from "..";
 
 export type StylexRules = Record<string, Rule[]>;
 

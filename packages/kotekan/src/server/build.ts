@@ -1,5 +1,5 @@
 import { buildRoute, type ClientComponentMap } from "./lib/buildRoute";
-import type { RenderMode } from "./server";
+import type { RenderMode } from ".";
 
 export type RouteBuilds = Map<
 	string,

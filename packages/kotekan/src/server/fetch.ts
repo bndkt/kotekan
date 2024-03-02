@@ -11,7 +11,7 @@ import { renderToPipeableStream } from "react-server-dom-esm/server.node";
 import { createFromNodeStream } from "react-server-dom-esm/client.node";
 
 import type { RouteBuilds } from "./build";
-import type { RenderMode } from "./server";
+import type { RenderMode } from ".";
 // import { createReadableStreamFromReadable } from "../lib/createReadableStreamFromReadable";
 
 interface FetchProps {

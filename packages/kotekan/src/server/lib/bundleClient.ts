@@ -3,7 +3,7 @@ import { resolveSync, type BunPlugin } from "bun";
 import { babelPlugin } from "../../plugins/babel";
 import type { ClientEntryPoints } from "./bundleServer";
 import type { StylexRules } from "./buildRoute";
-import type { RenderMode } from "../server";
+import type { RenderMode } from "..";
 
 const hydrateFilePath = resolveSync("./../../client/hydrate", import.meta.dir);
 const renderFilePath = resolveSync("./../../client/render", import.meta.dir);

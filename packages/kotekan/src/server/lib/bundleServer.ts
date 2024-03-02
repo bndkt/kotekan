@@ -3,7 +3,7 @@ import { resolveSync, type BunPlugin } from "bun";
 import { babelPlugin } from "../../plugins/babel";
 import { rscPlugin } from "../../plugins/rsc";
 import type { StylexRules } from "./buildRoute";
-import type { RenderMode } from "../server";
+import type { RenderMode } from "..";
 
 const documentFilePath = resolveSync(
 	"./../../client/Document.tsx",
