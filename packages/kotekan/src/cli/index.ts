@@ -1,11 +1,11 @@
 #!/usr/bin/env bun --hot
-import { ssrServer } from "../ssr/server";
+import { server } from "../server";
 // import { rnServer } from "../rn/server";
 
 const development = Bun.env.NODE_ENV === "development";
 
-const ssr = await ssrServer({
-	mode: "ssr",
+const ssr = await server({
+	mode: "csr",
 	development,
 });
 

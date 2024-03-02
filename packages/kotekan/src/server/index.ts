@@ -13,7 +13,7 @@ interface ServerProps {
 	development?: boolean;
 }
 
-export const ssrServer = async (props: ServerProps = {}) => {
+export const server = async (props: ServerProps = {}) => {
 	// Defaults
 	const mode = props.mode ?? "ssr";
 	const port = props.port ?? 3000;
