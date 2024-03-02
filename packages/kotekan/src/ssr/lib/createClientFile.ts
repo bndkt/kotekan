@@ -25,18 +25,22 @@ export const createClientFile = async ({
 		buildOutput.hash
 		// "hash"
 	}`.toLowerCase();
+	console.log({ name });
 
 	console.log(
-		"Client build output",
+		"🥁 Client build output",
 		buildOutput.path,
-		exports.map((exp) => exp.n),
+		"with exports",
+		exports.map((exp) => exp.n).join(", "),
 	);
 
 	for (const exp of exports) {
 		const key = Bun.hash(buildOutput.path + exp).toString();
+
 		clientComponentMap.set(key, {
 			id: `/_build/${name}`,
 			name: exp.n,
+			chunks: [],
 			async: true,
 		});
 

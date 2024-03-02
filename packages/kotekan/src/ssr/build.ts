@@ -3,7 +3,6 @@ import { buildRoute, type ClientComponentMap } from "./lib/buildRoute";
 export type RouteBuilds = Map<
 	string,
 	{
-		ssrBuildFilePath: string;
 		rscBuildFilePath: string;
 		csrBuildFilePath?: string;
 		bootstrapFileUrl: string;

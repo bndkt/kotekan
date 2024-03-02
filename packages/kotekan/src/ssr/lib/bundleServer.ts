@@ -41,7 +41,8 @@ export const bundleServer = async ({
 		plugins.push(rscPlugin({ clientEntryPoints, development }));
 	}
 
-	const entrypoint = mode === "rsc" ? routerFilePath : documentFilePath;
+	// const entrypoint = mode === "rsc" ? routerFilePath : documentFilePath;
+	const entrypoint = documentFilePath;
 
 	const build = await Bun.build({
 		entrypoints: [entrypoint],
@@ -55,14 +56,14 @@ export const bundleServer = async ({
 		external: ["react", "react-dom"],
 		define: {
 			"process.env.LOCATION": JSON.stringify(location),
-			"process.env.HYDRATE": JSON.stringify(mode === "hydrate"),
+			"process.env.HYDRATE": JSON.stringify(mode !== "render"),
 		},
 		plugins,
 	});
 
 	if (!build.success || build.outputs.length === 0) {
-		console.error("Logs:", build.logs);
-		throw new Error("Build failed or no outputs");
+		console.error("🥁 Build error:", build.logs);
+		throw new Error("🥁 Build failed or no outputs");
 	}
 
 	return { buildOutputs: build.outputs, clientEntryPoints };

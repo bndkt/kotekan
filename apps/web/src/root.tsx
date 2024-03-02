@@ -15,16 +15,12 @@ const styles = css.create({
 	},
 });
 
-export default function Root({
-	stylesheet,
-	children,
-}: { stylesheet: string; children?: ReactNode }) {
+export default function Root({ children }: { children?: ReactNode }) {
 	return (
 		<html lang="en">
 			<head>
 				<title>Kotekan</title>
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
-				<link href={stylesheet} rel="stylesheet" />
 			</head>
 			<body>
 				<h.h1 style={styles.blue}>Kotekan Web</h.h1>

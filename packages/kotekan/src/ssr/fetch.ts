@@ -2,14 +2,16 @@ import path from "node:path";
 import { PassThrough } from "node:stream";
 import { type FileSystemRouter } from "bun";
 import { createElement } from "react";
+import { isbot } from "isbot";
 // @ts-expect-error Untyped import
 import { renderToReadableStream } from "react-dom/server.browser"; // @todo
 // @ts-expect-error Untyped import
 import { renderToPipeableStream } from "react-server-dom-esm/server.node";
-import { isbot } from "isbot";
+// @ts-expect-error Untyped import
+import { createFromNodeStream } from "react-server-dom-esm/client.node";
 
 import type { RouteBuilds } from "./build";
-import { createReadableStreamFromReadable } from "../lib/createReadableStreamFromReadable";
+// import { createReadableStreamFromReadable } from "../lib/createReadableStreamFromReadable";
 
 interface FetchProps {
 	router: FileSystemRouter;
@@ -68,32 +70,31 @@ export const fetch = async (
 			return new Response(null, { status: 500 });
 		}
 
-		// JSX (for RSC)
-		if (searchParams.has("jsx")) {
-			// const rsrouteFile = routeBuild.rscBuildFilePath ?? "";
-			const rscDocumentFile = await import(routeBuild.rscBuildFilePath);
-			const rscDocument = createElement(rscDocumentFile.Document, {
-				stylesheet: routeBuild.stylexCssUrl,
-			});
+		// JSX for RSC
+		const rscDocumentBuild = await import(routeBuild.rscBuildFilePath);
+		const rscDocument = createElement(rscDocumentBuild.Document, {
+			stylesheet: routeBuild.stylexCssUrl,
+		});
 
-			const { pipe } = await renderToPipeableStream(
-				rscDocument,
-				routeBuild.clientComponentMap,
-			);
-			const rscStream = createReadableStreamFromReadable(
-				pipe(new PassThrough()),
-			);
+		const { pipe } = await renderToPipeableStream(
+			rscDocument,
+			routeBuild.clientComponentMap,
+		);
+
+		const rscStream = pipe(new PassThrough());
+
+		if (searchParams.has("jsx")) {
 			return new Response(rscStream);
 		}
 
-		const routeFile =
-			ssrEnabled || bot || !routeBuild.csrBuildFilePath
-				? routeBuild.ssrBuildFilePath
-				: routeBuild.csrBuildFilePath;
-		development && console.log("🥁 Route file:", path.basename(routeFile));
+		// const routeFile =
+		// 	ssrEnabled || bot || !routeBuild.csrBuildFilePath
+		// 		? routeBuild.ssrBuildFilePath
+		// 		: routeBuild.csrBuildFilePath;
+		// development && console.log("🥁 Route file:", path.basename(routeFile));
 
-		const documentFile = await import(routeFile);
-		const Document = createElement(documentFile.Document, {
+		// const documentFile = await import(routeFile);
+		const Document = createFromNodeStream(rscStream, {
 			stylesheet: routeBuild.stylexCssUrl,
 		});
 

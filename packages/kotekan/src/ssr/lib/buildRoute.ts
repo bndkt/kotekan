@@ -14,6 +14,7 @@ export type ClientComponentMap = Map<
 	{
 		id: string;
 		name: string;
+		chunks: string[];
 		async: boolean;
 	}
 >;
@@ -40,33 +41,33 @@ export const buildRoute = async ({
 	const stylexRules: StylexRules = {};
 
 	// Server for SSR/SSG
-	const ssrBuild = await bundleServer({
-		location,
-		mode: "hydrate",
-		stylexRules,
-		development,
-	});
-	const { filePath: ssrBuildFilePath } = await createBuildFile({
-		name: `${name}-ssr-${ssrBuild.buildOutputs[0].hash}`,
-		buildPath,
-		content: ssrBuild.buildOutputs[0],
-	});
+	// const ssrBuild = await bundleServer({
+	// 	location,
+	// 	mode: "hydrate",
+	// 	stylexRules,
+	// 	development,
+	// });
+	// const { filePath: ssrBuildFilePath } = await createBuildFile({
+	// 	name: `${name}-ssr-${ssrBuild.buildOutputs[0].hash}`,
+	// 	buildPath,
+	// 	content: ssrBuild.buildOutputs[0],
+	// });
 
 	// Server for CSR
-	if (!ssrEnabled) {
-		const csrBuild = await bundleServer({
-			location,
-			mode: "render",
-			// stylexRules,
-			development,
-		});
-		const csrBuildFile = await createBuildFile({
-			name: `${name}-csr-${csrBuild.buildOutputs[0].hash}`,
-			buildPath,
-			content: csrBuild.buildOutputs[0],
-		});
-		csrBuildFilePath = csrBuildFile.filePath;
-	}
+	// if (!ssrEnabled) {
+	// 	const csrBuild = await bundleServer({
+	// 		location,
+	// 		mode: "render",
+	// 		// stylexRules,
+	// 		development,
+	// 	});
+	// 	const csrBuildFile = await createBuildFile({
+	// 		name: `${name}-csr-${csrBuild.buildOutputs[0].hash}`,
+	// 		buildPath,
+	// 		content: csrBuild.buildOutputs[0],
+	// 	});
+	// 	csrBuildFilePath = csrBuildFile.filePath;
+	// }
 
 	// Server for RSC
 	const rscBuild = await bundleServer({
@@ -86,8 +87,8 @@ export const buildRoute = async ({
 		? `${buildUrlSegment}/${stylexCss.fileName}`
 		: undefined;
 
-	// Client (for SSR/CSR/RSC)
-	console.log("Client entry points", ssrBuild.clientEntryPoints);
+	// Client
+	console.log("Client entry points", rscBuild.clientEntryPoints);
 	const clientBuild = await bundleClient({
 		location,
 		mode: ssrEnabled ? "hydrate" : "render",
@@ -98,21 +99,19 @@ export const buildRoute = async ({
 	});
 
 	const clientComponentMap: ClientComponentMap = new Map();
-
 	const [bootstrapOutput, ...restOutput] = clientBuild.buildOutputs;
 	const { fileName: bootstrapFileName } = await createClientFile({
 		buildOutput: bootstrapOutput,
 		buildPath,
 		clientComponentMap,
 	});
+	console.log("🥁 clientComponentMap", clientComponentMap);
 	for (const buildOutput of restOutput) {
 		await createClientFile({ buildOutput, buildPath, clientComponentMap });
 	}
 	const bootstrapFileUrl = `${buildUrlSegment}/${bootstrapFileName}`;
-	console.log("🥁 clientComponentMap", clientComponentMap);
 
 	return {
-		ssrBuildFilePath,
 		rscBuildFilePath,
 		csrBuildFilePath,
 		bootstrapFileUrl,

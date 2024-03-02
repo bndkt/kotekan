@@ -37,7 +37,7 @@ export const bundleClient = async ({
 		entrypoints: [entrypoint, ...clientEntryPoints],
 		target: "browser",
 		// splitting: true,
-		sourcemap: development ? "inline" : "none",
+		sourcemap: "none", // development ? "inline" : "none",
 		minify: development ? false : true,
 		// naming: "[name]-[hash].[ext]",
 		// outdir: hydrate ? "./build" : undefined,
@@ -51,8 +51,8 @@ export const bundleClient = async ({
 	});
 
 	if (!build.success || build.outputs.length === 0) {
-		console.error("Logs:", build.logs);
-		throw new Error("Build failed or no outputs");
+		console.error("🥁 Build error:", build.logs);
+		throw new Error("🥁 Build failed or no outputs");
 	}
 
 	return { buildOutputs: build.outputs };
