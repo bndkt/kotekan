@@ -2,7 +2,7 @@ import path from "node:path";
 
 import { router as routerFn } from "./router";
 import { builder } from "./builder";
-import { fetch } from "./fetch";
+import { fetcher } from "./fetcher";
 
 export type RenderingStrategies = "csr" | "ssr" | "ssg";
 
@@ -43,7 +43,7 @@ export const server = async (props: ServerProps = {}) => {
 		port,
 		development,
 		fetch: (request: Request) =>
-			fetch(request, {
+			fetcher(request, {
 				mode,
 				build,
 				router,
