@@ -40,27 +40,23 @@ export const buildRoute = async ({
 	routes,
 	development,
 }: BuildRouteProps) => {
-	let csrBuildFilePath: string | undefined;
 	const clientBuildPath = path.join(buildPath, "client");
 	const serverBuildPath = path.join(buildPath, "server", "routes");
 	const stylexRules: StylexRules = {};
 
 	// Server build for CSR (shell)
-	if (mode === "csr") {
-		const csrBuild = await bundleServer({
-			location,
-			mode: "csr",
-			routes,
-			// stylexRules,
-			development,
-		});
-		const csrBuildFile = await createBuildFile({
-			name: `${name}-csr-${csrBuild.buildOutputs[0].hash}`,
-			buildPath: serverBuildPath,
-			content: csrBuild.buildOutputs[0],
-		});
-		csrBuildFilePath = csrBuildFile.filePath;
-	}
+	const csrBuild = await bundleServer({
+		location,
+		mode: "csr",
+		routes,
+		// stylexRules,
+		development,
+	});
+	const { filePath: csrBuildFilePath } = await createBuildFile({
+		name: `${name}-csr-${csrBuild.buildOutputs[0].hash}`,
+		buildPath: serverBuildPath,
+		content: csrBuild.buildOutputs[0],
+	});
 
 	// Server build for RSC
 	const rscBuild = await bundleServer({
@@ -99,7 +95,9 @@ export const buildRoute = async ({
 		buildPath: clientBuildPath,
 		content: bootstrapOutput,
 	});
+
 	console.log("🥁 clientComponentMap", clientComponentMap);
+
 	for (const buildOutput of restOutput) {
 		await createClientFile({
 			buildOutput,

@@ -6,7 +6,7 @@ export type RouteBuilds = Map<
 	string,
 	{
 		rscBuildFilePath: string;
-		csrBuildFilePath?: string;
+		csrBuildFilePath: string;
 		bootstrapFileUrl: string;
 		stylexCssUrl?: string;
 		clientComponentMap: ClientComponentMap;

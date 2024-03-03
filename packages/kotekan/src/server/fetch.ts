@@ -57,9 +57,11 @@ export const fetch = async (
 		return new Response(buildFile);
 	}
 
+	const csr = (mode === "csr" && !bot) || searchParams.has("csr");
+	const hydrate = !(searchParams.get("hydrate") === "false");
+
 	// Router
 	const match = router.match(request.url);
-	console.log({ match });
 	if (match) {
 		const routeName = match.name === "/" ? "index" : match.name.substring(1);
 		const routeBuild = routeBuilds.get(routeName);
@@ -90,21 +92,16 @@ export const fetch = async (
 			});
 		}
 
-		let Document: ReactElement | undefined = undefined;
-		if (mode === "csr" && routeBuild.csrBuildFilePath) {
-			const csrDocumentFile = await import(routeBuild.csrBuildFilePath);
-
-			Document = createElement(csrDocumentFile.Document, { stylesheet });
-			console.log("🥁 CSR document", Document);
-		} else {
-			Document = createFromNodeStream(rscStream, {
-				stylesheet,
-			});
-		}
+		const csrDocumentFile = await import(routeBuild.csrBuildFilePath);
+		const Document = csr
+			? createElement(csrDocumentFile.Document, { stylesheet })
+			: createFromNodeStream(rscStream, {
+					stylesheet,
+			  });
 
 		// HTML document stream
 		const stream = await renderToReadableStream(Document, {
-			bootstrapModules: [routeBuild.bootstrapFileUrl],
+			bootstrapModules: hydrate ? [routeBuild.bootstrapFileUrl] : false,
 			// Set JSX for initial hydration
 			// bootstrapScriptContent: `const jsx = ${JSON.stringify(RscDocument)}`,
 		});
