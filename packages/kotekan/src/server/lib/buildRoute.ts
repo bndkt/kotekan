@@ -78,7 +78,7 @@ export const buildRoute = async ({
 
 	const stylexCss = await createStylexCss({ stylexRules, buildPath });
 	const stylexCssUrl = stylexCss
-		? `${buildUrlSegment}/${stylexCss.fileName}`
+		? `/${buildUrlSegment}/${stylexCss.fileName}`
 		: undefined;
 
 	// Client
@@ -107,7 +107,7 @@ export const buildRoute = async ({
 			clientComponentMap,
 		});
 	}
-	const bootstrapFileUrl = `${buildUrlSegment}/${bootstrapFileName}`;
+	const bootstrapFileUrl = `/${buildUrlSegment}/${bootstrapFileName}`;
 
 	return {
 		rscBuildFilePath,

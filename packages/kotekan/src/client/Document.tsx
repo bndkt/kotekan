@@ -12,8 +12,6 @@ const HYDRATE = process.env.HYDRATE as string | undefined;
 const LOCATION = process.env.LOCATION as string | undefined;
 const ROUTES = process.env.ROUTES as Routes | undefined;
 
-console.log({ ROUTES });
-
 export const Document = ({ stylesheet }: { stylesheet: string }) => {
 	return (
 		<>

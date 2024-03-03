@@ -11,7 +11,7 @@ const styles = css.create({
 export const ServerComponent = async () => {
 	const msBefore = Bun.nanoseconds();
 
-	await new Promise((resolve) => setTimeout(resolve, 5000));
+	await new Promise((resolve) => setTimeout(resolve, 1000));
 
 	const msAfter = Bun.nanoseconds();
 

@@ -1,7 +1,7 @@
 import path from "node:path";
 import { resolveSync, type BunPlugin } from "bun";
 
-import type { ClientEntryPoints } from "../../ssr/lib/bundleServer";
+import type { ClientEntryPoints } from "../../server/lib/bundleServer";
 
 interface PluginConfig {
 	clientEntryPoints: ClientEntryPoints;
@@ -40,13 +40,20 @@ export const rscPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 					console.log("New path:", path);
 
 					return {
-						path,
-						external: true,
+						path: args.path.replace("../components", "."),
+						external: false,
+						namespace: "client",
 					};
 				}
 
 				return null;
 			});
+			// builder.onLoad({ filter: /.*/, namespace: "client" }, async (args) => {
+			// 	console.log(args);
+			// 	return {
+			// 		contents: "",
+			// 	};
+			// });
 		},
 	};
 };
