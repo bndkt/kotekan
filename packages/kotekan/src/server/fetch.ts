@@ -1,23 +1,22 @@
 import path from "node:path";
 import { PassThrough } from "node:stream";
 import { type FileSystemRouter } from "bun";
-import { createElement, type ReactElement } from "react";
+import { createElement } from "react";
 import { isbot } from "isbot";
 // @ts-expect-error Untyped import
 import { renderToReadableStream } from "react-dom/server.browser"; // @todo
 // @ts-expect-error Untyped import
-import { renderToPipeableStream } from "react-server-dom-esm/server.node";
+import { renderToPipeableStream } from "react-server-dom-esm/server.node"; // @todo
 // @ts-expect-error Untyped import
-import { createFromNodeStream } from "react-server-dom-esm/client.node";
+import { createFromNodeStream } from "react-server-dom-esm/client.node"; // @todo
 
-import type { RouteBuilds } from "./build";
-import type { RenderMode } from ".";
-// import { createReadableStreamFromReadable } from "../lib/createReadableStreamFromReadable";
+import type { BuildResult } from "./builder";
+import type { RenderingStrategies } from ".";
 
 interface FetchProps {
-	mode: RenderMode;
+	mode: RenderingStrategies;
+	build: BuildResult;
 	router: FileSystemRouter;
-	routeBuilds: RouteBuilds;
 	buildPath: string;
 	buildUrlSegment: string;
 	development?: boolean;
@@ -25,14 +24,7 @@ interface FetchProps {
 
 export const fetch = async (
 	request: Request,
-	{
-		mode,
-		router,
-		routeBuilds,
-		buildPath,
-		buildUrlSegment,
-		development,
-	}: FetchProps,
+	{ mode, build, router, buildPath, buildUrlSegment, development }: FetchProps,
 ): Promise<Response> => {
 	const userAgent = request.headers.get("user-agent");
 	const bot = isbot(userAgent); // @todo
@@ -49,7 +41,11 @@ export const fetch = async (
 
 	// Build files
 	if (pathSegments[0] === buildUrlSegment) {
-		const buildFilePath = path.join(buildPath, "client", pathSegments[1]);
+		const buildFilePath = path.join(
+			buildPath,
+			"client",
+			pathSegments.slice(1).join("/"),
+		);
 		development &&
 			console.log("🥁 Requested build file:", path.basename(buildFilePath));
 		const buildFile = Bun.file(buildFilePath);
@@ -63,45 +59,48 @@ export const fetch = async (
 	// Router
 	const match = router.match(request.url);
 	if (match) {
-		const routeName = match.name === "/" ? "index" : match.name.substring(1);
-		const routeBuild = routeBuilds.get(routeName);
+		const documentFile = await import(build.documentComponentFilePath);
+		const routeComponentFilePath = build.routeComponentPaths.get(match.name);
 
-		if (!routeBuild) {
-			development && console.log("🥁 Route build not found:", routeName);
-			return new Response(null, { status: 500 });
+		if (!routeComponentFilePath) {
+			throw new Error(`🥁 Route component file not found: ${match.name}`);
 		}
 
-		const stylesheet = routeBuild.stylexCssUrl;
+		const routeComponentFile = await import(routeComponentFilePath);
+		const RouteComponent = createElement(routeComponentFile.default);
 
 		// JSX for RSC
-		const rscDocumentBuild = await import(routeBuild.rscBuildFilePath);
-		const RscDocument = createElement(rscDocumentBuild.Document, {
-			stylesheet,
+		// const rscDocumentBuild = await import(routeBuild.rscBuildFilePath);
+		const RscDocumentElement = createElement(documentFile.Document, {
+			routeComponent: RouteComponent,
 		});
 
 		const { pipe } = await renderToPipeableStream(
-			RscDocument,
-			routeBuild.clientComponentMap,
+			RscDocumentElement,
+			{},
+			// routeBuild.clientComponentMap,
 		);
 
 		const rscStream = pipe(new PassThrough());
 
 		if (searchParams.has("jsx")) {
 			return new Response(rscStream, {
-				headers: { "Content-Type": "application/json" },
+				headers: { "Content-Type": "application/json; charset=utf-8" },
 			});
 		}
 
-		const csrDocumentFile = await import(routeBuild.csrBuildFilePath);
-		const Document = csr
-			? createElement(csrDocumentFile.Document, { stylesheet })
-			: createFromNodeStream(rscStream, {
-					stylesheet,
-			  });
+		const DocumentElement = csr
+			? createElement(documentFile.Document)
+			: createFromNodeStream(rscStream);
 
 		// HTML document stream
-		const stream = await renderToReadableStream(Document, {
-			bootstrapModules: hydrate ? [routeBuild.bootstrapFileUrl] : false,
+		const bootstrapModules = hydrate
+			? csr
+				? [`${buildUrlSegment}/bootstrap/${build.renderBootstrapFileName}`]
+				: [`${buildUrlSegment}/bootstrap/${build.hydrateBootstrapFileName}`]
+			: false;
+		const stream = await renderToReadableStream(DocumentElement, {
+			bootstrapModules,
 			// Set JSX for initial hydration
 			// bootstrapScriptContent: `const jsx = ${JSON.stringify(RscDocument)}`,
 		});

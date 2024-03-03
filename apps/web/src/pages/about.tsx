@@ -12,9 +12,10 @@ const styles = css.create({
 export default function About() {
 	return (
 		<>
+			<title>About - Kotekan</title>
 			<h.h1 style={styles.orange}>Kotekan - About</h.h1>
 			<h.a href="/">Home</h.a>
-			{/* <Counter /> */}
+			<Counter />
 		</>
 	);
 }

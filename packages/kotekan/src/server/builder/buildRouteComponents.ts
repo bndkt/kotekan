@@ -1,34 +1,46 @@
 import path from "node:path";
+
 import { babelPlugin } from "../../plugins/babel";
 import { createBuildFile } from "./createBuildFile";
+import { rscPlugin } from "../../plugins/rsc";
+import type { StylexRules } from ".";
 
-interface BuildPagesProps {
+interface BuildRouteComponentsProps {
 	routes: Record<string, string>;
 	buildPath: string;
+	stylexRules: StylexRules;
 	development: boolean;
 }
 
-export const buildPages = async ({
+export type RouteComponentPaths = Map<string, string>;
+export type ClientEntryPoints = Set<string>;
+
+export const buildRouteComponents = async ({
 	routes,
 	buildPath,
+	stylexRules,
 	development,
-}: BuildPagesProps) => {
-	const pages: Record<string, string> = {};
+}: BuildRouteComponentsProps) => {
+	const routeComponentPaths: RouteComponentPaths = new Map();
+	const clientEntryPoints: ClientEntryPoints = new Set<string>();
 
 	for (const [routeName, routePath] of Object.entries(routes)) {
 		const build = await Bun.build({
 			entrypoints: [routePath],
 			// root: process.cwd(),
 			target: "bun",
-			// splitting: true,
+			splitting: true,
 			sourcemap: development ? "inline" : "none",
 			minify: development ? false : true,
 			naming: "[name]-[hash].[ext]",
 			// outdir: path.join(buildPath, "server", "pages"),
-			external: ["react", "react-dom"],
+			external: ["react", "react-dom", "@stylexjs/stylex"],
 			// define: {},
+			publicPath: "/_build/",
 			plugins: [
+				rscPlugin({ clientEntryPoints, development }),
 				babelPlugin({
+					stylexRules,
 					development,
 				}),
 			],
@@ -39,14 +51,15 @@ export const buildPages = async ({
 			throw new Error("🥁 Build failed or no outputs");
 		}
 
+		const name = routeName === "/" ? "index" : routeName.substring(1);
 		const { filePath } = await createBuildFile({
-			name: `${path.basename(routePath)}-${build.outputs[0].hash}`,
-			buildPath: path.join(buildPath, "server", "pages"),
+			name: `${name}-${build.outputs[0].hash}`,
+			buildPath: path.join(buildPath, "server", "routes"),
 			content: build.outputs[0],
 		});
 
-		pages[routeName] = filePath;
+		routeComponentPaths.set(routeName, filePath);
 	}
 
-	return pages;
+	return { routeComponentPaths, clientEntryPoints };
 };

@@ -12,9 +12,9 @@ export default function Root({ children }: { children?: ReactNode }) {
 	return (
 		<html lang="en">
 			<head>
-				<title>Kotekan</title>
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
+				<meta name="description" content="Kotekan" />
 			</head>
 			<body>
 				<h.h1 style={styles.blue}>

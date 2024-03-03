@@ -13,6 +13,8 @@ const styles = css.create({
 export default function Index() {
 	return (
 		<>
+			<title>Kotekan</title>
+
 			<h.h1 style={styles.red}>Kotekan - Index</h.h1>
 			<h.a href="/about">About</h.a>
 			<h.a href="/pokemon">Pokémon</h.a>

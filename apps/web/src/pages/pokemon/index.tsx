@@ -13,6 +13,7 @@ const styles = css.create({
 export default function Pokenmon() {
 	return (
 		<>
+			<title>Pokémon - Kotekan</title>
 			<h.h1 style={styles.orange}>Kotekan - Pokémon</h.h1>
 			<h.a href="/">Home</h.a>
 			<Suspense fallback={<h.div>Loading Pokémon &hellip;</h.div>}>

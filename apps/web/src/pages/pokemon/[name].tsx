@@ -13,9 +13,9 @@ const styles = css.create({
 export default function Pokenmon() {
 	return (
 		<>
+			<title>Pokémon - Kotekan</title>
 			<h.h1 style={styles.orange}>Kotekan - Pokémon</h.h1>
 			<h.a href="/pokemon">All Pokémon</h.a>
-			ONE POKEMON
 			<Suspense fallback={<h.div>Loading Pokémon &hellip;</h.div>}>
 				{/* @ts-expect-error Async component */}
 				<PokemonDetail />

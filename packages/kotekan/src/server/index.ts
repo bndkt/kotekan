@@ -1,13 +1,13 @@
 import path from "node:path";
 
 import { router as routerFn } from "./router";
-import { build } from "./build";
+import { builder } from "./builder";
 import { fetch } from "./fetch";
 
-export type RenderMode = "csr" | "ssr" | "ssg";
+export type RenderingStrategies = "csr" | "ssr" | "ssg";
 
 interface ServerProps {
-	mode?: RenderMode;
+	mode?: RenderingStrategies;
 	buildDir?: string;
 	port?: number;
 	development?: boolean;
@@ -30,7 +30,7 @@ export const server = async (props: ServerProps = {}) => {
 	const { routes } = router;
 
 	// Build
-	const routeBuilds = await build({
+	const build = await builder({
 		mode,
 		routes,
 		buildPath,
@@ -45,7 +45,7 @@ export const server = async (props: ServerProps = {}) => {
 		fetch: (request: Request) =>
 			fetch(request, {
 				mode,
-				routeBuilds,
+				build,
 				router,
 				buildPath,
 				buildUrlSegment,

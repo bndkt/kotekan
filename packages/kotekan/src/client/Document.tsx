@@ -5,20 +5,25 @@
 // 	window.$RefreshSig$ = () => (type) => type;
 // 	console.log("Fast Refresh setup complete");
 // }
+import type { ReactElement } from "react";
 import Root from "../../../../apps/web/src/root"; // @todo
-import { Router, type Routes } from "./Router";
+// import { Router, type Routes } from "./Router";
 
-const HYDRATE = process.env.HYDRATE as string | undefined;
-const LOCATION = process.env.LOCATION as string | undefined;
-const ROUTES = process.env.ROUTES as Routes | undefined;
+// const HYDRATE = process.env.HYDRATE as string | undefined;
+// const LOCATION = process.env.LOCATION as string | undefined;
+// const ROUTES = process.env.ROUTES as Routes | undefined;
 
-export const Document = ({ stylesheet }: { stylesheet: string }) => {
+export const Document = ({
+	routeComponent,
+	stylesheet,
+}: { routeComponent?: ReactElement; stylesheet?: string }) => {
 	return (
-		<>
+		<Root>
 			{stylesheet && (
 				<link rel="stylesheet" href={stylesheet} precedence="default" />
 			)}
-			<Root>{HYDRATE && <Router location={LOCATION} routes={ROUTES} />}</Root>
-		</>
+			{/* {ssr && <Router location={LOCATION} routes={ROUTES} />} */}
+			{routeComponent}
+		</Root>
 	);
 };
