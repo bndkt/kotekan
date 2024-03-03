@@ -1,10 +1,13 @@
 import path from "node:path";
 import { resolveSync, type BunPlugin } from "bun";
+// import { parse } from "es-module-lexer"; // @todo
 
-import type { ClientEntryPoints } from "../../server/lib/bundleServer";
+import type { ClientEntryPoints } from "../../server/builder/buildRouteComponents";
+// import type { ClientComponentMap } from "../../server/lib/buildRoute";
 
 interface PluginConfig {
 	clientEntryPoints: ClientEntryPoints;
+	// clientComponentMap: ClientComponentMap;
 	development?: boolean;
 }
 
@@ -20,11 +23,6 @@ export const rscPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 				// Exclude node_modules (at least for now)
 				if (args.importer.includes("node_modules/")) return;
 
-				// Check for file extensions
-				// if (!PLUGIN_FILTER.test(args.importer)) return;
-
-				// console.log(args);
-
 				const importPath = resolveSync(args.path, path.dirname(args.importer));
 				console.log("Import:", importPath);
 				const file = Bun.file(importPath);
@@ -35,25 +33,34 @@ export const rscPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 					inputCode.startsWith(`'use client'`)
 				) {
 					config.clientEntryPoints.add(importPath);
+					console.log("CLIENT COMPONENT detected", config.clientEntryPoints);
 
 					const path = args.path.replace(/\.tsx?$/, ".client.js");
 					console.log("New path:", path);
 
 					return {
-						path: args.path.replace("../components", "."),
+						path, //: `${path}`,
 						external: false,
-						namespace: "client",
+						namespace: "rsc",
 					};
 				}
 
 				return null;
 			});
-			// builder.onLoad({ filter: /.*/, namespace: "client" }, async (args) => {
-			// 	console.log(args);
-			// 	return {
-			// 		contents: "",
-			// 	};
-			// });
+
+			builder.onLoad({ filter: /.*/, namespace: "rsc" }, async (args) => {
+				// console.log(args);
+				// const [, exports] = parse(args.path);
+
+				return {
+					// loader: "",
+					contents: `
+					export const Counter = () => {
+return (<div>Counter</div>)
+					}
+					`,
+				};
+			});
 		},
 	};
 };

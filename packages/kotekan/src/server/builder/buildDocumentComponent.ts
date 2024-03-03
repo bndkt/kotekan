@@ -27,12 +27,10 @@ export const buildDocumentComponent = async ({
 }: BuildDocumentsProps) => {
 	const build = await Bun.build({
 		entrypoints: [documentFilePath],
-		// root: process.cwd(),
 		target: "bun",
-		// splitting: true,
 		sourcemap: development ? "inline" : "none",
 		minify: development ? false : true,
-		// naming: "[name]-[hash].[ext]",
+		naming: "[name]-[hash].[ext]",
 		outdir: path.join(buildPath, "server", "documents"),
 		external: ["react", "react-dom"],
 		publicPath: "http://localhost/_build/",

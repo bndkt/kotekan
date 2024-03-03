@@ -6,9 +6,10 @@ import typescriptSyntaxPlugin from "@babel/plugin-syntax-typescript";
 // @ ts-expect-error Missing types
 // import jsxSyntaxPlugin from "@babel/plugin-syntax-jsx";
 import type { Rule } from "@stylexjs/babel-plugin";
-import { stylexPlugin } from "./stylex";
-import type { StylexRules } from "../../ssr/lib/buildRoute";
 // import reactRefreshBabelPlugin from "react-refresh/babel";
+
+import { stylexPlugin } from "./stylex";
+import type { StylexRules } from "../../server/builder";
 
 interface PluginConfig {
 	stylexRules?: StylexRules;
