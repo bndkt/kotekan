@@ -13,6 +13,8 @@ jobs:
               run: |
                 curl -L https://fly.io/install.sh | sh
                 echo "~/runner/.fly/bin/flyctl" >> $GITHUB_PATH
-            - run: flyctl deploy --remote-only
+            - run: echo $GITHUB_PATH
+            - name: Deploy
+              run: flyctl deploy --remote-only
               env:
                 FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
