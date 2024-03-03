@@ -61,18 +61,20 @@ export const fetch = async (
 	if (match) {
 		const documentFile = await import(build.documentComponentFilePath);
 		const routeComponentFilePath = build.routeComponentPaths.get(match.name);
+		const stylesheet = `${buildUrlSegment}/styles/${build.stylesheetFileName}`;
 
 		if (!routeComponentFilePath) {
 			throw new Error(`🥁 Route component file not found: ${match.name}`);
 		}
 
 		const routeComponentFile = await import(routeComponentFilePath);
-		const RouteComponent = createElement(routeComponentFile.default);
+		const routeComponent = createElement(routeComponentFile.default);
 
 		// JSX for RSC
 		// const rscDocumentBuild = await import(routeBuild.rscBuildFilePath);
 		const RscDocumentElement = createElement(documentFile.Document, {
-			routeComponent: RouteComponent,
+			routeComponent,
+			stylesheet,
 		});
 
 		const { pipe } = await renderToPipeableStream(
@@ -90,7 +92,7 @@ export const fetch = async (
 		}
 
 		const DocumentElement = csr
-			? createElement(documentFile.Document)
+			? createElement(documentFile.Document, { stylesheet })
 			: createFromNodeStream(rscStream);
 
 		// HTML document stream

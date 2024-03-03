@@ -1,13 +1,14 @@
 import type { Rule } from "@stylexjs/babel-plugin";
 
 import type { RenderingStrategies } from "..";
-import { buildClientComponents } from "./buildClientComponents";
-import { buildBootstrapScripts } from "./buildBootstrapScripts";
+import { buildDocumentComponent } from "./buildDocumentComponent";
 import {
 	buildRouteComponents,
 	type RouteComponentPaths,
 } from "./buildRouteComponents";
-import { buildDocumentComponent } from "./buildDocumentComponent";
+import { buildBootstrapScripts } from "./buildBootstrapScripts";
+import { buildClientComponents } from "./buildClientComponents";
+import { buildStylesheet } from "./buildStylesheet";
 
 export type StylexRules = Record<string, Rule[]>;
 
@@ -24,6 +25,7 @@ export interface BuildResult {
 	renderBootstrapFileName: string;
 	hydrateBootstrapFileName: string;
 	routeComponentPaths: RouteComponentPaths;
+	stylesheetFileName: string;
 }
 
 type ClientEntryPoints = Set<string>;
@@ -53,8 +55,12 @@ export const builder = async ({
 		development,
 	});
 
+	const stylesheetBuild = await buildStylesheet({
+		stylexRules,
+		buildPath,
+	});
+
 	const bootstrapScriptsBuild = await buildBootstrapScripts({
-		stylexCssUrl: "stylex.css",
 		buildPath,
 		development,
 	});
@@ -70,5 +76,6 @@ export const builder = async ({
 		...documentBuild,
 		...bootstrapScriptsBuild,
 		...routeComponentsBuild,
+		...stylesheetBuild,
 	};
 };

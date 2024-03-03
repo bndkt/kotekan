@@ -5,13 +5,11 @@ const renderFilePath = resolveSync("./../../client/render", import.meta.dir);
 const hydrateFilePath = resolveSync("./../../client/hydrate", import.meta.dir);
 
 interface BuildBootstrapScriptProps {
-	stylexCssUrl: string;
 	buildPath: string;
 	development: boolean;
 }
 
 export const buildBootstrapScripts = async ({
-	stylexCssUrl,
 	buildPath,
 	development,
 }: BuildBootstrapScriptProps) => {

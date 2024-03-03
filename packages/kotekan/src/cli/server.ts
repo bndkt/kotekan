@@ -20,8 +20,4 @@ const ssr = await server({
 // 	},
 // });
 
-console.log(
-	`Listening on {rsc.url} (RSC) and ${ssr.url} (SSR) and {rn.url} (RN) ${
-		development ? "(dev)" : "(prod)"
-	}`,
-);
+console.log(`Listening on ${ssr.url} ${development ? "(dev)" : "(prod)"}`);
