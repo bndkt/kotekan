@@ -49,7 +49,7 @@ export const fetch = async (
 
 	// Build files
 	if (pathSegments[0] === buildUrlSegment) {
-		const buildFilePath = path.join(buildPath, pathSegments[1]);
+		const buildFilePath = path.join(buildPath, "client", pathSegments[1]);
 		development &&
 			console.log("🥁 Requested build file:", path.basename(buildFilePath));
 		const buildFile = Bun.file(buildFilePath);
@@ -59,6 +59,7 @@ export const fetch = async (
 
 	// Router
 	const match = router.match(request.url);
+	console.log({ match });
 	if (match) {
 		const routeName = match.name === "/" ? "index" : match.name.substring(1);
 		const routeBuild = routeBuilds.get(routeName);

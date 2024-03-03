@@ -7,45 +7,27 @@ import {
 
 import { NotFound } from "./NotFound";
 
-const LOCATION = process.env.LOCATION as string | undefined;
-const timeout = 0;
+export type Routes = Record<string, string>;
 
-// const Index = lazy(() => import("../../../../apps/web/src/pages/index"));
-const Index = lazy(() =>
-	Promise.all([
-		import("../../../../apps/web/src/pages/index"),
-		new Promise((resolve) => setTimeout(resolve, timeout)),
-	]).then(([moduleExports]) => {
-		return moduleExports;
-	}),
-);
-// const About = lazy(() => import("../../../../apps/web/src/pages/about"));
-const About = lazy(() =>
-	Promise.all([
-		import("../../../../apps/web/src/pages/about"),
-		new Promise((resolve) => setTimeout(resolve, timeout)),
-	]).then(([moduleExports]) => {
-		return moduleExports;
-	}),
-);
-const Pokemon = lazy(() =>
-	Promise.all([
-		import("../../../../apps/web/src/pages/pokemon"),
-		new Promise((resolve) => setTimeout(resolve, timeout)),
-	]).then(([moduleExports]) => {
-		return moduleExports;
-	}),
-);
+export const Router = ({
+	location,
+	routes,
+}: { location?: string; routes?: Routes }) => {
+	location = location ?? "/";
 
-export const Router = ({ location }: { location?: string }) => {
-	location = location ?? LOCATION ?? "/";
+	const routeComponents = new Map<
+		string,
+		LazyExoticComponent<() => ReactNode>
+	>();
 
-	const routes = new Map<string, LazyExoticComponent<() => ReactNode>>();
-	routes.set("/", Index);
-	routes.set("/about", About);
-	routes.set("/pokemon", Pokemon);
+	for (const routeName in routes) {
+		routeComponents.set(
+			routeName,
+			lazy(() => import(routes[routeName])),
+		);
+	}
 
-	const RouteComponent = routes.get(location) ?? NotFound;
+	const RouteComponent = routeComponents.get(location) ?? NotFound;
 
 	return (
 		<>

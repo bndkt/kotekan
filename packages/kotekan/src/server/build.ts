@@ -1,5 +1,6 @@
 import { buildRoute, type ClientComponentMap } from "./lib/buildRoute";
 import type { RenderMode } from ".";
+import { buildPages } from "./lib/buildPages";
 
 export type RouteBuilds = Map<
 	string,
@@ -29,6 +30,12 @@ export const build = async ({
 }: BuildProps) => {
 	const routeBuilds: RouteBuilds = new Map();
 
+	const pages = await buildPages({
+		routes,
+		buildPath,
+		development,
+	});
+
 	for (const [key, val] of Object.entries(routes)) {
 		const name = key === "/" ? "index" : key.substring(1);
 
@@ -38,6 +45,7 @@ export const build = async ({
 			mode,
 			buildPath,
 			buildUrlSegment,
+			routes: pages, // @todo
 			development,
 		});
 

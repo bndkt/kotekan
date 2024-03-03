@@ -1,3 +1,4 @@
+import path from "node:path";
 import type { Rule } from "@stylexjs/babel-plugin";
 
 import { bundleServer } from "./bundleServer";
@@ -6,6 +7,7 @@ import { createBuildFile } from "./createBuildFile";
 import { createStylexCss } from "./createStylexCss";
 import { createClientFile } from "./createClientFile";
 import type { RenderMode } from "..";
+import type { Routes } from "../../client/Router";
 
 export type StylexRules = Record<string, Rule[]>;
 
@@ -25,6 +27,7 @@ interface BuildRouteProps {
 	mode: RenderMode;
 	buildPath: string;
 	buildUrlSegment: string;
+	routes: Routes;
 	development: boolean;
 }
 
@@ -34,36 +37,26 @@ export const buildRoute = async ({
 	mode,
 	buildPath,
 	buildUrlSegment,
+	routes,
 	development,
 }: BuildRouteProps) => {
 	let csrBuildFilePath: string | undefined;
-
+	const clientBuildPath = path.join(buildPath, "client");
+	const serverBuildPath = path.join(buildPath, "server", "routes");
 	const stylexRules: StylexRules = {};
-
-	// Server for SSR/SSG
-	// const ssrBuild = await bundleServer({
-	// 	location,
-	// 	mode: "hydrate",
-	// 	stylexRules,
-	// 	development,
-	// });
-	// const { filePath: ssrBuildFilePath } = await createBuildFile({
-	// 	name: `${name}-ssr-${ssrBuild.buildOutputs[0].hash}`,
-	// 	buildPath,
-	// 	content: ssrBuild.buildOutputs[0],
-	// });
 
 	// Server build for CSR (shell)
 	if (mode === "csr") {
 		const csrBuild = await bundleServer({
 			location,
 			mode: "csr",
+			routes,
 			// stylexRules,
 			development,
 		});
 		const csrBuildFile = await createBuildFile({
 			name: `${name}-csr-${csrBuild.buildOutputs[0].hash}`,
-			buildPath,
+			buildPath: serverBuildPath,
 			content: csrBuild.buildOutputs[0],
 		});
 		csrBuildFilePath = csrBuildFile.filePath;
@@ -73,12 +66,13 @@ export const buildRoute = async ({
 	const rscBuild = await bundleServer({
 		location,
 		mode: "ssr",
+		routes,
 		stylexRules,
 		development,
 	});
 	const { filePath: rscBuildFilePath } = await createBuildFile({
 		name: `${name}-rsc-${rscBuild.buildOutputs[0].hash}`,
-		buildPath,
+		buildPath: serverBuildPath,
 		content: rscBuild.buildOutputs[0],
 	});
 
@@ -102,12 +96,16 @@ export const buildRoute = async ({
 	const [bootstrapOutput, ...restOutput] = clientBuild.buildOutputs;
 	const { fileName: bootstrapFileName } = await createBuildFile({
 		name: `bootstrap-${mode}-${bootstrapOutput.hash}`,
-		buildPath,
+		buildPath: clientBuildPath,
 		content: bootstrapOutput,
 	});
 	console.log("🥁 clientComponentMap", clientComponentMap);
 	for (const buildOutput of restOutput) {
-		await createClientFile({ buildOutput, buildPath, clientComponentMap });
+		await createClientFile({
+			buildOutput,
+			buildPath: clientBuildPath,
+			clientComponentMap,
+		});
 	}
 	const bootstrapFileUrl = `${buildUrlSegment}/${bootstrapFileName}`;
 

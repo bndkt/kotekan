@@ -4,6 +4,7 @@ import { babelPlugin } from "../../plugins/babel";
 import { rscPlugin } from "../../plugins/rsc";
 import type { StylexRules } from "./buildRoute";
 import type { RenderMode } from "..";
+import type { Routes } from "../../client/Router";
 
 const documentFilePath = resolveSync(
 	"./../../client/Document.tsx",
@@ -13,6 +14,7 @@ const documentFilePath = resolveSync(
 type BundleServerProps = {
 	location: string;
 	mode: RenderMode;
+	routes: Routes;
 	stylexRules?: StylexRules;
 	development?: boolean;
 };
@@ -22,6 +24,7 @@ export type ClientEntryPoints = Set<string>;
 export const bundleServer = async ({
 	location,
 	mode,
+	routes,
 	stylexRules,
 	development,
 }: BundleServerProps) => {
@@ -34,10 +37,6 @@ export const bundleServer = async ({
 			development,
 		}),
 	];
-
-	// if (mode === "rsc") {
-	// 	plugins.push(rscPlugin({ clientEntryPoints, development }));
-	// }
 
 	// const entrypoint = mode === "csr" ? routerFilePath : documentFilePath;
 	const entrypoint = documentFilePath;
@@ -55,6 +54,7 @@ export const bundleServer = async ({
 		define: {
 			"process.env.LOCATION": JSON.stringify(location),
 			"process.env.HYDRATE": JSON.stringify(mode === "ssr"),
+			"process.env.ROUTES": JSON.stringify(routes),
 		},
 		plugins,
 	});

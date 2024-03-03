@@ -6,9 +6,13 @@
 // 	console.log("Fast Refresh setup complete");
 // }
 import Root from "../../../../apps/web/src/root"; // @todo
-import { Router } from "./Router";
+import { Router, type Routes } from "./Router";
 
-const HYDRATE = process.env.HYDRATE as string;
+const HYDRATE = process.env.HYDRATE as string | undefined;
+const LOCATION = process.env.LOCATION as string | undefined;
+const ROUTES = process.env.ROUTES as Routes | undefined;
+
+console.log({ ROUTES });
 
 export const Document = ({ stylesheet }: { stylesheet: string }) => {
 	return (
@@ -16,7 +20,7 @@ export const Document = ({ stylesheet }: { stylesheet: string }) => {
 			{stylesheet && (
 				<link rel="stylesheet" href={stylesheet} precedence="default" />
 			)}
-			<Root>{HYDRATE && <Router />}</Root>
+			<Root>{HYDRATE && <Router location={LOCATION} routes={ROUTES} />}</Root>
 		</>
 	);
 };

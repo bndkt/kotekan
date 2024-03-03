@@ -2,7 +2,7 @@ import { Suspense } from "react";
 // @ts-expect-error Missing types
 import { css, html as h } from "react-strict-dom";
 
-import { PokemonList } from "../components/PokemonList.tsx";
+import { PokemonList } from "../../components/PokemonList.tsx";
 
 const styles = css.create({
 	orange: {

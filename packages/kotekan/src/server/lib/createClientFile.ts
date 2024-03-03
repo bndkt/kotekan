@@ -27,6 +27,9 @@ export const createClientFile = async ({
 	}`.toLowerCase();
 	console.log({ name });
 
+	const name2 = `./components/${path.basename(buildOutput.path, ".js")}`;
+	console.log({ name2 });
+
 	console.log(
 		"🥁 Client build output",
 		buildOutput.path,
