@@ -42,7 +42,5 @@ export const buildBootstrapScripts = async ({
 		hydrateBootstrapFileName,
 	};
 
-	console.log(result);
-
 	return result;
 };
