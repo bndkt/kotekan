@@ -13,7 +13,7 @@ jobs:
               run: |
                 curl -L https://fly.io/install.sh | bash
                 echo "~/runner/.fly/bin/flyctl" >> $GITHUB_PATH
-            - run: echo $GITHUB_PATH
+            - run: echo "$PATH"
             - name: Deploy
               run: flyctl deploy --remote-only
               env:
