@@ -11,7 +11,7 @@ jobs:
               uses: actions/checkout@v4
             - name: Install flyctl
               run: |
-                curl -L https://fly.io/install.sh | sh
+                curl -L https://fly.io/install.sh | bash
                 echo "~/runner/.fly/bin/flyctl" >> $GITHUB_PATH
             - run: echo $GITHUB_PATH
             - name: Deploy
