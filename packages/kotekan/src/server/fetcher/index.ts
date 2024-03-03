@@ -7,6 +7,7 @@ import { isbot } from "isbot";
 import { renderToReadableStream as renderToHtmlStream } from "react-dom/server.edge"; // @todo
 // @ts-expect-error Untyped import
 import { renderToPipeableStream as renderToJsxStream } from "react-server-dom-esm/server.node"; // @todo
+// import { renderToReadableStream as renderToJsxStream } from "react-server-dom-webpack/server.edge"; // @todo
 // @ts-expect-error Untyped import
 import { createFromNodeStream as createFromJsxStream } from "react-server-dom-esm/client.node"; // @todo
 
@@ -83,7 +84,7 @@ export const fetcher = async (
 			// routeBuild.clientComponentMap,
 		);
 
-		const jsxStream = pipe(new PassThrough());
+		const jsxStream = pipe(new PassThrough()); // @todo: renderToJsxStream(JsxDocumentElement, {});
 
 		if (searchParams.has("jsx")) {
 			return new Response(jsxStream, {
@@ -102,9 +103,9 @@ export const fetcher = async (
 				: [`${buildUrlSegment}/bootstrap/${build.hydrateBootstrapFileName}`]
 			: false;
 		const stream = await renderToHtmlStream(DocumentElement, {
-			// bootstrapModules,
+			bootstrapModules,
 			// Set JSX for initial hydration
-			bootstrapScriptContent: `const jsx = ${JSON.stringify(jsxStream)}`,
+			// bootstrapScriptContent: `const jsx = ${JSON.stringify(jsxStream)}`,
 		});
 
 		return new Response(stream, {
