@@ -4,6 +4,7 @@ import { babelPlugin } from "../../plugins/babel";
 import { createBuildFile } from "./createBuildFile";
 import { rscPlugin } from "../../plugins/rsc";
 import type { StylexRules } from ".";
+import { mdxPlugin } from "../../plugins/mdx";
 
 interface BuildRouteComponentsProps {
 	routes: Record<string, string>;
@@ -38,6 +39,7 @@ export const buildRouteComponents = async ({
 			// define: {},
 			publicPath: "/_build/",
 			plugins: [
+				mdxPlugin({ development }),
 				rscPlugin({ clientEntryPoints, development }),
 				babelPlugin({
 					stylexRules,

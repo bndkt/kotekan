@@ -25,10 +25,10 @@
   },
   "devDependencies": {
     "@babel/core": "7.24.0",
-    "@babel/plugin-syntax-jsx": "7.23.3",
     "@babel/plugin-syntax-typescript": "7.23.3",
     "@babel/runtime": "7.24.0",
     "@biomejs/biome": "1.5.3",
+    "@mdx-js/mdx": "^3.0.1",
     "@react-native/babel-preset": "0.74.1",
     "@react-native/metro-config": "0.74.1",
     "@stylexjs/babel-plugin": "0.5.1",

@@ -2,11 +2,21 @@
 
 > Back to basics.
 
+## Features
+- [x] CSR
+- [x] SSR
+- [x] Streaming
+- [x] Server components
+- [ ] Client components
+- [ ] MDX
+- [x] StyleX
+- [ ] Tailwind CSS
+
 ## Supported React rendering strategies:
 - [x] CSR
 - [x] SSR
-- [x] SSG
 - [ ] RSC 👷
+- [ ] SSG
 
 ## Major dependencies:
 - [Bun](https://bun.sh/)
