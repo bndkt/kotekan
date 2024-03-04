@@ -2,12 +2,18 @@
 
 > Back to basics.
 
+A minimal React framework based on the [Bun](https://bun.sh/) runtime, with built-in support for [React Server Components (RSC)](https://react.dev/blog/2023/03/22/react-labs-what-we-have-been-working-on-march-2023#react-server-components), [react-strict-dom](https://github.com/facebook/react-strict-dom), and [StyleX](https://stylexjs.com/).
+
+> [!CAUTION]
+> Kotekan is in super early development. I appreciate if you try it out and provide feedback. But please, don't use it in production (yet).
+
 ## Features
 - [x] CSR
 - [x] SSR
 - [x] Streaming
 - [x] Server components
 - [ ] Client components
+- [ ] Server actions
 - [x] MDX
 - [x] StyleX
 - [ ] Tailwind CSS (waiting for v4)
@@ -25,7 +31,6 @@
 - [Biome](https://biomejs.dev/)
 - [React](https://react.dev/)
 - [StyleX](https://stylexjs.com/)
-- [SQLite](https://www.sqlite.org/) (via Bun)
 
 ## Smaller dependencies:
 - [react-error-boundary](https://github.com/bvaughn/react-error-boundary)
