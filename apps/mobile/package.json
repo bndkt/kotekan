@@ -2,7 +2,8 @@
   "name": "kotekan-mobile",
   "type": "module",
   "scripts": {
-    "dev": "kotekan dev"
+    "dev": "kotekan dev",
+    "rn": "npx react-native start --reset-cache"
   },
   "dependencies": {
     "kotekan": "workspace:*",
