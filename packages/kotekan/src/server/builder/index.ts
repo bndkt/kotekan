@@ -1,7 +1,6 @@
 import type { Rule } from "@stylexjs/babel-plugin";
 
 import type { RenderingStrategies } from "..";
-import { buildDocumentComponent } from "./buildDocumentComponent";
 import {
 	buildRouteComponents,
 	type RouteComponentPaths,
@@ -23,7 +22,6 @@ interface BuildProps {
 
 export interface BuildResult {
 	rootComponentFilePath: string;
-	documentComponentFilePath: string;
 	renderBootstrapFileName: string;
 	hydrateBootstrapFileName: string;
 	routeComponentPaths: RouteComponentPaths;
@@ -41,14 +39,6 @@ export const builder = async ({
 }: BuildProps): Promise<BuildResult> => {
 	const stylexRules: StylexRules = {};
 	const clientEntryPoints: ClientEntryPoints = new Set();
-
-	const documentBuild = await buildDocumentComponent({
-		routes,
-		buildPath,
-		stylexRules,
-		clientEntryPoints,
-		development,
-	});
 
 	const rootComponentBuild = await buildRootComponent({
 		buildPath,
@@ -84,7 +74,6 @@ export const builder = async ({
 
 	return {
 		...rootComponentBuild,
-		...documentBuild,
 		...bootstrapScriptsBuild,
 		...routeComponentsBuild,
 		...stylesheetBuild,
