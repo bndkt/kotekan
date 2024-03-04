@@ -19,14 +19,15 @@ export const server = async (props: ServerProps = {}) => {
 	const port = props.port ?? 3000;
 	const buildDir = props.buildDir ?? "./build";
 	const development = props.development ?? false;
+	const mdxEnabled = false;
 
 	// Paths
 	const buildPath = path.join(process.cwd(), buildDir);
 	const buildUrlSegment = "_build";
 
 	// Router
-	const pagesDir = path.join(process.cwd(), "src", "pages");
-	const router = routerFn(pagesDir);
+	const dir = path.join(process.cwd(), "src", "pages");
+	const router = routerFn({ dir, mdxEnabled });
 	const { routes } = router;
 	console.log("🥁 Routes", routes);
 
@@ -35,6 +36,7 @@ export const server = async (props: ServerProps = {}) => {
 		routes,
 		buildPath,
 		buildUrlSegment,
+		mdxEnabled,
 		development,
 	});
 

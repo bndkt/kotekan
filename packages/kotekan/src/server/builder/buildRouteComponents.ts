@@ -10,6 +10,7 @@ import { buildServerComponents } from "./buildServerComponents";
 interface BuildRouteComponentsProps {
 	routes: Record<string, string>;
 	buildPath: string;
+	mdxEnabled: boolean;
 	stylexRules: StylexRules;
 	clientEntryPoints: ClientEntryPoints;
 	development: boolean;
@@ -20,6 +21,7 @@ export type RouteComponentPaths = Map<string, string>;
 export const buildRouteComponents = async ({
 	routes,
 	buildPath,
+	mdxEnabled,
 	stylexRules,
 	clientEntryPoints,
 	development,
@@ -27,8 +29,10 @@ export const buildRouteComponents = async ({
 	const routeComponentPaths: RouteComponentPaths = new Map();
 
 	for (const [routeName, routePath] of Object.entries(routes)) {
+		// console.log({ routePath });
 		const build = await buildServerComponents({
 			entrypoints: [routePath],
+			mdxEnabled,
 			stylexRules,
 			clientEntryPoints,
 			development,

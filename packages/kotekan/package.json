@@ -10,11 +10,17 @@
     },
     "./ui": {
       "import": "./src/ui/index.ts"
+    },
+    "./client/render": {
+      "import": "./src/client/render.tsx"
+    },
+    "./client/hydrate": {
+      "import": "./src/client/hydrate.tsx"
     }
   },
   "scripts": {
     "lint": "biome lint ./src",
-    "compile": "bun build ./src/cli/index.ts --compile --outfile kotekan"
+    "compile": "bun build --compile --minify --sourcemap ./src/cli/index.ts --outfile ./bin/kotekan"
   },
   "dependencies": {
     "react": "18.3.0-canary-2f8f77602-20240229",

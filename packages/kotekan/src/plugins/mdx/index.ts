@@ -11,12 +11,12 @@ interface PluginConfig {
 export const mdxPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 	return {
 		name: "mdxPlugin",
-		setup(builder) {
+		setup(build) {
 			const { extnames, process } = createFormatAwareProcessors(
 				config.options || {},
 			);
 
-			builder.onLoad({ filter: extnamesToRegex(extnames) }, async (args) => {
+			build.onLoad({ filter: extnamesToRegex(extnames) }, async (args) => {
 				const file = Bun.file(args.path);
 				const input = await file.text();
 

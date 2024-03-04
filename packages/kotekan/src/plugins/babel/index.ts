@@ -24,7 +24,7 @@ export const babelPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 
 	return {
 		name: "babelPlugin",
-		setup(builder) {
+		setup(build) {
 			// console.log(builder.config, config);
 
 			// const stylexRules: Record<string, Rule[]> = {};
@@ -35,7 +35,7 @@ export const babelPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 			// 		return null;
 			// 	},
 			// );
-			builder.onLoad(
+			build.onLoad(
 				{
 					filter: BABEL_PLUGIN_ONLOAD_FILTER,
 				},

@@ -1,6 +1,5 @@
 import type { Rule } from "@stylexjs/babel-plugin";
 
-import type { RenderingStrategies } from "..";
 import {
 	buildRouteComponents,
 	type RouteComponentPaths,
@@ -16,6 +15,7 @@ interface BuildProps {
 	routes: Record<string, string>;
 	buildPath: string;
 	buildUrlSegment: string;
+	mdxEnabled: boolean;
 	development: boolean;
 }
 
@@ -33,6 +33,7 @@ export const builder = async ({
 	routes,
 	buildPath,
 	buildUrlSegment,
+	mdxEnabled,
 	development,
 }: BuildProps): Promise<BuildResult> => {
 	const stylexRules: StylexRules = {};
@@ -48,6 +49,7 @@ export const builder = async ({
 	const routeComponentsBuild = await buildRouteComponents({
 		routes,
 		buildPath,
+		mdxEnabled,
 		stylexRules,
 		clientEntryPoints,
 		development,

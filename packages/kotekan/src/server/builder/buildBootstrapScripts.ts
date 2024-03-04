@@ -1,8 +1,11 @@
 import path from "node:path";
 import { resolveSync } from "bun";
 
-const renderFilePath = resolveSync("./../../client/render", import.meta.dir);
-const hydrateFilePath = resolveSync("./../../client/hydrate", import.meta.dir);
+// const renderFilePath = resolveSync("./../../client/render", import.meta.dir);
+// const hydrateFilePath = resolveSync("./../../client/hydrate", import.meta.dir);
+
+const renderFilePath = resolveSync("kotekan/client/render", import.meta.dir);
+const hydrateFilePath = resolveSync("kotekan/client/hydrate", import.meta.dir);
 
 interface BuildBootstrapScriptProps {
 	buildPath: string;

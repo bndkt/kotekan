@@ -1,9 +1,12 @@
-import { server } from "../server";
+import { server as serverFn } from "../server";
 // import { rnServer } from "../rn/server";
+
+console.log("process.cwd", process.cwd());
+console.log("import.meta.dir", import.meta.dir);
 
 const development = Bun.env.NODE_ENV === "development";
 
-const ssr = await server({
+export const server = await serverFn({
 	mode: "ssr",
 	development,
 });
@@ -20,4 +23,4 @@ const ssr = await server({
 // 	},
 // });
 
-console.log(`Listening on ${ssr.url} ${development ? "(dev)" : "(prod)"}`);
+console.log(`Listening on ${server.url} ${development ? "(dev)" : "(prod)"}`);

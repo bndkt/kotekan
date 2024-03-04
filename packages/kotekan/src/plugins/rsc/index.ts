@@ -2,7 +2,7 @@ import path from "node:path";
 import { resolveSync, type BunPlugin } from "bun";
 // import { parse } from "es-module-lexer"; // @todo
 
-import type { ClientEntryPoints } from "../../server/builder/buildRouteComponents";
+import type { ClientEntryPoints } from "../../server/builder";
 // import type { ClientComponentMap } from "../../server/lib/buildRoute";
 
 interface PluginConfig {
@@ -16,10 +16,10 @@ const PLUGIN_FILTER = /\.(jsx|js|tsx|ts|mjs|cjs|mts|cts)$/;
 export const rscPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 	return {
 		name: "rscPlugin",
-		setup(builder) {
+		setup(build) {
 			// console.log(builder.config, config);
 
-			builder.onResolve({ filter: PLUGIN_FILTER }, async (args) => {
+			build.onResolve({ filter: PLUGIN_FILTER }, async (args) => {
 				// Exclude node_modules (at least for now)
 				if (args.importer.includes("node_modules/")) return;
 
@@ -48,7 +48,7 @@ export const rscPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 				return null;
 			});
 
-			builder.onLoad({ filter: /.*/, namespace: "rsc" }, async (args) => {
+			build.onLoad({ filter: /.*/, namespace: "rsc" }, async (args) => {
 				// console.log(args);
 				// const [, exports] = parse(args.path);
 
