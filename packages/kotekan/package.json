@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "type": "module",
   "sideEffects": false,
-  "bin": "./bin/kotekan",
+  "bin": "./cli/index.ts",
   "exports": {
     "./client/render": {
       "import": "./src/client/render.tsx"
