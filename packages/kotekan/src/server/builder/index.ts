@@ -13,7 +13,6 @@ import { buildRootComponent } from "./buildRootComponent";
 export type StylexRules = Record<string, Rule[]>;
 
 interface BuildProps {
-	mode: RenderingStrategies;
 	routes: Record<string, string>;
 	buildPath: string;
 	buildUrlSegment: string;
@@ -31,7 +30,6 @@ export interface BuildResult {
 export type ClientEntryPoints = Set<string>;
 
 export const builder = async ({
-	mode,
 	routes,
 	buildPath,
 	buildUrlSegment,
