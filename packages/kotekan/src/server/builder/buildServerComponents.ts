@@ -26,7 +26,7 @@ export const buildServerComponents = async ({
 		}),
 	];
 
-	// mdxEnabled && plugins.push(mdxPlugin({ development }));
+	mdxEnabled && plugins.push(mdxPlugin({ development }));
 
 	return await Bun.build({
 		entrypoints,

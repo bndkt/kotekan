@@ -19,7 +19,7 @@ export const server = async (props: ServerProps = {}) => {
 	const port = props.port ?? 3000;
 	const buildDir = props.buildDir ?? "./build";
 	const development = props.development ?? false;
-	const mdxEnabled = false;
+	const mdxEnabled = true;
 
 	// Paths
 	const buildPath = path.join(process.cwd(), buildDir);

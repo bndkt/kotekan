@@ -6,7 +6,7 @@ console.log("import.meta.dir", import.meta.dir);
 
 const development = Bun.env.NODE_ENV === "development";
 
-export const server = await serverFn({
+const server = await serverFn({
 	mode: "ssr",
 	development,
 });
