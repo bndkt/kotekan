@@ -1,7 +1,7 @@
 import path from "node:path";
 import { PassThrough } from "node:stream";
 import { type FileSystemRouter } from "bun";
-import { createElement } from "react";
+import { type FunctionComponent } from "react";
 import { isbot } from "isbot";
 // @ts-expect-error Untyped import
 import { renderToReadableStream as renderToHtmlStream } from "react-dom/server.edge"; // @todo
@@ -13,6 +13,7 @@ import { createFromNodeStream as createFromJsxStream } from "react-server-dom-es
 
 import type { BuildResult } from "../builder";
 import type { RenderingStrategies } from "..";
+import { createDocumentElement } from "./createDocumentElement";
 
 interface FetchProps {
 	mode: RenderingStrategies;
@@ -60,22 +61,19 @@ export const fetcher = async (
 	// Router
 	const match = router.match(request.url);
 	if (match) {
-		const documentFile = await import(build.documentComponentFilePath);
+		// Route component
 		const routeComponentFilePath = build.routeComponentPaths.get(match.name);
-		const stylesheet = `${buildUrlSegment}/styles/${build.stylesheetFileName}`;
-
 		if (!routeComponentFilePath) {
 			throw new Error(`🥁 Route component file not found: ${match.name}`);
 		}
-
 		const routeComponentFile = await import(routeComponentFilePath);
-		const routeComponent = createElement(routeComponentFile.default);
+		const RouteComponent = routeComponentFile.default as FunctionComponent;
 
 		// JSX (for RSC)
-		// const rscDocumentBuild = await import(routeBuild.rscBuildFilePath);
-		const JsxDocumentElement = createElement(documentFile.Document, {
-			routeComponent,
-			stylesheet,
+		const JsxDocumentElement = createDocumentElement({
+			build,
+			buildUrlSegment,
+			RouteComponent,
 		});
 
 		const { pipe } = await renderToJsxStream(
@@ -93,7 +91,7 @@ export const fetcher = async (
 		}
 
 		const DocumentElement = csr
-			? createElement(documentFile.Document, { stylesheet })
+			? createDocumentElement({ build, buildUrlSegment })
 			: createFromJsxStream(jsxStream);
 
 		// HTML document stream

@@ -9,6 +9,7 @@ import {
 import { buildBootstrapScripts } from "./buildBootstrapScripts";
 import { buildClientComponents } from "./buildClientComponents";
 import { buildStylesheet } from "./buildStylesheet";
+import { buildRootComponent } from "./buildRootComponent";
 
 export type StylexRules = Record<string, Rule[]>;
 
@@ -21,6 +22,7 @@ interface BuildProps {
 }
 
 export interface BuildResult {
+	rootComponentFilePath: string;
 	documentComponentFilePath: string;
 	renderBootstrapFileName: string;
 	hydrateBootstrapFileName: string;
@@ -28,7 +30,7 @@ export interface BuildResult {
 	stylesheetFileName: string;
 }
 
-type ClientEntryPoints = Set<string>;
+export type ClientEntryPoints = Set<string>;
 
 export const builder = async ({
 	mode,
@@ -48,10 +50,18 @@ export const builder = async ({
 		development,
 	});
 
+	const rootComponentBuild = await buildRootComponent({
+		buildPath,
+		stylexRules,
+		clientEntryPoints,
+		development,
+	});
+
 	const routeComponentsBuild = await buildRouteComponents({
 		routes,
 		buildPath,
 		stylexRules,
+		clientEntryPoints,
 		development,
 	});
 
@@ -73,6 +83,7 @@ export const builder = async ({
 	// });
 
 	return {
+		...rootComponentBuild,
 		...documentBuild,
 		...bootstrapScriptsBuild,
 		...routeComponentsBuild,

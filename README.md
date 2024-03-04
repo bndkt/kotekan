@@ -8,9 +8,10 @@
 - [x] Streaming
 - [x] Server components
 - [ ] Client components
-- [ ] MDX
+- [x] MDX
 - [x] StyleX
-- [ ] Tailwind CSS
+- [ ] Tailwind CSS (waiting for v4)
+- [ ] HMR/Fast Refresh
 
 ## Supported React rendering strategies:
 - [x] CSR

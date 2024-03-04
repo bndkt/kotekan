@@ -1,29 +1,29 @@
 import path from "node:path";
 
+import type { ClientEntryPoints, StylexRules } from ".";
 import { babelPlugin } from "../../plugins/babel";
 import { createBuildFile } from "./createBuildFile";
 import { rscPlugin } from "../../plugins/rsc";
-import type { StylexRules } from ".";
 import { mdxPlugin } from "../../plugins/mdx";
 
 interface BuildRouteComponentsProps {
 	routes: Record<string, string>;
 	buildPath: string;
 	stylexRules: StylexRules;
+	clientEntryPoints: ClientEntryPoints;
 	development: boolean;
 }
 
 export type RouteComponentPaths = Map<string, string>;
-export type ClientEntryPoints = Set<string>;
 
 export const buildRouteComponents = async ({
 	routes,
 	buildPath,
 	stylexRules,
+	clientEntryPoints,
 	development,
 }: BuildRouteComponentsProps) => {
 	const routeComponentPaths: RouteComponentPaths = new Map();
-	const clientEntryPoints: ClientEntryPoints = new Set<string>();
 
 	for (const [routeName, routePath] of Object.entries(routes)) {
 		const build = await Bun.build({

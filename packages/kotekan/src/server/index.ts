@@ -28,6 +28,7 @@ export const server = async (props: ServerProps = {}) => {
 	const pagesDir = path.join(process.cwd(), "src", "pages");
 	const router = routerFn(pagesDir);
 	const { routes } = router;
+	console.log("🥁 Routes", routes);
 
 	// Build
 	const build = await builder({
