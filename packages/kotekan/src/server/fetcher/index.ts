@@ -4,7 +4,7 @@ import { type FileSystemRouter } from "bun";
 import { type FunctionComponent } from "react";
 import { isbot } from "isbot";
 // @ts-expect-error Untyped import
-import { renderToReadableStream as renderToHtmlStream } from "react-dom/server.edge"; // @todo
+import { renderToReadableStream as renderToHtmlStream } from "react-dom/server.bun"; // @todo
 // @ts-expect-error Untyped import
 import { renderToPipeableStream as renderToJsxStream } from "react-server-dom-esm/server.node"; // @todo
 // import { renderToReadableStream as renderToJsxStream } from "react-server-dom-webpack/server.edge"; // @todo
@@ -83,6 +83,7 @@ export const fetcher = async (
 		);
 
 		const jsxStream = pipe(new PassThrough()); // @todo: renderToJsxStream(JsxDocumentElement, {});
+		// const jsxStream = renderToJsxStream(JsxDocumentElement, {});
 
 		if (searchParams.has("jsx")) {
 			return new Response(jsxStream, {

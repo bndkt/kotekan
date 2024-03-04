@@ -10,6 +10,7 @@ interface ServerProps {
 	mode?: RenderingStrategies;
 	buildDir?: string;
 	port?: number;
+	mdxEnabled?: boolean;
 	development?: boolean;
 }
 
@@ -18,8 +19,8 @@ export const server = async (props: ServerProps = {}) => {
 	const mode = props.mode ?? "ssr";
 	const port = props.port ?? 3000;
 	const buildDir = props.buildDir ?? "./build";
+	const mdxEnabled = props.mdxEnabled ?? true;
 	const development = props.development ?? false;
-	const mdxEnabled = true;
 
 	// Paths
 	const buildPath = path.join(process.cwd(), buildDir);

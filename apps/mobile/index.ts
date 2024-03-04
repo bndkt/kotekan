@@ -1,7 +1,7 @@
 import { AppRegistry } from "react-native";
 
-import { name as appKey } from "./app.json";
-import App from "./App";
+import { name as appKey } from "./src/app.json";
+import App from "./src/App";
 
 console.log("This is the app! It's named", appKey);
 
