@@ -5,11 +5,8 @@
   "sideEffects": false,
   "scripts": {
     "lint": "biome lint ./src",
-    "dev2": "bun --hot run src/index.ts",
     "dev": "kotekan dev",
-    "dev:bin": "../../packages/kotekan/bin/kotekan",
-    "start": "kotekan start",
-    "compile": "bun build --compile --minify --sourcemap ./src/index.ts --outfile ./kotekan"
+    "start": "kotekan start"
   },
   "dependencies": {
     "kotekan": "workspace:*",

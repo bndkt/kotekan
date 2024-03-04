@@ -1,21 +1,18 @@
 {
   "name": "kotekan",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "sideEffects": false,
-  "bin": "./src/cli/index.ts",
+  "bin": "./bin/kotekan",
   "exports": {
-    ".": {
-      "import": "./src/index.ts"
-    },
-    "./ui": {
-      "import": "./src/ui/index.ts"
-    },
     "./client/render": {
       "import": "./src/client/render.tsx"
     },
     "./client/hydrate": {
       "import": "./src/client/hydrate.tsx"
+    },
+    "./ui": {
+      "import": "./src/ui/index.ts"
     }
   },
   "scripts": {
@@ -49,5 +46,11 @@
     "metro-core": "0.80.6",
     "react-refresh": "0.14.0",
     "typescript": "5.3.3"
-  }
+  },
+  "files": [
+    "bin",
+    "src/index.ts",
+    "src/client",
+    "README.md"
+  ]
 }
