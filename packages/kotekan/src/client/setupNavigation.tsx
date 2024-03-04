@@ -1,7 +1,7 @@
 /// <reference lib="dom" />
 import { StrictMode, type ReactNode } from "react";
 import { type Root } from "react-dom/client";
-// @ts-ignore
+// @ts-expect-error Untyped import
 import { createFromFetch } from "react-server-dom-esm/client";
 
 export const setupNavigation = (root: Root) => {

@@ -1,7 +1,7 @@
 /// <reference lib="dom" />
 import { StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
-// @ts-ignore
+// @ts-expect-error Untyped import
 import { createFromFetch } from "react-server-dom-esm/client";
 
 import { setupNavigation } from "./setupNavigation";
