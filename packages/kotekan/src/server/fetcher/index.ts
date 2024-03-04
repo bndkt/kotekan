@@ -4,7 +4,7 @@ import { type FileSystemRouter } from "bun";
 import { type FunctionComponent } from "react";
 import { isbot } from "isbot";
 // @ts-expect-error Untyped import
-import { renderToReadableStream as renderToHtmlStream } from "react-dom/server.bun"; // @todo
+import { renderToReadableStream as renderToHtmlStream } from "react-dom/server.edge"; // @todo
 // @ts-expect-error Untyped import
 import { renderToPipeableStream as renderToJsxStream } from "react-server-dom-esm/server.node"; // @todo
 // import { renderToReadableStream as renderToJsxStream } from "react-server-dom-webpack/server.edge"; // @todo
@@ -98,8 +98,8 @@ export const fetcher = async (
 		// HTML document stream
 		const bootstrapModules = hydrate
 			? csr
-				? [`${buildUrlSegment}/bootstrap/${build.renderBootstrapFileName}`]
-				: [`${buildUrlSegment}/bootstrap/${build.hydrateBootstrapFileName}`]
+				? [`/${buildUrlSegment}/bootstrap/${build.renderBootstrapFileName}`]
+				: [`/${buildUrlSegment}/bootstrap/${build.hydrateBootstrapFileName}`]
 			: false;
 		const stream = await renderToHtmlStream(DocumentElement, {
 			bootstrapModules,

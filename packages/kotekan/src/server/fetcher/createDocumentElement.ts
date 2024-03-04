@@ -14,7 +14,7 @@ export const createDocumentElement = async ({
 	RouteComponent,
 }: CreateDocumentElementProps) => {
 	// StyleX
-	const href = `${buildUrlSegment}/styles/${build.stylesheetFileName}`;
+	const href = `/${buildUrlSegment}/styles/${build.stylesheetFileName}`;
 	const StylesheetElement = createElement("link", {
 		href,
 		rel: "stylesheet",

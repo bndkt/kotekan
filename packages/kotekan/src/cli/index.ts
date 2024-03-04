@@ -1,4 +1,5 @@
 #!/usr/bin/env bun
+// --conditions react-server
 // --hot
 // import path from "node:path";
 
@@ -13,4 +14,5 @@
 // // await $`bun build ${serverPath} --compile --minify --sourcemap --outfile app`;
 // await $`bun build ${serverPath} --outdir ./dist --target bun`;
 
+// import "./native";
 import "./dev";
