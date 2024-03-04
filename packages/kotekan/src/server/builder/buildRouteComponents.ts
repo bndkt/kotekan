@@ -5,6 +5,7 @@ import { babelPlugin } from "../../plugins/babel";
 import { createBuildFile } from "./createBuildFile";
 import { rscPlugin } from "../../plugins/rsc";
 import { mdxPlugin } from "../../plugins/mdx";
+import { buildServerComponents } from "./buildServerComponents";
 
 interface BuildRouteComponentsProps {
 	routes: Record<string, string>;
@@ -26,26 +27,11 @@ export const buildRouteComponents = async ({
 	const routeComponentPaths: RouteComponentPaths = new Map();
 
 	for (const [routeName, routePath] of Object.entries(routes)) {
-		const build = await Bun.build({
+		const build = await buildServerComponents({
 			entrypoints: [routePath],
-			// root: process.cwd(),
-			target: "bun",
-			splitting: true,
-			sourcemap: development ? "inline" : "none",
-			minify: development ? false : true,
-			naming: "[name]-[hash].[ext]",
-			// outdir: path.join(buildPath, "server", "pages"),
-			external: ["react", "react-dom", "@stylexjs/stylex"],
-			// define: {},
-			publicPath: "/_build/",
-			plugins: [
-				mdxPlugin({ development }),
-				rscPlugin({ clientEntryPoints, development }),
-				babelPlugin({
-					stylexRules,
-					development,
-				}),
-			],
+			stylexRules,
+			clientEntryPoints,
+			development,
 		});
 
 		if (!build.success || build.outputs.length === 0) {
