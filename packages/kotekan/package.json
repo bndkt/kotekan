@@ -40,13 +40,15 @@
     "@types/react": "18.2.62",
     "@types/react-dom": "18.2.19",
     "@types/react-refresh": "0.14.5",
+    "@types/yargs": "17.0.32",
     "acorn-loose": "8.4.0",
     "es-module-lexer": "1.4.1",
     "isbot": "5.1.1",
     "metro": "0.80.6",
     "metro-core": "0.80.6",
     "react-refresh": "0.14.0",
-    "typescript": "5.3.3"
+    "typescript": "5.3.3",
+    "yargs": "17.7.2"
   },
   "files": [
     "bin",
