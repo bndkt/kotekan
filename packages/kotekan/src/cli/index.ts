@@ -1,18 +1,26 @@
 #!/usr/bin/env bun
 // --conditions react-server
 // --hot
-// import path from "node:path";
+import yargs from "yargs";
+import { hideBin } from "yargs/helpers";
 
-// const cwd = process.cwd();
-// const serverPath = path.join(import.meta.dir, "server.ts");
-// const preloadPath = path.join(import.meta.dir, "preload.ts");
-// console.log(cwd);
-// console.log(import.meta.dir);
-// // console.log(serverPath);
+import { devCommand } from "./dev";
+import { nativeCommand } from "./native";
 
-// import { $ } from "bun";
-// // await $`bun build ${serverPath} --compile --minify --sourcemap --outfile app`;
-// await $`bun build ${serverPath} --outdir ./dist --target bun`;
-
-// import "./native";
-import "./dev";
+yargs(hideBin(process.argv))
+	.command({
+		command: "dev",
+		describe: "Run the development script",
+		handler: () => {
+			devCommand();
+		},
+	})
+	.command({
+		command: "native",
+		describe: "Run the React Native development script",
+		handler: () => {
+			nativeCommand();
+		},
+	})
+	.demandCommand(1, "You need at least one command before moving on")
+	.parse();

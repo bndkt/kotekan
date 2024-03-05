@@ -1,7 +1,7 @@
-import React from "react";
+import type { ReactNode } from "react";
 import { SafeAreaView, Text, View } from "react-native";
 
-function App(): React.JSX.Element {
+export default function App({ children }: { children?: ReactNode }) {
 	return (
 		<SafeAreaView>
 			<View>
@@ -11,9 +11,8 @@ function App(): React.JSX.Element {
 				<Text style={{ textAlign: "center", marginTop: 20 }}>
 					Hello, Kotekan!
 				</Text>
+				{children}
 			</View>
 		</SafeAreaView>
 	);
 }
-
-export default App;

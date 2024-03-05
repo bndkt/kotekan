@@ -6,21 +6,24 @@ console.log("import.meta.dir", import.meta.dir);
 
 const development = Bun.env.NODE_ENV === "development";
 
-const server = await serverFn({
-	mode: "ssr",
-	development,
-});
+export const devCommand = async () => {
+	const server = await serverFn({
+		mode: "ssr",
+		mdxEnabled: false,
+		development,
+	});
 
-// const rn = await rnServer({
-// 	port: 8081,
-// 	development
-// });
+	// const rn = await rnServer({
+	// 	port: 8081,
+	// 	development
+	// });
 
-// const ssr = Bun.serve({
-// 	port: 3000,
-// 	fetch(req) {
-// 		return new Response("Bun!");
-// 	},
-// });
+	// const ssr = Bun.serve({
+	// 	port: 3000,
+	// 	fetch(req) {
+	// 		return new Response("Bun!");
+	// 	},
+	// });
 
-console.log(`Listening on ${server.url} ${development ? "(dev)" : "(prod)"}`);
+	console.log(`Listening on ${server.url} ${development ? "(dev)" : "(prod)"}`);
+};

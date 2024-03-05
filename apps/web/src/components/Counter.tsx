@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 // @ts-expect-error Missing types
 import { css, html as h } from "react-strict-dom";

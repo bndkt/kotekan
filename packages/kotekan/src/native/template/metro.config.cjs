@@ -2,8 +2,10 @@ const path = require("path");
 
 const { getDefaultConfig, mergeConfig } = require("@react-native/metro-config");
 
-const projectRoot = path.join(process.cwd());
-const workspaceRoot = path.join(process.cwd(), "../../");
+const projectRoot = path.join(__dirname);
+const workspaceRoot = path.join(__dirname, "../../../../");
+
+console.log({ projectRoot, workspaceRoot });
 
 /**
  * Metro configuration
@@ -16,12 +18,9 @@ const config = {
 	watchFolders: [workspaceRoot],
 	resolver: {
 		nodeModulesPaths: [
-			path.resolve(projectRoot, "node_modules"),
+			path.resolve(projectRoot, "../../node_modules"),
 			path.resolve(workspaceRoot, "node_modules"),
 		],
-		extraNodeModules: {
-			modules: workspaceRoot,
-		},
 	},
 };
 
