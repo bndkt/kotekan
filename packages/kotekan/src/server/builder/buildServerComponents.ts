@@ -1,4 +1,4 @@
-import type { ClientEntryPoints, StylexRules } from ".";
+import type { ClientComponentsMap, ClientEntryPoints, StylexRules } from ".";
 import { babelPlugin } from "../../plugins/babel";
 import { mdxPlugin } from "../../plugins/mdx";
 import { rscPlugin } from "../../plugins/rsc";
@@ -8,6 +8,7 @@ interface BuildServerComponentsProps {
 	mdxEnabled: boolean;
 	stylexRules: StylexRules;
 	clientEntryPoints: ClientEntryPoints;
+	clientComponentsMap: ClientComponentsMap;
 	development: boolean;
 }
 
@@ -16,10 +17,11 @@ export const buildServerComponents = async ({
 	mdxEnabled,
 	stylexRules,
 	clientEntryPoints,
+	clientComponentsMap,
 	development,
 }: BuildServerComponentsProps) => {
 	const plugins = [
-		rscPlugin({ clientEntryPoints, development }),
+		rscPlugin({ clientEntryPoints, clientComponentsMap, development }),
 		babelPlugin({
 			stylexRules,
 			development,

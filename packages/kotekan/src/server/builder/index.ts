@@ -20,6 +20,7 @@ interface BuildProps {
 }
 
 export interface BuildResult {
+	clientComponentsMap: ClientComponentsMap;
 	rootComponentFilePath: string;
 	renderBootstrapFileName: string;
 	hydrateBootstrapFileName: string;
@@ -28,6 +29,16 @@ export interface BuildResult {
 }
 
 export type ClientEntryPoints = Set<string>;
+
+export type ClientComponentsMap = Map<
+	string,
+	{
+		id: string;
+		name: string;
+		chunks: string[];
+		async: boolean;
+	}
+>;
 
 export const builder = async ({
 	routes,
@@ -38,6 +49,7 @@ export const builder = async ({
 }: BuildProps): Promise<BuildResult> => {
 	const stylexRules: StylexRules = {};
 	const clientEntryPoints: ClientEntryPoints = new Set();
+	const clientComponentsMap: ClientComponentsMap = new Map();
 
 	const rootComponentBuild = await buildRootComponent({
 		buildPath,
@@ -52,6 +64,7 @@ export const builder = async ({
 		mdxEnabled,
 		stylexRules,
 		clientEntryPoints,
+		clientComponentsMap,
 		development,
 	});
 
@@ -65,14 +78,17 @@ export const builder = async ({
 		development,
 	});
 
-	// const clientComponentsBuild = buildClientComponents({
-	// 	entrypoints: Array.from(clientEntryPoints),
-	// 	buildPath,
-	// 	stylexRules,
-	// 	development,
-	// });
+	const clientComponentsBuild = buildClientComponents({
+		entrypoints: Array.from(clientEntryPoints),
+		buildPath,
+		stylexRules,
+		development,
+	});
+
+	console.log({ clientComponentsMap });
 
 	return {
+		clientComponentsMap,
 		...rootComponentBuild,
 		...bootstrapScriptsBuild,
 		...routeComponentsBuild,

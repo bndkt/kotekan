@@ -78,8 +78,7 @@ export const fetcher = async (
 
 		const { pipe } = await renderToJsxStream(
 			JsxDocumentElement,
-			{},
-			// routeBuild.clientComponentMap,
+			"./build/client/components",
 		);
 
 		const jsxStream = pipe(new PassThrough()); // @todo: renderToJsxStream(JsxDocumentElement, {});
@@ -91,9 +90,13 @@ export const fetcher = async (
 			});
 		}
 
+		// function createFromNodeStream(stream, moduleRootPath, moduleBaseURL)
+		const clientComponentsPath = path.join(buildPath, "client", "components");
 		const DocumentElement = csr
 			? createDocumentElement({ build, buildUrlSegment })
-			: createFromJsxStream(jsxStream);
+			: createFromJsxStream(jsxStream, buildPath, "./build/client/components");
+
+		// build.clientComponentsMap,
 
 		// HTML document stream
 		const bootstrapModules = hydrate
