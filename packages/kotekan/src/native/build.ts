@@ -1,7 +1,6 @@
 import { resolveSync } from "bun";
 import { getDefaultConfig } from "@react-native/metro-config";
 
-import { createBuildFile } from "./lib/createBuildFile";
 import { reactNativePlugin } from "../plugins/reactNative";
 
 interface BuildProps {
@@ -17,9 +16,7 @@ export const build = async ({
 }: BuildProps) => {
 	const indexFilePath = resolveSync("./src/index.ts", process.cwd());
 	console.log({ indexFilePath });
-	console.log(getDefaultConfig("./"));
-
-	return;
+	// console.log(getDefaultConfig("./"));
 
 	const build = await Bun.build({
 		entrypoints: [indexFilePath],
@@ -40,16 +37,9 @@ export const build = async ({
 		plugins: [reactNativePlugin({ development })],
 	});
 
-	if (!build.success || build.outputs.length === 0) {
-		console.error("Logs:", build.logs);
-		throw new Error("Build failed or no outputs");
+	if (!build.success) {
+		console.error(build.logs);
 	}
 
-	await createBuildFile({
-		name: "bundle",
-		buildArtifact: build.outputs[0],
-		buildPath,
-	});
-
-	// return rnBuild;
+	return;
 };
