@@ -1,4 +1,5 @@
 {
+  "types": ["react/canary"],
   "compilerOptions": {
     // Enable latest features
     "lib": ["ESNext"],
