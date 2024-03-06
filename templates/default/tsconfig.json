@@ -1,5 +1,5 @@
 {
-  "types": ["react/canary"],
+  "types": ["@types/bun", "react/canary"],
   "compilerOptions": {
     // Enable latest features
     "lib": ["ESNext"],
