@@ -5,7 +5,8 @@
   "sideEffects": false,
   "scripts": {
     "lint": "biome lint ./src",
-    "dev": "kotekan dev",
+    "dev:jsx": "kotekan-jsx",
+    "dev:ssr": "kotekan-ssr",
     "native": "kotekan native",
     "start": "kotekan start",
     "rn:start": "react-native start --config ./build/mobile/metro.config.cjs",

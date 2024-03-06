@@ -37,8 +37,10 @@ export const buildServerComponents = async ({
 		sourcemap: development ? "inline" : "none",
 		minify: development ? false : true,
 		naming: "[name]-[hash].[ext]",
-		external: ["react", "react-dom", "@stylexjs/stylex"], // @todo ["*"]?
 		publicPath: "/_build/",
 		plugins,
+		define: {
+			"process.env.PROJECT_ROOT": JSON.stringify(process.cwd()),
+		},
 	});
 };

@@ -1,10 +1,11 @@
 import path from "node:path";
 
 import { router as routerFn } from "./router";
-import { builder } from "./builder";
-import { fetcher } from "./fetcher";
+import { builder } from "../builder";
+// import { jsxFetcher } from "./fetcher/jsxFetcher";
+// import { ssrFetcher } from "./fetcher/ssrFetcher";
 
-export type RenderingStrategies = "csr" | "ssr" | "ssg";
+export type RenderingStrategies = "csr" | "ssr" | "jsx";
 
 interface ServerProps {
 	mode?: RenderingStrategies;
@@ -41,19 +42,34 @@ export const server = async (props: ServerProps = {}) => {
 		development,
 	});
 
-	// Serve
-	return Bun.serve({
-		port,
-		development,
-		fetch: (request: Request) =>
-			fetcher(request, {
+	const fetch = async (request: Request) => {
+		if (mode === "jsx") {
+			const { jsxFetcher } = await import("./fetcher/jsxFetcher");
+			return jsxFetcher(request, {
 				mode,
 				build,
 				router,
 				buildPath,
 				buildUrlSegment,
 				development,
-			}),
+			});
+		}
+
+		const { ssrFetcher } = await import("./fetcher/ssrFetcher");
+		return ssrFetcher(request, {
+			mode,
+			build,
+			router,
+			buildPath,
+			buildUrlSegment,
+			development,
+		});
+	};
+
+	return Bun.serve({
+		port,
+		development,
+		fetch,
 		error: (error) => {
 			console.error(error);
 			return new Response(null, { status: 404 });

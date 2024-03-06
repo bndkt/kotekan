@@ -9,7 +9,7 @@ import type { Rule } from "@stylexjs/babel-plugin";
 // import reactRefreshBabelPlugin from "react-refresh/babel";
 
 import { stylexPlugin } from "./stylex";
-import type { StylexRules } from "../../server/builder";
+import type { StylexRules } from "../../builder";
 
 interface PluginConfig {
 	stylexRules?: StylexRules;

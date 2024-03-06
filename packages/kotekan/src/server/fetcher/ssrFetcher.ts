@@ -1,17 +1,17 @@
 import path from "node:path";
-import { PassThrough } from "node:stream";
 import { type FileSystemRouter } from "bun";
-import { type FunctionComponent } from "react";
 import { isbot } from "isbot";
 // @ts-expect-error Untyped import
 import { renderToReadableStream as renderToHtmlStream } from "react-dom/server.edge"; // @todo
-// @ts-expect-error Untyped import
-import { renderToPipeableStream as renderToJsxStream } from "react-server-dom-esm/server.node"; // @todo
+// @ ts-expect-error Untyped import
+// import { renderToPipeableStream as renderToJsxStream } from "react-server-dom-esm/server.node"; // @todo
+// import { renderToPipeableStream as renderToJsxStream } from "react-server-dom-esm/server.node"; // @todo
 // import { renderToReadableStream as renderToJsxStream } from "react-server-dom-webpack/server.edge"; // @todo
 // @ts-expect-error Untyped import
-import { createFromNodeStream as createFromJsxStream } from "react-server-dom-esm/client.node"; // @todo
+// import { createFromReadableStream as createFromJsxStream } from "react-server-dom-webpack/client.edge"; // @todo
+import { createFromFetch } from "react-server-dom-webpack/client.edge"; // @todo
 
-import type { BuildResult } from "../builder";
+import type { BuildResult } from "../../builder";
 import type { RenderingStrategies } from "..";
 import { createDocumentElement } from "./createDocumentElement";
 
@@ -24,7 +24,7 @@ interface FetchProps {
 	development?: boolean;
 }
 
-export const fetcher = async (
+export const ssrFetcher = async (
 	request: Request,
 	{ mode, build, router, buildPath, buildUrlSegment, development }: FetchProps,
 ): Promise<Response> => {
@@ -61,40 +61,26 @@ export const fetcher = async (
 	// Router
 	const match = router.match(request.url);
 	if (match) {
-		// Route component
-		const routeComponentFilePath = build.routeComponentPaths.get(match.name);
-		if (!routeComponentFilePath) {
-			throw new Error(`🥁 Route component file not found: ${match.name}`);
-		}
-		const routeComponentFile = await import(routeComponentFilePath);
-		const RouteComponent = routeComponentFile.default as FunctionComponent;
-
-		// JSX (for RSC)
-		const JsxDocumentElement = createDocumentElement({
-			build,
-			buildUrlSegment,
-			RouteComponent,
-		});
-
-		const { pipe } = await renderToJsxStream(
-			JsxDocumentElement,
-			"./build/client/components",
-		);
-
-		const jsxStream = pipe(new PassThrough()); // @todo: renderToJsxStream(JsxDocumentElement, {});
-		// const jsxStream = renderToJsxStream(JsxDocumentElement, {});
-
+		// Forward JSX requests to JSX server
 		if (searchParams.has("jsx")) {
-			return new Response(jsxStream, {
+			const jsxUrl = url;
+			url.hostname = "localhost";
+			url.port = "3001";
+			console.log({ jsxUrl });
+			const jsxStream = await fetch(jsxUrl);
+
+			return new Response(await jsxStream.text(), {
 				headers: { "Content-Type": "application/json; charset=utf-8" },
 			});
 		}
 
 		// function createFromNodeStream(stream, moduleRootPath, moduleBaseURL)
 		const clientComponentsPath = path.join(buildPath, "client", "components");
+		const jsxStreamOptions = { ssrManifest: { moduleMap: {} } };
 		const DocumentElement = csr
 			? createDocumentElement({ build, buildUrlSegment })
-			: createFromJsxStream(jsxStream, buildPath, "./build/client/components");
+			: createFromFetch(fetch("http://localhost:3001"), jsxStreamOptions);
+		// : createFromJsxStream(jsxStream, buildPath, "./build/client/components");
 
 		// build.clientComponentsMap,
 

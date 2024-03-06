@@ -3,7 +3,10 @@
   "version": "0.0.2",
   "type": "module",
   "sideEffects": false,
-  "bin": "./src/cli/index.ts",
+  "bin": {
+    "kotekan-jsx": "./src/cli/jsxServer.ts",
+    "kotekan-ssr": "./src/cli/ssrServer.ts"
+  },
   "exports": {
     "./client/render": {
       "import": "./src/client/render.tsx"

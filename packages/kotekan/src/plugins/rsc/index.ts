@@ -2,10 +2,7 @@ import path from "node:path";
 import { resolveSync, type BunPlugin } from "bun";
 import { parse } from "es-module-lexer"; // @todo
 
-import type {
-	ClientComponentsMap,
-	ClientEntryPoints,
-} from "../../server/builder";
+import type { ClientComponentsMap, ClientEntryPoints } from "../../builder";
 
 interface PluginConfig {
 	clientEntryPoints: ClientEntryPoints;

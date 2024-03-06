@@ -1,6 +1,6 @@
 import { createElement, type FunctionComponent } from "react";
 
-import type { BuildResult } from "../builder";
+import type { BuildResult } from "../../builder";
 
 interface CreateDocumentElementProps {
 	build: BuildResult;
