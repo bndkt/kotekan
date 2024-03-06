@@ -1,6 +1,6 @@
 /**
  * @license React
- * react-server-dom-esm-client.browser.development.js
+ * react-server-dom-esm-client.browser.production.min.js
  *
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -10,20 +10,15 @@
 
 'use strict';
 
-if (process.env.NODE_ENV !== "production") {
-  (function() {
-'use strict';
-
 var ReactDOM = require('react-dom');
-var React = require('react');
 
 // -----------------------------------------------------------------------------
-var enableBinaryFlight = false;
+const enableBinaryFlight = false;
 
 function createStringDecoder() {
   return new TextDecoder();
 }
-var decoderOptions = {
+const decoderOptions = {
   stream: true
 };
 function readPartialStringChunk(decoder, buffer) {
@@ -33,59 +28,17 @@ function readFinalStringChunk(decoder, buffer) {
   return decoder.decode(buffer);
 }
 
-var badgeFormat = '%c%s%c '; // Same badge styling as DevTools.
-
-var badgeStyle = // We use a fixed background if light-dark is not supported, otherwise
-// we use a transparent background.
-'background: #e6e6e6;' + 'background: light-dark(rgba(0,0,0,0.1), rgba(255,255,255,0.25));' + 'color: #000000;' + 'color: light-dark(#000000, #ffffff);' + 'border-radius: 2px';
-var resetStyle = '';
-var pad = ' ';
-function printToConsole(methodName, args, badgeName) {
-  var offset = 0;
-
-  switch (methodName) {
-    case 'dir':
-    case 'dirxml':
-    case 'groupEnd':
-    case 'table':
-      {
-        // These methods cannot be colorized because they don't take a formatting string.
-        // eslint-disable-next-line react-internal/no-production-logging
-        console[methodName].apply(console, args);
-        return;
-      }
-
-    case 'assert':
-      {
-        // assert takes formatting options as the second argument.
-        offset = 1;
-      }
-  }
-
-  var newArgs = args.slice(0);
-
-  if (typeof newArgs[offset] === 'string') {
-    newArgs.splice(offset, 1, badgeFormat + newArgs[offset], badgeStyle, pad + badgeName + pad, resetStyle);
-  } else {
-    newArgs.splice(offset, 0, badgeFormat, badgeStyle, pad + badgeName + pad, resetStyle);
-  } // eslint-disable-next-line react-internal/no-production-logging
-
-
-  console[methodName].apply(console, newArgs);
-  return;
-}
-
 // Module root path
 function resolveClientReference(bundlerConfig, metadata) {
-  var baseURL = bundlerConfig;
+  const baseURL = bundlerConfig;
   return {
     specifier: baseURL + metadata[0],
     name: metadata[1]
   };
 }
-var asyncModuleCache = new Map();
+const asyncModuleCache = new Map();
 function preloadModule(metadata) {
-  var existingPromise = asyncModuleCache.get(metadata.specifier);
+  const existingPromise = asyncModuleCache.get(metadata.specifier);
 
   if (existingPromise) {
     if (existingPromise.status === 'fulfilled') {
@@ -95,13 +48,13 @@ function preloadModule(metadata) {
     return existingPromise;
   } else {
     // $FlowFixMe[unsupported-syntax]
-    var modulePromise = import(metadata.specifier);
-    modulePromise.then(function (value) {
-      var fulfilledThenable = modulePromise;
+    const modulePromise = import(metadata.specifier);
+    modulePromise.then(value => {
+      const fulfilledThenable = modulePromise;
       fulfilledThenable.status = 'fulfilled';
       fulfilledThenable.value = value;
-    }, function (reason) {
-      var rejectedThenable = modulePromise;
+    }, reason => {
+      const rejectedThenable = modulePromise;
       rejectedThenable.status = 'rejected';
       rejectedThenable.reason = reason;
     });
@@ -110,10 +63,10 @@ function preloadModule(metadata) {
   }
 }
 function requireModule(metadata) {
-  var moduleExports; // We assume that preloadModule has been called before, which
+  let moduleExports; // We assume that preloadModule has been called before, which
   // should have added something to the module cache.
 
-  var promise = asyncModuleCache.get(metadata.specifier);
+  const promise = asyncModuleCache.get(metadata.specifier);
 
   if (promise.status === 'fulfilled') {
     moduleExports = promise.value;
@@ -124,33 +77,33 @@ function requireModule(metadata) {
   return moduleExports[metadata.name];
 }
 
-var ReactDOMSharedInternals = ReactDOM.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+const ReactDOMSharedInternals = ReactDOM.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
 
 // This client file is in the shared folder because it applies to both SSR and browser contexts.
-var ReactDOMCurrentDispatcher = ReactDOMSharedInternals.ReactDOMCurrentDispatcher;
+const ReactDOMCurrentDispatcher = ReactDOMSharedInternals.ReactDOMCurrentDispatcher;
 function dispatchHint(code, model) {
-  var dispatcher = ReactDOMCurrentDispatcher.current;
+  const dispatcher = ReactDOMCurrentDispatcher.current;
 
   switch (code) {
     case 'D':
       {
-        var refined = refineModel(code, model);
-        var href = refined;
+        const refined = refineModel(code, model);
+        const href = refined;
         dispatcher.prefetchDNS(href);
         return;
       }
 
     case 'C':
       {
-        var _refined = refineModel(code, model);
+        const refined = refineModel(code, model);
 
-        if (typeof _refined === 'string') {
-          var _href = _refined;
-          dispatcher.preconnect(_href);
+        if (typeof refined === 'string') {
+          const href = refined;
+          dispatcher.preconnect(href);
         } else {
-          var _href2 = _refined[0];
-          var crossOrigin = _refined[1];
-          dispatcher.preconnect(_href2, crossOrigin);
+          const href = refined[0];
+          const crossOrigin = refined[1];
+          dispatcher.preconnect(href, crossOrigin);
         }
 
         return;
@@ -158,16 +111,15 @@ function dispatchHint(code, model) {
 
     case 'L':
       {
-        var _refined2 = refineModel(code, model);
+        const refined = refineModel(code, model);
+        const href = refined[0];
+        const as = refined[1];
 
-        var _href3 = _refined2[0];
-        var as = _refined2[1];
-
-        if (_refined2.length === 3) {
-          var options = _refined2[2];
-          dispatcher.preload(_href3, as, options);
+        if (refined.length === 3) {
+          const options = refined[2];
+          dispatcher.preload(href, as, options);
         } else {
-          dispatcher.preload(_href3, as);
+          dispatcher.preload(href, as);
         }
 
         return;
@@ -175,15 +127,15 @@ function dispatchHint(code, model) {
 
     case 'm':
       {
-        var _refined3 = refineModel(code, model);
+        const refined = refineModel(code, model);
 
-        if (typeof _refined3 === 'string') {
-          var _href4 = _refined3;
-          dispatcher.preloadModule(_href4);
+        if (typeof refined === 'string') {
+          const href = refined;
+          dispatcher.preloadModule(href);
         } else {
-          var _href5 = _refined3[0];
-          var _options = _refined3[1];
-          dispatcher.preloadModule(_href5, _options);
+          const href = refined[0];
+          const options = refined[1];
+          dispatcher.preloadModule(href, options);
         }
 
         return;
@@ -191,18 +143,16 @@ function dispatchHint(code, model) {
 
     case 'S':
       {
-        var _refined4 = refineModel(code, model);
+        const refined = refineModel(code, model);
 
-        if (typeof _refined4 === 'string') {
-          var _href6 = _refined4;
-          dispatcher.preinitStyle(_href6);
+        if (typeof refined === 'string') {
+          const href = refined;
+          dispatcher.preinitStyle(href);
         } else {
-          var _href7 = _refined4[0];
-          var precedence = _refined4[1] === 0 ? undefined : _refined4[1];
-
-          var _options2 = _refined4.length === 3 ? _refined4[2] : undefined;
-
-          dispatcher.preinitStyle(_href7, precedence, _options2);
+          const href = refined[0];
+          const precedence = refined[1] === 0 ? undefined : refined[1];
+          const options = refined.length === 3 ? refined[2] : undefined;
+          dispatcher.preinitStyle(href, precedence, options);
         }
 
         return;
@@ -210,15 +160,15 @@ function dispatchHint(code, model) {
 
     case 'X':
       {
-        var _refined5 = refineModel(code, model);
+        const refined = refineModel(code, model);
 
-        if (typeof _refined5 === 'string') {
-          var _href8 = _refined5;
-          dispatcher.preinitScript(_href8);
+        if (typeof refined === 'string') {
+          const href = refined;
+          dispatcher.preinitScript(href);
         } else {
-          var _href9 = _refined5[0];
-          var _options3 = _refined5[1];
-          dispatcher.preinitScript(_href9, _options3);
+          const href = refined[0];
+          const options = refined[1];
+          dispatcher.preinitScript(href, options);
         }
 
         return;
@@ -226,15 +176,15 @@ function dispatchHint(code, model) {
 
     case 'M':
       {
-        var _refined6 = refineModel(code, model);
+        const refined = refineModel(code, model);
 
-        if (typeof _refined6 === 'string') {
-          var _href10 = _refined6;
-          dispatcher.preinitModuleScript(_href10);
+        if (typeof refined === 'string') {
+          const href = refined;
+          dispatcher.preinitModuleScript(href);
         } else {
-          var _href11 = _refined6[0];
-          var _options4 = _refined6[1];
-          dispatcher.preinitModuleScript(_href11, _options4);
+          const href = refined[0];
+          const options = refined[1];
+          dispatcher.preinitModuleScript(href, options);
         }
 
         return;
@@ -247,64 +197,20 @@ function refineModel(code, model) {
   return model;
 }
 
-var ReactSharedInternals = React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
-
-function error(format) {
-  {
-    {
-      for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-        args[_key2 - 1] = arguments[_key2];
-      }
-
-      printWarning('error', format, args);
-    }
-  }
-}
-
-function printWarning(level, format, args) {
-  // When changing this logic, you might want to also
-  // update consoleWithStackDev.www.js as well.
-  {
-    var ReactDebugCurrentFrame = ReactSharedInternals.ReactDebugCurrentFrame;
-    var stack = ReactDebugCurrentFrame.getStackAddendum();
-
-    if (stack !== '') {
-      format += '%s';
-      args = args.concat([stack]);
-    } // eslint-disable-next-line react-internal/safe-string-coercion
-
-
-    var argsWithFormat = args.map(function (item) {
-      return String(item);
-    }); // Careful: RN currently depends on this prefix
-
-    argsWithFormat.unshift('Warning: ' + format); // We intentionally don't use spread (or .apply) directly because it
-    // breaks IE9: https://github.com/facebook/react/issues/13610
-    // eslint-disable-next-line react-internal/no-production-logging
-
-    Function.prototype.apply.call(console[level], console, argsWithFormat);
-  }
-}
-
 // ATTENTION
 // When adding new symbols to this file,
 // Please consider also adding to 'react-devtools-shared/src/backend/ReactSymbols'
 // The Symbol used to tag the ReactElement-like types.
-var REACT_ELEMENT_TYPE = Symbol.for('react.element');
-var REACT_PROVIDER_TYPE = Symbol.for('react.provider'); // TODO: Delete with enableRenderableContext
-var REACT_FORWARD_REF_TYPE = Symbol.for('react.forward_ref');
-var REACT_SUSPENSE_TYPE = Symbol.for('react.suspense');
-var REACT_SUSPENSE_LIST_TYPE = Symbol.for('react.suspense_list');
-var REACT_MEMO_TYPE = Symbol.for('react.memo');
-var REACT_LAZY_TYPE = Symbol.for('react.lazy');
-var MAYBE_ITERATOR_SYMBOL = Symbol.iterator;
-var FAUX_ITERATOR_SYMBOL = '@@iterator';
+const REACT_ELEMENT_TYPE = Symbol.for('react.element');
+const REACT_LAZY_TYPE = Symbol.for('react.lazy');
+const MAYBE_ITERATOR_SYMBOL = Symbol.iterator;
+const FAUX_ITERATOR_SYMBOL = '@@iterator';
 function getIteratorFn(maybeIterable) {
   if (maybeIterable === null || typeof maybeIterable !== 'object') {
     return null;
   }
 
-  var maybeIterator = MAYBE_ITERATOR_SYMBOL && maybeIterable[MAYBE_ITERATOR_SYMBOL] || maybeIterable[FAUX_ITERATOR_SYMBOL];
+  const maybeIterator = MAYBE_ITERATOR_SYMBOL && maybeIterable[MAYBE_ITERATOR_SYMBOL] || maybeIterable[FAUX_ITERATOR_SYMBOL];
 
   if (typeof maybeIterator === 'function') {
     return maybeIterator;
@@ -313,346 +219,16 @@ function getIteratorFn(maybeIterable) {
   return null;
 }
 
-var isArrayImpl = Array.isArray; // eslint-disable-next-line no-redeclare
+const isArrayImpl = Array.isArray; // eslint-disable-next-line no-redeclare
 
 function isArray(a) {
   return isArrayImpl(a);
 }
 
-var getPrototypeOf = Object.getPrototypeOf;
+const getPrototypeOf = Object.getPrototypeOf;
 
-// in case they error.
-
-var jsxPropsParents = new WeakMap();
-var jsxChildrenParents = new WeakMap();
-
-function isObjectPrototype(object) {
-  if (!object) {
-    return false;
-  }
-
-  var ObjectPrototype = Object.prototype;
-
-  if (object === ObjectPrototype) {
-    return true;
-  } // It might be an object from a different Realm which is
-  // still just a plain simple object.
-
-
-  if (getPrototypeOf(object)) {
-    return false;
-  }
-
-  var names = Object.getOwnPropertyNames(object);
-
-  for (var i = 0; i < names.length; i++) {
-    if (!(names[i] in ObjectPrototype)) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-function isSimpleObject(object) {
-  if (!isObjectPrototype(getPrototypeOf(object))) {
-    return false;
-  }
-
-  var names = Object.getOwnPropertyNames(object);
-
-  for (var i = 0; i < names.length; i++) {
-    var descriptor = Object.getOwnPropertyDescriptor(object, names[i]);
-
-    if (!descriptor) {
-      return false;
-    }
-
-    if (!descriptor.enumerable) {
-      if ((names[i] === 'key' || names[i] === 'ref') && typeof descriptor.get === 'function') {
-        // React adds key and ref getters to props objects to issue warnings.
-        // Those getters will not be transferred to the client, but that's ok,
-        // so we'll special case them.
-        continue;
-      }
-
-      return false;
-    }
-  }
-
-  return true;
-}
-function objectName(object) {
-  // $FlowFixMe[method-unbinding]
-  var name = Object.prototype.toString.call(object);
-  return name.replace(/^\[object (.*)\]$/, function (m, p0) {
-    return p0;
-  });
-}
-
-function describeKeyForErrorMessage(key) {
-  var encodedKey = JSON.stringify(key);
-  return '"' + key + '"' === encodedKey ? key : encodedKey;
-}
-
-function describeValueForErrorMessage(value) {
-  switch (typeof value) {
-    case 'string':
-      {
-        return JSON.stringify(value.length <= 10 ? value : value.slice(0, 10) + '...');
-      }
-
-    case 'object':
-      {
-        if (isArray(value)) {
-          return '[...]';
-        }
-
-        if (value !== null && value.$$typeof === CLIENT_REFERENCE_TAG) {
-          return describeClientReference();
-        }
-
-        var name = objectName(value);
-
-        if (name === 'Object') {
-          return '{...}';
-        }
-
-        return name;
-      }
-
-    case 'function':
-      {
-        if (value.$$typeof === CLIENT_REFERENCE_TAG) {
-          return describeClientReference();
-        }
-
-        var _name = value.displayName || value.name;
-
-        return _name ? 'function ' + _name : 'function';
-      }
-
-    default:
-      // eslint-disable-next-line react-internal/safe-string-coercion
-      return String(value);
-  }
-}
-
-function describeElementType(type) {
-  if (typeof type === 'string') {
-    return type;
-  }
-
-  switch (type) {
-    case REACT_SUSPENSE_TYPE:
-      return 'Suspense';
-
-    case REACT_SUSPENSE_LIST_TYPE:
-      return 'SuspenseList';
-  }
-
-  if (typeof type === 'object') {
-    switch (type.$$typeof) {
-      case REACT_FORWARD_REF_TYPE:
-        return describeElementType(type.render);
-
-      case REACT_MEMO_TYPE:
-        return describeElementType(type.type);
-
-      case REACT_LAZY_TYPE:
-        {
-          var lazyComponent = type;
-          var payload = lazyComponent._payload;
-          var init = lazyComponent._init;
-
-          try {
-            // Lazy may contain any component type so we recursively resolve it.
-            return describeElementType(init(payload));
-          } catch (x) {}
-        }
-    }
-  }
-
-  return '';
-}
-
-var CLIENT_REFERENCE_TAG = Symbol.for('react.client.reference');
-
-function describeClientReference(ref) {
-  return 'client';
-}
-
-function describeObjectForErrorMessage(objectOrArray, expandedName) {
-  var objKind = objectName(objectOrArray);
-
-  if (objKind !== 'Object' && objKind !== 'Array') {
-    return objKind;
-  }
-
-  var str = '';
-  var start = -1;
-  var length = 0;
-
-  if (isArray(objectOrArray)) {
-    if (jsxChildrenParents.has(objectOrArray)) {
-      // Print JSX Children
-      var type = jsxChildrenParents.get(objectOrArray);
-      str = '<' + describeElementType(type) + '>';
-      var array = objectOrArray;
-
-      for (var i = 0; i < array.length; i++) {
-        var value = array[i];
-        var substr = void 0;
-
-        if (typeof value === 'string') {
-          substr = value;
-        } else if (typeof value === 'object' && value !== null) {
-          substr = '{' + describeObjectForErrorMessage(value) + '}';
-        } else {
-          substr = '{' + describeValueForErrorMessage(value) + '}';
-        }
-
-        if ('' + i === expandedName) {
-          start = str.length;
-          length = substr.length;
-          str += substr;
-        } else if (substr.length < 15 && str.length + substr.length < 40) {
-          str += substr;
-        } else {
-          str += '{...}';
-        }
-      }
-
-      str += '</' + describeElementType(type) + '>';
-    } else {
-      // Print Array
-      str = '[';
-      var _array = objectOrArray;
-
-      for (var _i = 0; _i < _array.length; _i++) {
-        if (_i > 0) {
-          str += ', ';
-        }
-
-        var _value = _array[_i];
-
-        var _substr = void 0;
-
-        if (typeof _value === 'object' && _value !== null) {
-          _substr = describeObjectForErrorMessage(_value);
-        } else {
-          _substr = describeValueForErrorMessage(_value);
-        }
-
-        if ('' + _i === expandedName) {
-          start = str.length;
-          length = _substr.length;
-          str += _substr;
-        } else if (_substr.length < 10 && str.length + _substr.length < 40) {
-          str += _substr;
-        } else {
-          str += '...';
-        }
-      }
-
-      str += ']';
-    }
-  } else {
-    if (objectOrArray.$$typeof === REACT_ELEMENT_TYPE) {
-      str = '<' + describeElementType(objectOrArray.type) + '/>';
-    } else if (objectOrArray.$$typeof === CLIENT_REFERENCE_TAG) {
-      return describeClientReference();
-    } else if (jsxPropsParents.has(objectOrArray)) {
-      // Print JSX
-      var _type = jsxPropsParents.get(objectOrArray);
-
-      str = '<' + (describeElementType(_type) || '...');
-      var object = objectOrArray;
-      var names = Object.keys(object);
-
-      for (var _i2 = 0; _i2 < names.length; _i2++) {
-        str += ' ';
-        var name = names[_i2];
-        str += describeKeyForErrorMessage(name) + '=';
-        var _value2 = object[name];
-
-        var _substr2 = void 0;
-
-        if (name === expandedName && typeof _value2 === 'object' && _value2 !== null) {
-          _substr2 = describeObjectForErrorMessage(_value2);
-        } else {
-          _substr2 = describeValueForErrorMessage(_value2);
-        }
-
-        if (typeof _value2 !== 'string') {
-          _substr2 = '{' + _substr2 + '}';
-        }
-
-        if (name === expandedName) {
-          start = str.length;
-          length = _substr2.length;
-          str += _substr2;
-        } else if (_substr2.length < 10 && str.length + _substr2.length < 40) {
-          str += _substr2;
-        } else {
-          str += '...';
-        }
-      }
-
-      str += '>';
-    } else {
-      // Print Object
-      str = '{';
-      var _object = objectOrArray;
-
-      var _names = Object.keys(_object);
-
-      for (var _i3 = 0; _i3 < _names.length; _i3++) {
-        if (_i3 > 0) {
-          str += ', ';
-        }
-
-        var _name2 = _names[_i3];
-        str += describeKeyForErrorMessage(_name2) + ': ';
-        var _value3 = _object[_name2];
-
-        var _substr3 = void 0;
-
-        if (typeof _value3 === 'object' && _value3 !== null) {
-          _substr3 = describeObjectForErrorMessage(_value3);
-        } else {
-          _substr3 = describeValueForErrorMessage(_value3);
-        }
-
-        if (_name2 === expandedName) {
-          start = str.length;
-          length = _substr3.length;
-          str += _substr3;
-        } else if (_substr3.length < 10 && str.length + _substr3.length < 40) {
-          str += _substr3;
-        } else {
-          str += '...';
-        }
-      }
-
-      str += '}';
-    }
-  }
-
-  if (expandedName === undefined) {
-    return str;
-  }
-
-  if (start > -1 && length > 0) {
-    var highlight = ' '.repeat(start) + '^'.repeat(length);
-    return '\n  ' + str + '\n  ' + highlight;
-  }
-
-  return '\n  ' + str;
-}
-
-var ObjectPrototype = Object.prototype;
-var knownServerReferences = new WeakMap(); // Serializable values
+const ObjectPrototype = Object.prototype;
+const knownServerReferences = new WeakMap(); // Serializable values
 // Thenable<ReactServerValue>
 // function serializeByValueID(id: number): string {
 //   return '$' + id.toString(16);
@@ -726,25 +302,12 @@ function escapeStringValue(value) {
 }
 
 function processReply(root, formFieldPrefix, resolve, reject) {
-  var nextPartId = 1;
-  var pendingParts = 0;
-  var formData = null;
+  let nextPartId = 1;
+  let pendingParts = 0;
+  let formData = null;
 
   function resolveToJSON(key, value) {
-    var parent = this; // Make sure that `parent[key]` wasn't JSONified before `value` was passed to us
-
-    {
-      // $FlowFixMe[incompatible-use]
-      var originalValue = parent[key];
-
-      if (typeof originalValue === 'object' && originalValue !== value && !(originalValue instanceof Date)) {
-        if (objectName(originalValue) !== 'Object') {
-          error('Only plain objects can be passed to Server Functions from the Client. ' + '%s objects are not supported.%s', objectName(originalValue), describeObjectForErrorMessage(parent, key));
-        } else {
-          error('Only plain objects can be passed to Server Functions from the Client. ' + 'Objects with toJSON methods are not supported. Convert it manually ' + 'to a simple value before passing it to props.%s', describeObjectForErrorMessage(parent, key));
-        }
-      }
-    }
+    const parent = this; // Make sure that `parent[key]` wasn't JSONified before `value` was passed to us
 
     if (value === null) {
       return null;
@@ -761,12 +324,12 @@ function processReply(root, formFieldPrefix, resolve, reject) {
         }
 
         pendingParts++;
-        var promiseId = nextPartId++;
-        var thenable = value;
-        thenable.then(function (partValue) {
-          var partJSON = JSON.stringify(partValue, resolveToJSON); // $FlowFixMe[incompatible-type] We know it's not null because we assigned it above.
+        const promiseId = nextPartId++;
+        const thenable = value;
+        thenable.then(partValue => {
+          const partJSON = JSON.stringify(partValue, resolveToJSON); // $FlowFixMe[incompatible-type] We know it's not null because we assigned it above.
 
-          var data = formData; // eslint-disable-next-line react-internal/safe-string-coercion
+          const data = formData; // eslint-disable-next-line react-internal/safe-string-coercion
 
           data.append(formFieldPrefix + promiseId, partJSON);
           pendingParts--;
@@ -774,7 +337,7 @@ function processReply(root, formFieldPrefix, resolve, reject) {
           if (pendingParts === 0) {
             resolve(data);
           }
-        }, function (reason) {
+        }, reason => {
           // In the future we could consider serializing this as an error
           // that throws on the server instead.
           reject(reason);
@@ -794,75 +357,55 @@ function processReply(root, formFieldPrefix, resolve, reject) {
           formData = new FormData();
         }
 
-        var data = formData;
-        var refId = nextPartId++; // Copy all the form fields with a prefix for this reference.
+        const data = formData;
+        const refId = nextPartId++; // Copy all the form fields with a prefix for this reference.
         // These must come first in the form order because we assume that all the
         // fields are available before this is referenced.
 
-        var prefix = formFieldPrefix + refId + '_'; // $FlowFixMe[prop-missing]: FormData has forEach.
+        const prefix = formFieldPrefix + refId + '_'; // $FlowFixMe[prop-missing]: FormData has forEach.
 
-        value.forEach(function (originalValue, originalKey) {
+        value.forEach((originalValue, originalKey) => {
           data.append(prefix + originalKey, originalValue);
         });
         return serializeFormDataReference(refId);
       }
 
       if (value instanceof Map) {
-        var partJSON = JSON.stringify(Array.from(value), resolveToJSON);
+        const partJSON = JSON.stringify(Array.from(value), resolveToJSON);
 
         if (formData === null) {
           formData = new FormData();
         }
 
-        var mapId = nextPartId++;
+        const mapId = nextPartId++;
         formData.append(formFieldPrefix + mapId, partJSON);
         return serializeMapID(mapId);
       }
 
       if (value instanceof Set) {
-        var _partJSON = JSON.stringify(Array.from(value), resolveToJSON);
+        const partJSON = JSON.stringify(Array.from(value), resolveToJSON);
 
         if (formData === null) {
           formData = new FormData();
         }
 
-        var setId = nextPartId++;
-        formData.append(formFieldPrefix + setId, _partJSON);
+        const setId = nextPartId++;
+        formData.append(formFieldPrefix + setId, partJSON);
         return serializeSetID(setId);
       }
 
-      var iteratorFn = getIteratorFn(value);
+      const iteratorFn = getIteratorFn(value);
 
       if (iteratorFn) {
         return Array.from(value);
       } // Verify that this is a simple plain object.
 
 
-      var proto = getPrototypeOf(value);
+      const proto = getPrototypeOf(value);
 
       if (proto !== ObjectPrototype && (proto === null || getPrototypeOf(proto) !== null)) {
         throw new Error('Only plain objects, and a few built-ins, can be passed to Server Actions. ' + 'Classes or null prototypes are not supported.');
       }
-
-      {
-        if (value.$$typeof === REACT_ELEMENT_TYPE) {
-          error('React Element cannot be passed to Server Functions from the Client.%s', describeObjectForErrorMessage(parent, key));
-        } else if (value.$$typeof === REACT_LAZY_TYPE) {
-          error('React Lazy cannot be passed to Server Functions from the Client.%s', describeObjectForErrorMessage(parent, key));
-        } else if (value.$$typeof === (REACT_PROVIDER_TYPE)) {
-          error('React Context Providers cannot be passed to Server Functions from the Client.%s', describeObjectForErrorMessage(parent, key));
-        } else if (objectName(value) !== 'Object') {
-          error('Only plain objects can be passed to Server Functions from the Client. ' + '%s objects are not supported.%s', objectName(value), describeObjectForErrorMessage(parent, key));
-        } else if (!isSimpleObject(value)) {
-          error('Only plain objects can be passed to Server Functions from the Client. ' + 'Classes or other objects with methods are not supported.%s', describeObjectForErrorMessage(parent, key));
-        } else if (Object.getOwnPropertySymbols) {
-          var symbols = Object.getOwnPropertySymbols(value);
-
-          if (symbols.length > 0) {
-            error('Only plain objects can be passed to Server Functions from the Client. ' + 'Objects with symbol properties like %s are not supported.%s', symbols[0].description, describeObjectForErrorMessage(parent, key));
-          }
-        }
-      } // $FlowFixMe[incompatible-return]
 
 
       return value;
@@ -873,9 +416,9 @@ function processReply(root, formFieldPrefix, resolve, reject) {
       if (value[value.length - 1] === 'Z') {
         // Possibly a Date, whose toJSON automatically calls toISOString
         // $FlowFixMe[incompatible-use]
-        var _originalValue = parent[key];
+        const originalValue = parent[key];
 
-        if (_originalValue instanceof Date) {
+        if (originalValue instanceof Date) {
           return serializeDateFromDateJSON(value);
         }
       }
@@ -896,10 +439,10 @@ function processReply(root, formFieldPrefix, resolve, reject) {
     }
 
     if (typeof value === 'function') {
-      var metaData = knownServerReferences.get(value);
+      const metaData = knownServerReferences.get(value);
 
       if (metaData !== undefined) {
-        var metaDataJSON = JSON.stringify(metaData, resolveToJSON);
+        const metaDataJSON = JSON.stringify(metaData, resolveToJSON);
 
         if (formData === null) {
           // Upgrade to use FormData to allow us to stream this value.
@@ -907,11 +450,10 @@ function processReply(root, formFieldPrefix, resolve, reject) {
         } // The reference to this function came from the same client so we can pass it back.
 
 
-        var _refId = nextPartId++; // eslint-disable-next-line react-internal/safe-string-coercion
+        const refId = nextPartId++; // eslint-disable-next-line react-internal/safe-string-coercion
 
-
-        formData.set(formFieldPrefix + _refId, metaDataJSON);
-        return serializeServerReferenceID(_refId);
+        formData.set(formFieldPrefix + refId, metaDataJSON);
+        return serializeServerReferenceID(refId);
       }
 
       throw new Error('Client Functions cannot be passed directly to Server Functions. ' + 'Only Functions passed from the Server can be passed back again.');
@@ -919,7 +461,7 @@ function processReply(root, formFieldPrefix, resolve, reject) {
 
     if (typeof value === 'symbol') {
       // $FlowFixMe[incompatible-type] `description` might be undefined
-      var name = value.description;
+      const name = value.description;
 
       if (Symbol.for(name) !== value) {
         throw new Error('Only global symbols received from Symbol.for(...) can be passed to Server Functions. ' + ("The symbol Symbol.for(" + // $FlowFixMe[incompatible-type] `description` might be undefined
@@ -937,7 +479,7 @@ function processReply(root, formFieldPrefix, resolve, reject) {
   } // $FlowFixMe[incompatible-type] it's not going to be undefined because we'll encode it.
 
 
-  var json = JSON.stringify(root, resolveToJSON);
+  const json = JSON.stringify(root, resolveToJSON);
 
   if (formData === null) {
     // If it's a simple data structure, we just use plain JSON.
@@ -959,48 +501,44 @@ function registerServerReference(proxy, reference, encodeFormAction) {
 } // $FlowFixMe[method-unbinding]
 
 function createServerReference(id, callServer, encodeFormAction) {
-  var proxy = function () {
+  const proxy = function () {
     // $FlowFixMe[method-unbinding]
-    var args = Array.prototype.slice.call(arguments);
+    const args = Array.prototype.slice.call(arguments);
     return callServer(id, args);
   };
 
   registerServerReference(proxy, {
-    id: id,
+    id,
     bound: null
   });
   return proxy;
 }
 
-var ROW_ID = 0;
-var ROW_TAG = 1;
-var ROW_LENGTH = 2;
-var ROW_CHUNK_BY_NEWLINE = 3;
-var ROW_CHUNK_BY_LENGTH = 4;
-var PENDING = 'pending';
-var BLOCKED = 'blocked';
-var CYCLIC = 'cyclic';
-var RESOLVED_MODEL = 'resolved_model';
-var RESOLVED_MODULE = 'resolved_module';
-var INITIALIZED = 'fulfilled';
-var ERRORED = 'rejected'; // $FlowFixMe[missing-this-annot]
+const ROW_ID = 0;
+const ROW_TAG = 1;
+const ROW_LENGTH = 2;
+const ROW_CHUNK_BY_NEWLINE = 3;
+const ROW_CHUNK_BY_LENGTH = 4;
+const PENDING = 'pending';
+const BLOCKED = 'blocked';
+const CYCLIC = 'cyclic';
+const RESOLVED_MODEL = 'resolved_model';
+const RESOLVED_MODULE = 'resolved_module';
+const INITIALIZED = 'fulfilled';
+const ERRORED = 'rejected'; // $FlowFixMe[missing-this-annot]
 
 function Chunk(status, value, reason, response) {
   this.status = status;
   this.value = value;
   this.reason = reason;
   this._response = response;
-
-  {
-    this._debugInfo = null;
-  }
 } // We subclass Promise.prototype so that we get other methods like .catch
 
 
 Chunk.prototype = Object.create(Promise.prototype); // TODO: This doesn't return a new Promise chain unlike the real .then
 
 Chunk.prototype.then = function (resolve, reject) {
-  var chunk = this; // If we have resolved content, we try to initialize it first which
+  const chunk = this; // If we have resolved content, we try to initialize it first which
   // might put us back into one of the other states.
 
   switch (chunk.status) {
@@ -1076,7 +614,7 @@ function readChunk(chunk) {
 }
 
 function getRoot(response) {
-  var chunk = getChunk(response, 0);
+  const chunk = getChunk(response, 0);
   return chunk;
 }
 
@@ -1096,8 +634,8 @@ function createErrorChunk(response, error) {
 }
 
 function wakeChunk(listeners, value) {
-  for (var i = 0; i < listeners.length; i++) {
-    var listener = listeners[i];
+  for (let i = 0; i < listeners.length; i++) {
+    const listener = listeners[i];
     listener(value);
   }
 }
@@ -1130,8 +668,8 @@ function triggerErrorOnChunk(chunk, error) {
     return;
   }
 
-  var listeners = chunk.reason;
-  var erroredChunk = chunk;
+  const listeners = chunk.reason;
+  const erroredChunk = chunk;
   erroredChunk.status = ERRORED;
   erroredChunk.reason = error;
 
@@ -1161,9 +699,9 @@ function resolveModelChunk(chunk, value) {
     return;
   }
 
-  var resolveListeners = chunk.value;
-  var rejectListeners = chunk.reason;
-  var resolvedChunk = chunk;
+  const resolveListeners = chunk.value;
+  const rejectListeners = chunk.reason;
+  const resolvedChunk = chunk;
   resolvedChunk.status = RESOLVED_MODEL;
   resolvedChunk.value = value;
 
@@ -1183,9 +721,9 @@ function resolveModuleChunk(chunk, value) {
     return;
   }
 
-  var resolveListeners = chunk.value;
-  var rejectListeners = chunk.reason;
-  var resolvedChunk = chunk;
+  const resolveListeners = chunk.value;
+  const rejectListeners = chunk.reason;
+  const resolvedChunk = chunk;
   resolvedChunk.status = RESOLVED_MODULE;
   resolvedChunk.value = value;
 
@@ -1195,37 +733,37 @@ function resolveModuleChunk(chunk, value) {
   }
 }
 
-var initializingChunk = null;
-var initializingChunkBlockedModel = null;
+let initializingChunk = null;
+let initializingChunkBlockedModel = null;
 
 function initializeModelChunk(chunk) {
-  var prevChunk = initializingChunk;
-  var prevBlocked = initializingChunkBlockedModel;
+  const prevChunk = initializingChunk;
+  const prevBlocked = initializingChunkBlockedModel;
   initializingChunk = chunk;
   initializingChunkBlockedModel = null;
-  var resolvedModel = chunk.value; // We go to the CYCLIC state until we've fully resolved this.
+  const resolvedModel = chunk.value; // We go to the CYCLIC state until we've fully resolved this.
   // We do this before parsing in case we try to initialize the same chunk
   // while parsing the model. Such as in a cyclic reference.
 
-  var cyclicChunk = chunk;
+  const cyclicChunk = chunk;
   cyclicChunk.status = CYCLIC;
   cyclicChunk.value = null;
   cyclicChunk.reason = null;
 
   try {
-    var value = parseModel(chunk._response, resolvedModel);
+    const value = parseModel(chunk._response, resolvedModel);
 
     if (initializingChunkBlockedModel !== null && initializingChunkBlockedModel.deps > 0) {
       initializingChunkBlockedModel.value = value; // We discovered new dependencies on modules that are not yet resolved.
       // We have to go the BLOCKED state until they're resolved.
 
-      var blockedChunk = chunk;
+      const blockedChunk = chunk;
       blockedChunk.status = BLOCKED;
       blockedChunk.value = null;
       blockedChunk.reason = null;
     } else {
-      var resolveListeners = cyclicChunk.value;
-      var initializedChunk = chunk;
+      const resolveListeners = cyclicChunk.value;
+      const initializedChunk = chunk;
       initializedChunk.status = INITIALIZED;
       initializedChunk.value = value;
 
@@ -1234,7 +772,7 @@ function initializeModelChunk(chunk) {
       }
     }
   } catch (error) {
-    var erroredChunk = chunk;
+    const erroredChunk = chunk;
     erroredChunk.status = ERRORED;
     erroredChunk.reason = error;
   } finally {
@@ -1245,12 +783,12 @@ function initializeModelChunk(chunk) {
 
 function initializeModuleChunk(chunk) {
   try {
-    var value = requireModule(chunk.value);
-    var initializedChunk = chunk;
+    const value = requireModule(chunk.value);
+    const initializedChunk = chunk;
     initializedChunk.status = INITIALIZED;
     initializedChunk.value = value;
   } catch (error) {
-    var erroredChunk = chunk;
+    const erroredChunk = chunk;
     erroredChunk.status = ERRORED;
     erroredChunk.reason = error;
   }
@@ -1259,7 +797,7 @@ function initializeModuleChunk(chunk) {
 
 
 function reportGlobalError(response, error) {
-  response._chunks.forEach(function (chunk) {
+  response._chunks.forEach(chunk => {
     // If this chunk was already resolved or errored, it won't
     // trigger an error but if it wasn't then we need to
     // because we won't be getting any new data to resolve it.
@@ -1270,64 +808,37 @@ function reportGlobalError(response, error) {
 }
 
 function createElement(type, key, props) {
-  var element;
+  let element;
 
   {
     element = {
       // This tag allows us to uniquely identify this as a React Element
       $$typeof: REACT_ELEMENT_TYPE,
-      type: type,
-      key: key,
+      type,
+      key,
       ref: null,
-      props: props,
+      props,
       // Record the component responsible for creating this element.
       _owner: null
     };
-  }
-
-  {
-    // We don't really need to add any of these but keeping them for good measure.
-    // Unfortunately, _store is enumerable in jest matchers so for equality to
-    // work, I need to keep it or make _store non-enumerable in the other file.
-    element._store = {};
-    Object.defineProperty(element._store, 'validated', {
-      configurable: false,
-      enumerable: false,
-      writable: true,
-      value: true // This element has already been validated on the server.
-
-    }); // debugInfo contains Server Component debug information.
-
-    Object.defineProperty(element, '_debugInfo', {
-      configurable: false,
-      enumerable: false,
-      writable: true,
-      value: null
-    });
   }
 
   return element;
 }
 
 function createLazyChunkWrapper(chunk) {
-  var lazyType = {
+  const lazyType = {
     $$typeof: REACT_LAZY_TYPE,
     _payload: chunk,
     _init: readChunk
   };
 
-  {
-    // Ensure we have a live array to track future debug info.
-    var chunkDebugInfo = chunk._debugInfo || (chunk._debugInfo = []);
-    lazyType._debugInfo = chunkDebugInfo;
-  }
-
   return lazyType;
 }
 
 function getChunk(response, id) {
-  var chunks = response._chunks;
-  var chunk = chunks.get(id);
+  const chunks = response._chunks;
+  let chunk = chunks.get(id);
 
   if (!chunk) {
     chunk = createPendingChunk(response);
@@ -1338,7 +849,7 @@ function getChunk(response, id) {
 }
 
 function createModelResolver(chunk, parentObject, key, cyclic) {
-  var blocked;
+  let blocked;
 
   if (initializingChunkBlockedModel) {
     blocked = initializingChunkBlockedModel;
@@ -1353,7 +864,7 @@ function createModelResolver(chunk, parentObject, key, cyclic) {
     };
   }
 
-  return function (value) {
+  return value => {
     parentObject[key] = value;
     blocked.deps--;
 
@@ -1362,8 +873,8 @@ function createModelResolver(chunk, parentObject, key, cyclic) {
         return;
       }
 
-      var resolveListeners = chunk.value;
-      var initializedChunk = chunk;
+      const resolveListeners = chunk.value;
+      const initializedChunk = chunk;
       initializedChunk.status = INITIALIZED;
       initializedChunk.value = blocked.value;
 
@@ -1375,25 +886,23 @@ function createModelResolver(chunk, parentObject, key, cyclic) {
 }
 
 function createModelReject(chunk) {
-  return function (error) {
-    return triggerErrorOnChunk(chunk, error);
-  };
+  return error => triggerErrorOnChunk(chunk, error);
 }
 
 function createServerReferenceProxy(response, metaData) {
-  var callServer = response._callServer;
+  const callServer = response._callServer;
 
-  var proxy = function () {
+  const proxy = function () {
     // $FlowFixMe[method-unbinding]
-    var args = Array.prototype.slice.call(arguments);
-    var p = metaData.bound;
+    const args = Array.prototype.slice.call(arguments);
+    const p = metaData.bound;
 
     if (!p) {
       return callServer(metaData.id, args);
     }
 
     if (p.status === INITIALIZED) {
-      var bound = p.value;
+      const bound = p.value;
       return callServer(metaData.id, bound.concat(args));
     } // Since this is a fake Promise whose .then doesn't chain, we have to wrap it.
     // TODO: Remove the wrapper once that's fixed.
@@ -1409,7 +918,7 @@ function createServerReferenceProxy(response, metaData) {
 }
 
 function getOutlinedModel(response, id) {
-  var chunk = getChunk(response, id);
+  const chunk = getChunk(response, id);
 
   switch (chunk.status) {
     case RESOLVED_MODEL:
@@ -1447,8 +956,8 @@ function parseModelString(response, parentObject, key, value) {
       case 'L':
         {
           // Lazy node
-          var id = parseInt(value.slice(2), 16);
-          var chunk = getChunk(response, id); // We create a React.lazy wrapper around any lazy values.
+          const id = parseInt(value.slice(2), 16);
+          const chunk = getChunk(response, id); // We create a React.lazy wrapper around any lazy values.
           // When passed into React, we'll know how to suspend on this.
 
           return createLazyChunkWrapper(chunk);
@@ -1459,14 +968,12 @@ function parseModelString(response, parentObject, key, value) {
           // Promise
           if (value.length === 2) {
             // Infinite promise that never resolves.
-            return new Promise(function () {});
+            return new Promise(() => {});
           }
 
-          var _id = parseInt(value.slice(2), 16);
-
-          var _chunk = getChunk(response, _id);
-
-          return _chunk;
+          const id = parseInt(value.slice(2), 16);
+          const chunk = getChunk(response, id);
+          return chunk;
         }
 
       case 'S':
@@ -1478,29 +985,25 @@ function parseModelString(response, parentObject, key, value) {
       case 'F':
         {
           // Server Reference
-          var _id2 = parseInt(value.slice(2), 16);
-
-          var metadata = getOutlinedModel(response, _id2);
+          const id = parseInt(value.slice(2), 16);
+          const metadata = getOutlinedModel(response, id);
           return createServerReferenceProxy(response, metadata);
         }
 
       case 'Q':
         {
           // Map
-          var _id3 = parseInt(value.slice(2), 16);
-
-          var data = getOutlinedModel(response, _id3);
+          const id = parseInt(value.slice(2), 16);
+          const data = getOutlinedModel(response, id);
           return new Map(data);
         }
 
       case 'W':
         {
           // Set
-          var _id4 = parseInt(value.slice(2), 16);
-
-          var _data = getOutlinedModel(response, _id4);
-
-          return new Set(_data);
+          const id = parseInt(value.slice(2), 16);
+          const data = getOutlinedModel(response, id);
+          return new Set(data);
         }
 
       case 'I':
@@ -1545,77 +1048,39 @@ function parseModelString(response, parentObject, key, value) {
         }
 
       case 'E':
-        {
-          {
-            // In DEV mode we allow indirect eval to produce functions for logging.
-            // This should not compile to eval() because then it has local scope access.
-            try {
-              // eslint-disable-next-line no-eval
-              return (0, eval)(value.slice(2));
-            } catch (x) {
-              // We currently use this to express functions so we fail parsing it,
-              // let's just return a blank function as a place holder.
-              return function () {};
-            }
-          } // Fallthrough
-
-        }
 
       default:
         {
           // We assume that anything else is a reference ID.
-          var _id5 = parseInt(value.slice(1), 16);
+          const id = parseInt(value.slice(1), 16);
+          const chunk = getChunk(response, id);
 
-          var _chunk2 = getChunk(response, _id5);
-
-          switch (_chunk2.status) {
+          switch (chunk.status) {
             case RESOLVED_MODEL:
-              initializeModelChunk(_chunk2);
+              initializeModelChunk(chunk);
               break;
 
             case RESOLVED_MODULE:
-              initializeModuleChunk(_chunk2);
+              initializeModuleChunk(chunk);
               break;
           } // The status might have changed after initialization.
 
 
-          switch (_chunk2.status) {
+          switch (chunk.status) {
             case INITIALIZED:
-              var chunkValue = _chunk2.value;
-
-              if (_chunk2._debugInfo) {
-                // If we have a direct reference to an object that was rendered by a synchronous
-                // server component, it might have some debug info about how it was rendered.
-                // We forward this to the underlying object. This might be a React Element or
-                // an Array fragment.
-                // If this was a string / number return value we lose the debug info. We choose
-                // that tradeoff to allow sync server components to return plain values and not
-                // use them as React Nodes necessarily. We could otherwise wrap them in a Lazy.
-                if (typeof chunkValue === 'object' && chunkValue !== null && (Array.isArray(chunkValue) || chunkValue.$$typeof === REACT_ELEMENT_TYPE) && !chunkValue._debugInfo) {
-                  // We should maybe use a unique symbol for arrays but this is a React owned array.
-                  // $FlowFixMe[prop-missing]: This should be added to elements.
-                  Object.defineProperty(chunkValue, '_debugInfo', {
-                    configurable: false,
-                    enumerable: false,
-                    writable: true,
-                    value: _chunk2._debugInfo
-                  });
-                }
-              }
+              const chunkValue = chunk.value;
 
               return chunkValue;
 
             case PENDING:
             case BLOCKED:
             case CYCLIC:
-              var parentChunk = initializingChunk;
-
-              _chunk2.then(createModelResolver(parentChunk, parentObject, key, _chunk2.status === CYCLIC), createModelReject(parentChunk));
-
+              const parentChunk = initializingChunk;
+              chunk.then(createModelResolver(parentChunk, parentObject, key, chunk.status === CYCLIC), createModelReject(parentChunk));
               return null;
 
             default:
-              throw _chunk2.reason;
+              throw chunk.reason;
           }
         }
     }
@@ -1625,7 +1090,7 @@ function parseModelString(response, parentObject, key, value) {
 }
 
 function parseModelTuple(response, value) {
-  var tuple = value;
+  const tuple = value;
 
   if (tuple[0] === REACT_ELEMENT_TYPE) {
     // TODO: Consider having React just directly accept these arrays as elements.
@@ -1641,8 +1106,8 @@ function missingCall() {
 }
 
 function createResponse(bundlerConfig, moduleLoading, callServer, encodeFormAction, nonce) {
-  var chunks = new Map();
-  var response = {
+  const chunks = new Map();
+  const response = {
     _bundlerConfig: bundlerConfig,
     _moduleLoading: moduleLoading,
     _callServer: callServer !== undefined ? callServer : missingCall,
@@ -1663,8 +1128,8 @@ function createResponse(bundlerConfig, moduleLoading, callServer, encodeFormActi
 }
 
 function resolveModel(response, id, model) {
-  var chunks = response._chunks;
-  var chunk = chunks.get(id);
+  const chunks = response._chunks;
+  const chunk = chunks.get(id);
 
   if (!chunk) {
     chunks.set(id, createResolvedModelChunk(response, model));
@@ -1674,24 +1139,24 @@ function resolveModel(response, id, model) {
 }
 
 function resolveText(response, id, text) {
-  var chunks = response._chunks; // We assume that we always reference large strings after they've been
+  const chunks = response._chunks; // We assume that we always reference large strings after they've been
   // emitted.
 
   chunks.set(id, createInitializedTextChunk(response, text));
 }
 
 function resolveModule(response, id, model) {
-  var chunks = response._chunks;
-  var chunk = chunks.get(id);
-  var clientReferenceMetadata = parseModel(response, model);
-  var clientReference = resolveClientReference(response._bundlerConfig, clientReferenceMetadata);
+  const chunks = response._chunks;
+  const chunk = chunks.get(id);
+  const clientReferenceMetadata = parseModel(response, model);
+  const clientReference = resolveClientReference(response._bundlerConfig, clientReferenceMetadata);
   // For now we preload all modules as early as possible since it's likely
   // that we'll need them.
 
-  var promise = preloadModule(clientReference);
+  const promise = preloadModule(clientReference);
 
   if (promise) {
-    var blockedChunk;
+    let blockedChunk;
 
     if (!chunk) {
       // Technically, we should just treat promise as the chunk in this
@@ -1705,11 +1170,7 @@ function resolveModule(response, id, model) {
       blockedChunk.status = BLOCKED;
     }
 
-    promise.then(function () {
-      return resolveModuleChunk(blockedChunk, clientReference);
-    }, function (error) {
-      return triggerErrorOnChunk(blockedChunk, error);
-    });
+    promise.then(() => resolveModuleChunk(blockedChunk, clientReference), error => triggerErrorOnChunk(blockedChunk, error));
   } else {
     if (!chunk) {
       chunks.set(id, createResolvedModuleChunk(response, clientReference));
@@ -1721,15 +1182,14 @@ function resolveModule(response, id, model) {
   }
 }
 
-function resolveErrorDev(response, id, digest, message, stack) {
+function resolveErrorProd(response, id, digest) {
 
-
-  var error = new Error(message || 'An error occurred in the Server Components render but no message was provided');
-  error.stack = stack;
+  const error = new Error('An error occurred in the Server Components render. The specific message is omitted in production' + ' builds to avoid leaking sensitive details. A digest property is included on this error instance which' + ' may provide additional details about the nature of the error.');
+  error.stack = 'Error: ' + error.message;
   error.digest = digest;
-  var errorWithDigest = error;
-  var chunks = response._chunks;
-  var chunk = chunks.get(id);
+  const errorWithDigest = error;
+  const chunks = response._chunks;
+  const chunk = chunks.get(id);
 
   if (!chunk) {
     chunks.set(id, createErrorChunk(response, errorWithDigest));
@@ -1739,34 +1199,16 @@ function resolveErrorDev(response, id, digest, message, stack) {
 }
 
 function resolveHint(response, code, model) {
-  var hintModel = parseModel(response, model);
+  const hintModel = parseModel(response, model);
   dispatchHint(code, hintModel);
-}
-
-function resolveDebugInfo(response, id, debugInfo) {
-
-  var chunk = getChunk(response, id);
-  var chunkDebugInfo = chunk._debugInfo || (chunk._debugInfo = []);
-  chunkDebugInfo.push(debugInfo);
-}
-
-function resolveConsoleEntry(response, value) {
-
-  var payload = parseModel(response, value);
-  var methodName = payload[0]; // TODO: Restore the fake stack before logging.
-  // const stackTrace = payload[1];
-
-  var env = payload[2];
-  var args = payload.slice(3);
-  printToConsole(methodName, args, env);
 }
 
 function processFullRow(response, id, tag, buffer, chunk) {
 
-  var stringDecoder = response._stringDecoder;
-  var row = '';
+  const stringDecoder = response._stringDecoder;
+  let row = '';
 
-  for (var i = 0; i < buffer.length; i++) {
+  for (let i = 0; i < buffer.length; i++) {
     row += readPartialStringChunk(stringDecoder, buffer[i]);
   }
 
@@ -1785,7 +1227,7 @@ function processFullRow(response, id, tag, buffer, chunk) {
     /* "H" */
     :
       {
-        var code = row[0];
+        const code = row[0];
         resolveHint(response, code, row.slice(1));
         return;
       }
@@ -1794,10 +1236,10 @@ function processFullRow(response, id, tag, buffer, chunk) {
     /* "E" */
     :
       {
-        var errorInfo = JSON.parse(row);
+        const errorInfo = JSON.parse(row);
 
         {
-          resolveErrorDev(response, id, errorInfo.digest, errorInfo.message, errorInfo.stack);
+          resolveErrorProd(response, id, errorInfo.digest);
         }
 
         return;
@@ -1814,23 +1256,13 @@ function processFullRow(response, id, tag, buffer, chunk) {
     case 68
     /* "D" */
     :
-      {
-        {
-          var debugInfo = JSON.parse(row);
-          resolveDebugInfo(response, id, debugInfo);
-          return;
-        } // Fallthrough to share the error with Console entries.
-
-      }
 
     case 87
     /* "W" */
     :
       {
-        {
-          resolveConsoleEntry(response, row);
-          return;
-        }
+
+        throw new Error('Failed to read a RSC payload created by a development version of React ' + 'on the server while using a production version on the client. Always use ' + 'matching versions on the server and the client.');
       }
 
     case 80
@@ -1849,21 +1281,21 @@ function processFullRow(response, id, tag, buffer, chunk) {
 }
 
 function processBinaryChunk(response, chunk) {
-  var i = 0;
-  var rowState = response._rowState;
-  var rowID = response._rowID;
-  var rowTag = response._rowTag;
-  var rowLength = response._rowLength;
-  var buffer = response._buffer;
-  var chunkLength = chunk.length;
+  let i = 0;
+  let rowState = response._rowState;
+  let rowID = response._rowID;
+  let rowTag = response._rowTag;
+  let rowLength = response._rowLength;
+  const buffer = response._buffer;
+  const chunkLength = chunk.length;
 
   while (i < chunkLength) {
-    var lastIdx = -1;
+    let lastIdx = -1;
 
     switch (rowState) {
       case ROW_ID:
         {
-          var byte = chunk[i++];
+          const byte = chunk[i++];
 
           if (byte === 58
           /* ":" */
@@ -1879,7 +1311,7 @@ function processBinaryChunk(response, chunk) {
 
       case ROW_TAG:
         {
-          var resolvedRowTag = chunk[i];
+          const resolvedRowTag = chunk[i];
 
           if (resolvedRowTag === 84
           /* "T" */
@@ -1905,15 +1337,15 @@ function processBinaryChunk(response, chunk) {
 
       case ROW_LENGTH:
         {
-          var _byte = chunk[i++];
+          const byte = chunk[i++];
 
-          if (_byte === 44
+          if (byte === 44
           /* "," */
           ) {
               // Finished the rowLength, next we'll buffer up to that length.
               rowState = ROW_CHUNK_BY_LENGTH;
             } else {
-            rowLength = rowLength << 4 | (_byte > 96 ? _byte - 87 : _byte - 48);
+            rowLength = rowLength << 4 | (byte > 96 ? byte - 87 : byte - 48);
           }
 
           continue;
@@ -1941,12 +1373,12 @@ function processBinaryChunk(response, chunk) {
         }
     }
 
-    var offset = chunk.byteOffset + i;
+    const offset = chunk.byteOffset + i;
 
     if (lastIdx > -1) {
       // We found the last chunk of the row
-      var length = lastIdx - i;
-      var lastChunk = new Uint8Array(chunk.buffer, offset, length);
+      const length = lastIdx - i;
+      const lastChunk = new Uint8Array(chunk.buffer, offset, length);
       processFullRow(response, rowID, rowTag, buffer, lastChunk); // Reset state machine for a new row
 
       i = lastIdx;
@@ -1964,9 +1396,8 @@ function processBinaryChunk(response, chunk) {
     } else {
       // The rest of this row is in a future chunk. We stash the rest of the
       // current chunk until we can process the full row.
-      var _length = chunk.byteLength - i;
-
-      var remainingSlice = new Uint8Array(chunk.buffer, offset, _length);
+      const length = chunk.byteLength - i;
+      const remainingSlice = new Uint8Array(chunk.buffer, offset, length);
       buffer.push(remainingSlice); // Update how many bytes we're still waiting for. If we're looking for
       // a newline, this doesn't hurt since we'll just ignore it.
 
@@ -2016,10 +1447,10 @@ function createResponseFromOptions(options) {
 }
 
 function startReadingFromStream(response, stream) {
-  var reader = stream.getReader();
+  const reader = stream.getReader();
 
   function progress(_ref) {
-    var done = _ref.done,
+    let done = _ref.done,
         value = _ref.value;
 
     if (done) {
@@ -2027,7 +1458,7 @@ function startReadingFromStream(response, stream) {
       return;
     }
 
-    var buffer = value;
+    const buffer = value;
     processBinaryChunk(response, buffer);
     return reader.read().then(progress).catch(error);
   }
@@ -2040,13 +1471,13 @@ function startReadingFromStream(response, stream) {
 }
 
 function createFromReadableStream(stream, options) {
-  var response = createResponseFromOptions(options);
+  const response = createResponseFromOptions(options);
   startReadingFromStream(response, stream);
   return getRoot(response);
 }
 
 function createFromFetch(promiseForResponse, options) {
-  var response = createResponseFromOptions(options);
+  const response = createResponseFromOptions(options);
   promiseForResponse.then(function (r) {
     startReadingFromStream(response, r.body);
   }, function (e) {
@@ -2058,7 +1489,7 @@ function createFromFetch(promiseForResponse, options) {
 function encodeReply(value)
 /* We don't use URLSearchParams yet but maybe */
 {
-  return new Promise(function (resolve, reject) {
+  return new Promise((resolve, reject) => {
     processReply(value, '', resolve, reject);
   });
 }
@@ -2067,5 +1498,3 @@ exports.createFromFetch = createFromFetch;
 exports.createFromReadableStream = createFromReadableStream;
 exports.createServerReference = createServerReference;
 exports.encodeReply = encodeReply;
-  })();
-}

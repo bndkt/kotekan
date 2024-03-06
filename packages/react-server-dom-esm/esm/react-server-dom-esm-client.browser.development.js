@@ -1,5 +1,5 @@
 /**
- * @license React
+* @license React
  * react-server-dom-esm-client.browser.development.js
  *
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -8,14 +8,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-'use strict';
-
-if (process.env.NODE_ENV !== "production") {
-  (function() {
-'use strict';
-
-var ReactDOM = require('react-dom');
-var React = require('react');
+import * as ReactDOM from 'react-dom';
+import * as React from 'react';
 
 // -----------------------------------------------------------------------------
 var enableBinaryFlight = false;
@@ -2063,9 +2057,4 @@ function encodeReply(value)
   });
 }
 
-exports.createFromFetch = createFromFetch;
-exports.createFromReadableStream = createFromReadableStream;
-exports.createServerReference = createServerReference;
-exports.encodeReply = encodeReply;
-  })();
-}
+export { createFromFetch, createFromReadableStream, createServerReference, encodeReply };
