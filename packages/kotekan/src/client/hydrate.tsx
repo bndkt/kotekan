@@ -13,9 +13,7 @@ const hydrate = await createFromFetch(
 			Accept: "text/x-component",
 		},
 	}),
-	{
-		moduleBaseURL: "/BASEEEEEEEE",
-	},
+	{},
 );
 const root = hydrateRoot(document, <StrictMode>{hydrate}</StrictMode>);
 

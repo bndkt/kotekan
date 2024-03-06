@@ -15,9 +15,7 @@ createFromFetch(
 			Accept: "text/x-component",
 		},
 	}),
-	{
-		moduleBaseURL: "/BASEEEEEEEE",
-	},
+	{},
 ).then((response: ReactNode) =>
 	root.render(<StrictMode>{response}</StrictMode>),
 );
