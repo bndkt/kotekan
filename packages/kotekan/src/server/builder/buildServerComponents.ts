@@ -5,19 +5,19 @@ import { rscPlugin } from "../../plugins/rsc";
 
 interface BuildServerComponentsProps {
 	entrypoints: string[];
-	mdxEnabled: boolean;
 	stylexRules: StylexRules;
 	clientEntryPoints: ClientEntryPoints;
 	clientComponentsMap: ClientComponentsMap;
+	mdxEnabled: boolean;
 	development: boolean;
 }
 
 export const buildServerComponents = async ({
 	entrypoints,
-	mdxEnabled,
 	stylexRules,
 	clientEntryPoints,
 	clientComponentsMap,
+	mdxEnabled,
 	development,
 }: BuildServerComponentsProps) => {
 	const plugins = [

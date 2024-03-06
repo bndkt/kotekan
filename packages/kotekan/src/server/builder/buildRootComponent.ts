@@ -1,17 +1,16 @@
 import path from "node:path";
 import { resolveSync } from "bun";
 
-import { babelPlugin } from "../../plugins/babel";
+import type { ClientComponentsMap, ClientEntryPoints, StylexRules } from ".";
 import { createBuildFile } from "./createBuildFile";
-import { rscPlugin } from "../../plugins/rsc";
-import type { ClientEntryPoints, StylexRules } from ".";
-import { mdxPlugin } from "../../plugins/mdx";
 import { buildServerComponents } from "./buildServerComponents";
 
 interface BuildRootComponentProps {
 	buildPath: string;
 	stylexRules: StylexRules;
 	clientEntryPoints: ClientEntryPoints;
+	clientComponentsMap: ClientComponentsMap;
+	mdxEnabled: boolean;
 	development: boolean;
 }
 
@@ -19,6 +18,8 @@ export const buildRootComponent = async ({
 	buildPath,
 	stylexRules,
 	clientEntryPoints,
+	clientComponentsMap,
+	mdxEnabled,
 	development,
 }: BuildRootComponentProps) => {
 	const routePath = resolveSync("./src/root", process.cwd());
@@ -26,6 +27,8 @@ export const buildRootComponent = async ({
 		entrypoints: [routePath],
 		stylexRules,
 		clientEntryPoints,
+		clientComponentsMap,
+		mdxEnabled,
 		development,
 	});
 

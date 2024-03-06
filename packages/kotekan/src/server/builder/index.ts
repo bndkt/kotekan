@@ -25,7 +25,7 @@ export interface BuildResult {
 	renderBootstrapFileName: string;
 	hydrateBootstrapFileName: string;
 	routeComponentPaths: RouteComponentPaths;
-	stylesheetFileName: string;
+	stylesheetFileName?: string;
 }
 
 export type ClientEntryPoints = Set<string>;
@@ -55,16 +55,18 @@ export const builder = async ({
 		buildPath,
 		stylexRules,
 		clientEntryPoints,
+		clientComponentsMap,
+		mdxEnabled,
 		development,
 	});
 
 	const routeComponentsBuild = await buildRouteComponents({
 		routes,
 		buildPath,
-		mdxEnabled,
 		stylexRules,
 		clientEntryPoints,
 		clientComponentsMap,
+		mdxEnabled,
 		development,
 	});
 

@@ -15,12 +15,14 @@ export const createDocumentElement = async ({
 }: CreateDocumentElementProps) => {
 	// StyleX
 	const href = `/${buildUrlSegment}/styles/${build.stylesheetFileName}`;
-	const StylesheetElement = createElement("link", {
-		href,
-		rel: "stylesheet",
-		precedence: "default",
-		key: "stylesheet",
-	});
+	const StylesheetElement = build.stylesheetFileName
+		? createElement("link", {
+				href,
+				rel: "stylesheet",
+				precedence: "default",
+				key: "stylesheet",
+		  })
+		: null;
 
 	// Root component
 	const rootComponentFile = await import(build.rootComponentFilePath);

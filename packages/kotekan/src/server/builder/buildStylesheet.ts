@@ -14,6 +14,10 @@ export const buildStylesheet = async ({
 }: BuildStylesheetProps) => {
 	const rulesArray: Array<Rule> = Object.values(stylexRules).flat();
 
+	if (rulesArray.length === 0) {
+		return null;
+	}
+
 	const collectedCSS = stylexBabelPlugin.processStylexRules(rulesArray, false);
 	const hash = Bun.hash(collectedCSS);
 	const fileName = `stylex-${hash}.css`;
