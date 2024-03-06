@@ -4,6 +4,7 @@
   "type": "module",
   "sideEffects": false,
   "bin": {
+    "kotekan": "./src/cli/index.ts",
     "kotekan-jsx": "./src/cli/jsxServer.ts",
     "kotekan-ssr": "./src/cli/ssrServer.ts"
   },

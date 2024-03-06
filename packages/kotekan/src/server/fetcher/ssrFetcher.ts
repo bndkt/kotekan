@@ -21,13 +21,27 @@ interface FetchProps {
 	router: FileSystemRouter;
 	buildPath: string;
 	buildUrlSegment: string;
+	jsxServer?: {
+		hostname: string;
+		port: string;
+	};
 	development?: boolean;
 }
 
 export const ssrFetcher = async (
 	request: Request,
-	{ mode, build, router, buildPath, buildUrlSegment, development }: FetchProps,
+	{
+		mode,
+		build,
+		router,
+		buildPath,
+		buildUrlSegment,
+		jsxServer,
+		development,
+	}: FetchProps,
 ): Promise<Response> => {
+	jsxServer ??= { hostname: "localhost", port: "3001" };
+
 	const userAgent = request.headers.get("user-agent");
 	const bot = isbot(userAgent); // @todo
 
@@ -64,9 +78,9 @@ export const ssrFetcher = async (
 		// Forward JSX requests to JSX server
 		if (searchParams.has("jsx")) {
 			const jsxUrl = url;
-			url.hostname = "localhost";
-			url.port = "3001";
-			console.log({ jsxUrl });
+			url.hostname = jsxServer.hostname;
+			url.port = jsxServer.port;
+
 			const jsxStream = await fetch(jsxUrl);
 
 			return new Response(await jsxStream.text(), {

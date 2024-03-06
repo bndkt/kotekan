@@ -1,7 +1,7 @@
-#!/usr/bin/env bun --hot
+#!/usr/bin/env bun
 import path from "node:path";
 
-export const devCommand = async () => {
+export const startCommand = async () => {
 	const jsxServerPath = path.join(import.meta.dir, "jsxServer.ts");
 	const jsxServerPort = 3001;
 
