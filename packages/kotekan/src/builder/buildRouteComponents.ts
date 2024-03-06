@@ -1,10 +1,10 @@
 import path from "node:path";
 
 import type { ClientComponentsMap, ClientEntryPoints, StylexRules } from ".";
-import { babelPlugin } from "../../plugins/babel";
+import { babelPlugin } from "../plugins/babel";
 import { createBuildFile } from "./createBuildFile";
-import { rscPlugin } from "../../plugins/rsc";
-import { mdxPlugin } from "../../plugins/mdx";
+import { rscPlugin } from "../plugins/rsc";
+import { mdxPlugin } from "../plugins/mdx";
 import { buildServerComponents } from "./buildServerComponents";
 
 interface BuildRouteComponentsProps {

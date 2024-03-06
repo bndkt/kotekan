@@ -1,4 +1,4 @@
-import { babelPlugin } from "../../plugins/babel";
+import { babelPlugin } from "../plugins/babel";
 import type { StylexRules } from ".";
 
 interface BuildClientComponentsProps {

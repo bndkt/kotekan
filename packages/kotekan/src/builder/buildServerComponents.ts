@@ -1,7 +1,7 @@
 import type { ClientComponentsMap, ClientEntryPoints, StylexRules } from ".";
-import { babelPlugin } from "../../plugins/babel";
-import { mdxPlugin } from "../../plugins/mdx";
-import { rscPlugin } from "../../plugins/rsc";
+import { babelPlugin } from "../plugins/babel";
+import { mdxPlugin } from "../plugins/mdx";
+import { rscPlugin } from "../plugins/rsc";
 
 interface BuildServerComponentsProps {
 	entrypoints: string[];
