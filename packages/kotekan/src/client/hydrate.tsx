@@ -2,8 +2,7 @@
 import { StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
 // @ts-expect-error Untyped import
-import { createFromFetch } from "react-server-dom-esm/client"; // @todo
-// import { createFromFetch } from "react-server-dom-webpack/client.browser";
+import { createFromFetch } from "react-server-dom-esm/client";
 
 import { setupNavigation } from "./setupNavigation";
 

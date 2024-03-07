@@ -1,15 +1,10 @@
 import path from "node:path";
-import { type FileSystemRouter } from "bun";
+import { pathToFileURL, type FileSystemRouter } from "bun";
 import { isbot } from "isbot";
 // @ts-expect-error Untyped import
 import { renderToReadableStream as renderToHtmlStream } from "react-dom/server.edge"; // @todo
-// @ ts-expect-error Untyped import
-// import { renderToPipeableStream as renderToJsxStream } from "react-server-dom-esm/server.node"; // @todo
-// import { renderToPipeableStream as renderToJsxStream } from "react-server-dom-esm/server.node"; // @todo
-// import { renderToReadableStream as renderToJsxStream } from "react-server-dom-webpack/server.edge"; // @todo
 // @ts-expect-error Untyped import
-// import { createFromReadableStream as createFromJsxStream } from "react-server-dom-webpack/client.edge"; // @todo
-import { createFromFetch } from "react-server-dom-webpack/client.edge"; // @todo
+import { createFromFetch } from "react-server-dom-esm/client.browser"; // @todo
 
 import type { BuildResult } from "../../builder";
 import type { RenderingStrategy } from "..";
@@ -92,23 +87,25 @@ export const ssrFetcher = async (
 		// Forward JSX requests to JSX server
 		if (searchParams.has("jsx")) {
 			const jsxResponse = await jsxFetch;
-			return new Response(await jsxResponse.text(), {
+			return new Response(await jsxResponse.arrayBuffer(), {
 				headers: {
-					"Content-Type": "application/json; charset=utf-8",
+					"Content-Type": "text/x-component; charset=utf-8",
 					"Cache-Control": "no-cache",
 				},
 			});
 		}
 
 		// function createFromNodeStream(stream, moduleRootPath, moduleBaseURL)
-		const clientComponentsPath = path.join(buildPath, "client", "components");
-		const jsxStreamOptions = { ssrManifest: { moduleMap: {} } };
+		// const clientComponentsPath = path.join(buildPath, "client", "components");
+		// const jsxStreamOptions = { ssrManifest: { moduleMap: {} } };
+		const moduleBaseURL = new URL("./src", pathToFileURL(process.cwd())).href;
+		console.log({ moduleBaseURL });
+		const options = {};
 		const DocumentElement = csr
 			? createDocumentElement({ build, buildUrlSegment })
-			: createFromFetch(jsxFetch, jsxStreamOptions); // @todo
+			: // createFromNodeStream(stream, moduleRootPath, moduleBaseURL, options)
+			  createFromFetch(jsxFetch, moduleBaseURL, options); // @todo
 		// : createFromJsxStream(jsxStream, buildPath, "./build/client/components");
-
-		// build.clientComponentsMap,
 
 		// HTML document stream
 		const bootstrapModules = hydrate

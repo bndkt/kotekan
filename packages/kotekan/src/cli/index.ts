@@ -1,4 +1,4 @@
-#!/usr/bin/env bun --hot
+#!/usr/bin/env bun
 // --conditions react-server
 // --hot
 import yargs from "yargs";

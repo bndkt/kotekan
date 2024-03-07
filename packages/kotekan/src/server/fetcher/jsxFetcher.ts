@@ -1,7 +1,8 @@
-import { type FileSystemRouter } from "bun";
+import { pathToFileURL, type FileSystemRouter } from "bun";
+import { PassThrough } from "node:stream";
 import { type FunctionComponent } from "react";
 // @ts-expect-error Untyped import
-import { renderToReadableStream as renderToJsxStream } from "react-server-dom-webpack/server.edge"; // @todo
+import { renderToPipeableStream as renderToJsxStream } from "react-server-dom-esm/server.node"; // @todo
 
 import type { BuildResult } from "../../builder";
 import type { RenderingStrategy } from "..";
@@ -46,10 +47,17 @@ export const jsxFetcher = async (
 			RouteComponent,
 		});
 
-		const jsxStream = renderToJsxStream(JsxDocumentElement);
+		const moduleBasePath = new URL("./src", pathToFileURL(process.cwd())).href;
+		console.log({ moduleBasePath });
+		const { pipe } = await renderToJsxStream(
+			JsxDocumentElement,
+			moduleBasePath,
+		);
+		const jsxStream = pipe(new PassThrough()); // @todo: renderToJsxStream(JsxDocumentElement, {});
 
+		// Send JSX
 		return new Response(jsxStream, {
-			headers: { "Content-Type": "application/json; charset=utf-8" },
+			headers: { "Content-Type": "text/x-component; charset=utf-8" },
 		});
 	}
 
