@@ -12,9 +12,6 @@
 
 var ReactDOM = require('react-dom');
 
-// -----------------------------------------------------------------------------
-const enableBinaryFlight = false;
-
 function createStringDecoder() {
   return new TextDecoder();
 }
@@ -203,6 +200,7 @@ function refineModel(code, model) {
 // The Symbol used to tag the ReactElement-like types.
 const REACT_ELEMENT_TYPE = Symbol.for('react.element');
 const REACT_LAZY_TYPE = Symbol.for('react.lazy');
+const REACT_POSTPONE_TYPE = Symbol.for('react.postpone');
 const MAYBE_ITERATOR_SYMBOL = Symbol.iterator;
 const FAUX_ITERATOR_SYMBOL = '@@iterator';
 function getIteratorFn(maybeIterable) {
@@ -693,6 +691,11 @@ function createInitializedTextChunk(response, value) {
   return new Chunk(INITIALIZED, value, null, response);
 }
 
+function createInitializedBufferChunk(response, value) {
+  // $FlowFixMe[invalid-constructor] Flow doesn't support functions as constructors
+  return new Chunk(INITIALIZED, value, null, response);
+}
+
 function resolveModelChunk(chunk, value) {
   if (chunk.status !== PENDING) {
     // We already resolved. We didn't expect to see this.
@@ -1145,6 +1148,12 @@ function resolveText(response, id, text) {
   chunks.set(id, createInitializedTextChunk(response, text));
 }
 
+function resolveBuffer(response, id, buffer) {
+  const chunks = response._chunks; // We assume that we always reference buffers after they've been emitted.
+
+  chunks.set(id, createInitializedBufferChunk(response, buffer));
+}
+
 function resolveModule(response, id, model) {
   const chunks = response._chunks;
   const chunk = chunks.get(id);
@@ -1198,12 +1207,148 @@ function resolveErrorProd(response, id, digest) {
   }
 }
 
+function resolvePostponeProd(response, id) {
+
+  const error = new Error('A Server Component was postponed. The reason is omitted in production' + ' builds to avoid leaking sensitive details.');
+  const postponeInstance = error;
+  postponeInstance.$$typeof = REACT_POSTPONE_TYPE;
+  postponeInstance.stack = 'Error: ' + error.message;
+  const chunks = response._chunks;
+  const chunk = chunks.get(id);
+
+  if (!chunk) {
+    chunks.set(id, createErrorChunk(response, postponeInstance));
+  } else {
+    triggerErrorOnChunk(chunk, postponeInstance);
+  }
+}
+
 function resolveHint(response, code, model) {
   const hintModel = parseModel(response, model);
   dispatchHint(code, hintModel);
 }
 
+function mergeBuffer(buffer, lastChunk) {
+  const l = buffer.length; // Count the bytes we'll need
+
+  let byteLength = lastChunk.length;
+
+  for (let i = 0; i < l; i++) {
+    byteLength += buffer[i].byteLength;
+  } // Allocate enough contiguous space
+
+
+  const result = new Uint8Array(byteLength);
+  let offset = 0; // Copy all the buffers into it.
+
+  for (let i = 0; i < l; i++) {
+    const chunk = buffer[i];
+    result.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+
+  result.set(lastChunk, offset);
+  return result;
+}
+
+function resolveTypedArray(response, id, buffer, lastChunk, constructor, bytesPerElement) {
+  // If the view fits into one original buffer, we just reuse that buffer instead of
+  // copying it out to a separate copy. This means that it's not always possible to
+  // transfer these values to other threads without copying first since they may
+  // share array buffer. For this to work, it must also have bytes aligned to a
+  // multiple of a size of the type.
+  const chunk = buffer.length === 0 && lastChunk.byteOffset % bytesPerElement === 0 ? lastChunk : mergeBuffer(buffer, lastChunk); // TODO: The transfer protocol of RSC is little-endian. If the client isn't little-endian
+  // we should convert it instead. In practice big endian isn't really Web compatible so it's
+  // somewhat safe to assume that browsers aren't going to run it, but maybe there's some SSR
+  // server that's affected.
+
+  const view = new constructor(chunk.buffer, chunk.byteOffset, chunk.byteLength / bytesPerElement);
+  resolveBuffer(response, id, view);
+}
+
 function processFullRow(response, id, tag, buffer, chunk) {
+  {
+    switch (tag) {
+      case 65
+      /* "A" */
+      :
+        // We must always clone to extract it into a separate buffer instead of just a view.
+        resolveBuffer(response, id, mergeBuffer(buffer, chunk).buffer);
+        return;
+
+      case 67
+      /* "C" */
+      :
+        resolveTypedArray(response, id, buffer, chunk, Int8Array, 1);
+        return;
+
+      case 99
+      /* "c" */
+      :
+        resolveBuffer(response, id, buffer.length === 0 ? chunk : mergeBuffer(buffer, chunk));
+        return;
+
+      case 85
+      /* "U" */
+      :
+        resolveTypedArray(response, id, buffer, chunk, Uint8ClampedArray, 1);
+        return;
+
+      case 83
+      /* "S" */
+      :
+        resolveTypedArray(response, id, buffer, chunk, Int16Array, 2);
+        return;
+
+      case 115
+      /* "s" */
+      :
+        resolveTypedArray(response, id, buffer, chunk, Uint16Array, 2);
+        return;
+
+      case 76
+      /* "L" */
+      :
+        resolveTypedArray(response, id, buffer, chunk, Int32Array, 4);
+        return;
+
+      case 108
+      /* "l" */
+      :
+        resolveTypedArray(response, id, buffer, chunk, Uint32Array, 4);
+        return;
+
+      case 70
+      /* "F" */
+      :
+        resolveTypedArray(response, id, buffer, chunk, Float32Array, 4);
+        return;
+
+      case 100
+      /* "d" */
+      :
+        resolveTypedArray(response, id, buffer, chunk, Float64Array, 8);
+        return;
+
+      case 78
+      /* "N" */
+      :
+        resolveTypedArray(response, id, buffer, chunk, BigInt64Array, 8);
+        return;
+
+      case 109
+      /* "m" */
+      :
+        resolveTypedArray(response, id, buffer, chunk, BigUint64Array, 8);
+        return;
+
+      case 86
+      /* "V" */
+      :
+        resolveTypedArray(response, id, buffer, chunk, DataView, 1);
+        return;
+    }
+  }
 
   const stringDecoder = response._stringDecoder;
   let row = '';
@@ -1268,6 +1413,15 @@ function processFullRow(response, id, tag, buffer, chunk) {
     case 80
     /* "P" */
     :
+      {
+        {
+          {
+            resolvePostponeProd(response, id);
+          }
+
+          return;
+        }
+      }
     // Fallthrough
 
     default:
@@ -1315,7 +1469,31 @@ function processBinaryChunk(response, chunk) {
 
           if (resolvedRowTag === 84
           /* "T" */
-          || enableBinaryFlight 
+          || (resolvedRowTag === 65
+          /* "A" */
+          || resolvedRowTag === 67
+          /* "C" */
+          || resolvedRowTag === 99
+          /* "c" */
+          || resolvedRowTag === 85
+          /* "U" */
+          || resolvedRowTag === 83
+          /* "S" */
+          || resolvedRowTag === 115
+          /* "s" */
+          || resolvedRowTag === 76
+          /* "L" */
+          || resolvedRowTag === 108
+          /* "l" */
+          || resolvedRowTag === 70
+          /* "F" */
+          || resolvedRowTag === 100
+          /* "d" */
+          || resolvedRowTag === 78
+          /* "N" */
+          || resolvedRowTag === 109
+          /* "m" */
+          || resolvedRowTag === 86)
           /* "V" */
           ) {
               rowTag = resolvedRowTag;

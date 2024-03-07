@@ -17,7 +17,7 @@ var ReactDOM = require('react-dom');
 var React = require('react');
 
 // -----------------------------------------------------------------------------
-const enablePostpone = false;
+const enablePostpone = true;
 
 function scheduleWork(callback) {
   setImmediate(callback);
@@ -168,8 +168,15 @@ const textEncoder = new util.TextEncoder();
 function stringToChunk(content) {
   return content;
 }
+function typedArrayToBinaryChunk(content) {
+  // Convert any non-Uint8Array array to Uint8Array. We could avoid this for Uint8Arrays.
+  return new Uint8Array(content.buffer, content.byteOffset, content.byteLength);
+}
 function byteLengthOfChunk(chunk) {
   return typeof chunk === 'string' ? Buffer.byteLength(chunk, 'utf8') : chunk.byteLength;
+}
+function byteLengthOfBinaryChunk(chunk) {
+  return chunk.byteLength;
 }
 function closeWithError(destination, error) {
   // $FlowFixMe[incompatible-call]: This is an Error object or the destination accepts other types.
@@ -1057,6 +1064,12 @@ if (!ReactSharedServerInternals) {
   throw new Error('The "react" package in this environment is not configured correctly. ' + 'The "react-server" condition must be enabled in any environment that ' + 'runs React Server Components.');
 }
 
+// Turns a TypedArray or ArrayBuffer into a string that can be used for comparison
+// in a Map to see if the bytes are the same.
+function binaryToComparableString(view) {
+  return String.fromCharCode.apply(String, new Uint8Array(view.buffer, view.byteOffset, view.byteLength));
+}
+
 const ObjectPrototype = Object.prototype;
 const stringify = JSON.stringify; // Serializable values
 // Thenable<ReactClientValue>
@@ -1065,8 +1078,37 @@ const PENDING$1 = 0;
 const COMPLETED = 1;
 const ABORTED = 3;
 const ERRORED$1 = 4;
-const ReactCurrentCache = ReactSharedServerInternals.ReactCurrentCache;
+const TaintRegistryObjects = ReactSharedServerInternals.TaintRegistryObjects,
+      TaintRegistryValues = ReactSharedServerInternals.TaintRegistryValues,
+      TaintRegistryByteLengths = ReactSharedServerInternals.TaintRegistryByteLengths,
+      TaintRegistryPendingRequests = ReactSharedServerInternals.TaintRegistryPendingRequests,
+      ReactCurrentCache = ReactSharedServerInternals.ReactCurrentCache;
 const ReactCurrentDispatcher = ReactSharedInternals.ReactCurrentDispatcher;
+
+function throwTaintViolation(message) {
+  // eslint-disable-next-line react-internal/prod-error-codes
+  throw new Error(message);
+}
+
+function cleanupTaintQueue(request) {
+  const cleanupQueue = request.taintCleanupQueue;
+  TaintRegistryPendingRequests.delete(cleanupQueue);
+
+  for (let i = 0; i < cleanupQueue.length; i++) {
+    const entryValue = cleanupQueue[i];
+    const entry = TaintRegistryValues.get(entryValue);
+
+    if (entry !== undefined) {
+      if (entry.count === 1) {
+        TaintRegistryValues.delete(entryValue);
+      } else {
+        entry.count--;
+      }
+    }
+  }
+
+  cleanupQueue.length = 0;
+}
 
 function defaultErrorHandler(error) {
   console['error'](error); // Don't transform to our wrapper
@@ -1087,6 +1129,10 @@ function createRequest(model, bundlerConfig, onError, identifierPrefix, onPostpo
   const abortSet = new Set();
   const pingedTasks = [];
   const cleanupQueue = [];
+
+  {
+    TaintRegistryPendingRequests.add(cleanupQueue);
+  }
 
   const hints = createHints();
   const request = {
@@ -1149,7 +1195,11 @@ function serializeThenable(request, task, thenable) {
       {
         const x = thenable.reason;
 
-        {
+        if (typeof x === 'object' && x !== null && x.$$typeof === REACT_POSTPONE_TYPE) {
+          const postponeInstance = x;
+          logPostpone(request, postponeInstance.message);
+          emitPostponeChunk(request, newTask.id);
+        } else {
           const digest = logRecoverableError(request, x);
           emitErrorChunk(request, newTask.id, digest);
         }
@@ -1189,7 +1239,11 @@ function serializeThenable(request, task, thenable) {
     newTask.model = value;
     pingTask(request, newTask);
   }, reason => {
-    {
+    if (typeof reason === 'object' && reason !== null && reason.$$typeof === REACT_POSTPONE_TYPE) {
+      const postponeInstance = reason;
+      logPostpone(request, postponeInstance.message);
+      emitPostponeChunk(request, newTask.id);
+    } else {
       newTask.status = ERRORED$1;
       const digest = logRecoverableError(request, reason);
       emitErrorChunk(request, newTask.id, digest);
@@ -1322,15 +1376,68 @@ function renderFunctionComponent(request, task, key, Component, props) {
 
 function renderFragment(request, task, children) {
 
-  {
-    return children;
-  }
+  if (task.keyPath !== null) {
+    // We have a Server Component that specifies a key but we're now splitting
+    // the tree using a fragment.
+    const fragment = [REACT_ELEMENT_TYPE, REACT_FRAGMENT_TYPE, task.keyPath, {
+      children
+    }];
+
+    if (!task.implicitSlot) {
+      // If this was keyed inside a set. I.e. the outer Server Component was keyed
+      // then we need to handle reorders of the whole set. To do this we need to wrap
+      // this array in a keyed Fragment.
+      return fragment;
+    } // If the outer Server Component was implicit but then an inner one had a key
+    // we don't actually need to be able to move the whole set around. It'll always be
+    // in an implicit slot. The key only exists to be able to reset the state of the
+    // children. We could achieve the same effect by passing on the keyPath to the next
+    // set of components inside the fragment. This would also allow a keyless fragment
+    // reconcile against a single child.
+    // Unfortunately because of JSON.stringify, we can't call the recursive loop for
+    // each child within this context because we can't return a set with already resolved
+    // values. E.g. a string would get double encoded. Returning would pop the context.
+    // So instead, we wrap it with an unkeyed fragment and inner keyed fragment.
+
+
+    return [fragment];
+  } // Since we're yielding here, that implicitly resets the keyPath context on the
+  // way up. Which is what we want since we've consumed it. If this changes to
+  // be recursive serialization, we need to reset the keyPath and implicitSlot,
+  // before recursing here.
+
+
+  return children;
 }
 
 function renderClientElement(task, type, key, props) {
-  {
-    return [REACT_ELEMENT_TYPE, type, key, props];
-  } // We prepend the terminal client element that actually gets serialized with
+  // the keys of any Server Components which are not serialized.
+
+
+  const keyPath = task.keyPath;
+
+  if (key === null) {
+    key = keyPath;
+  } else if (keyPath !== null) {
+    key = keyPath + ',' + key;
+  }
+
+  const element = [REACT_ELEMENT_TYPE, type, key, props];
+
+  if (task.implicitSlot && key !== null) {
+    // The root Server Component had no key so it was in an implicit slot.
+    // If we had a key lower, it would end up in that slot with an explicit key.
+    // We wrap the element in a fragment to give it an implicit key slot with
+    // an inner explicit key.
+    return [element];
+  } // Since we're yielding here, that implicitly resets the keyPath context on the
+  // way up. Which is what we want since we've consumed it. If this changes to
+  // be recursive serialization, we need to reset the keyPath and implicitSlot,
+  // before recursing here. We also need to reset it once we render into an array
+  // or anything else too which we also get implicitly.
+
+
+  return element;
 } // The chunk ID we're currently rendering that we can assign debug data to.
 
 
@@ -1422,7 +1529,7 @@ function createTask(request, model, keyPath, implicitSlot, abortSet) {
   if (typeof model === 'object' && model !== null) {
     // If we're about to write this into a new task we can assign it an ID early so that
     // any other references can refer to the value we're about to write.
-    {
+    if ((keyPath !== null || implicitSlot)) ; else {
       request.writtenObjects.set(model, id);
     }
   }
@@ -1630,6 +1737,30 @@ function serializeSet(request, set) {
   return '$W' + id.toString(16);
 }
 
+function serializeTypedArray(request, tag, typedArray) {
+  {
+    if (TaintRegistryByteLengths.has(typedArray.byteLength)) {
+      // If we have had any tainted values of this length, we check
+      // to see if these bytes matches any entries in the registry.
+      const tainted = TaintRegistryValues.get(binaryToComparableString(typedArray));
+
+      if (tainted !== undefined) {
+        throwTaintViolation(tainted.message);
+      }
+    }
+  }
+
+  request.pendingChunks += 2;
+  const bufferId = request.nextChunkId++; // TODO: Convert to little endian if that's not the server default.
+
+  const binaryChunk = typedArrayToBinaryChunk(typedArray);
+  const binaryLength = byteLengthOfBinaryChunk(binaryChunk);
+  const row = bufferId.toString(16) + ':' + tag + binaryLength.toString(16) + ',';
+  const headerChunk = stringToChunk(row);
+  request.completedRegularChunks.push(headerChunk, binaryChunk);
+  return serializeByValueID(bufferId);
+}
+
 function escapeStringValue(value) {
   if (value[0] === '$') {
     // We need to escape $ prefixed strings since we use those to encode
@@ -1678,6 +1809,24 @@ function renderModel(request, task, parent, key, value) {
         }
 
         return serializeByValueID(newTask.id);
+      } else if (x.$$typeof === REACT_POSTPONE_TYPE) {
+        // Something postponed. We'll still send everything we have up until this point.
+        // We'll replace this element with a lazy reference that postpones on the client.
+        const postponeInstance = x;
+        request.pendingChunks++;
+        const postponeId = request.nextChunkId++;
+        logPostpone(request, postponeInstance.message);
+        emitPostponeChunk(request, postponeId); // Restore the context. We assume that this will be restored by the inner
+        // functions in case nothing throws so we don't use "finally" here.
+
+        task.keyPath = prevKeyPath;
+        task.implicitSlot = prevImplicitSlot;
+
+        if (wasReactNode) {
+          return serializeLazyID(postponeId);
+        }
+
+        return serializeByValueID(postponeId);
       }
     } // Restore the context. We assume that this will be restored by the inner
     // functions in case nothing throws so we don't use "finally" here.
@@ -1724,7 +1873,7 @@ function renderModelDestructive(request, task, parent, parentPropertyName, value
           const existingId = writtenObjects.get(value);
 
           if (existingId !== undefined) {
-            if (modelRoot === value) {
+            if ((task.keyPath !== null || task.implicitSlot)) ; else if (modelRoot === value) {
               // This is the ID we're currently emitting so we need to write it
               // once but if we discover it again, we refer to it by id.
               modelRoot = null;
@@ -1757,7 +1906,11 @@ function renderModelDestructive(request, task, parent, parentPropertyName, value
           let ref;
 
           {
-            ref = element.ref;
+            // TODO: This is a temporary, intermediate step. Once the feature
+            // flag is removed, we should get the ref off the props object right
+            // before using it.
+            const refProp = props.ref;
+            ref = refProp !== undefined ? refProp : null;
           } // Attempt to render the Server Component.
 
 
@@ -1783,12 +1936,26 @@ function renderModelDestructive(request, task, parent, parentPropertyName, value
       return serializeClientReference(request, parent, parentPropertyName, value);
     }
 
+    {
+      const tainted = TaintRegistryObjects.get(value);
+
+      if (tainted !== undefined) {
+        throwTaintViolation(tainted);
+      }
+    }
+
     const writtenObjects = request.writtenObjects;
     const existingId = writtenObjects.get(value); // $FlowFixMe[method-unbinding]
 
     if (typeof value.then === 'function') {
       if (existingId !== undefined) {
-        if (modelRoot === value) {
+        if ((task.keyPath !== null || task.implicitSlot)) {
+          // If we're in some kind of context we can't reuse the result of this render or
+          // previous renders of this element. We only reuse Promises if they're not wrapped
+          // by another Server Component.
+          const promiseId = serializeThenable(request, task, value);
+          return serializePromiseID(promiseId);
+        } else if (modelRoot === value) {
           // This is the ID we're currently emitting so we need to write it
           // once but if we discover it again, we refer to it by id.
           modelRoot = null;
@@ -1837,6 +2004,72 @@ function renderModelDestructive(request, task, parent, parentPropertyName, value
       return serializeSet(request, value);
     }
 
+    {
+      if (value instanceof ArrayBuffer) {
+        return serializeTypedArray(request, 'A', new Uint8Array(value));
+      }
+
+      if (value instanceof Int8Array) {
+        // char
+        return serializeTypedArray(request, 'C', value);
+      }
+
+      if (value instanceof Uint8Array) {
+        // unsigned char
+        return serializeTypedArray(request, 'c', value);
+      }
+
+      if (value instanceof Uint8ClampedArray) {
+        // unsigned clamped char
+        return serializeTypedArray(request, 'U', value);
+      }
+
+      if (value instanceof Int16Array) {
+        // sort
+        return serializeTypedArray(request, 'S', value);
+      }
+
+      if (value instanceof Uint16Array) {
+        // unsigned short
+        return serializeTypedArray(request, 's', value);
+      }
+
+      if (value instanceof Int32Array) {
+        // long
+        return serializeTypedArray(request, 'L', value);
+      }
+
+      if (value instanceof Uint32Array) {
+        // unsigned long
+        return serializeTypedArray(request, 'l', value);
+      }
+
+      if (value instanceof Float32Array) {
+        // float
+        return serializeTypedArray(request, 'F', value);
+      }
+
+      if (value instanceof Float64Array) {
+        // double
+        return serializeTypedArray(request, 'd', value);
+      }
+
+      if (value instanceof BigInt64Array) {
+        // number
+        return serializeTypedArray(request, 'N', value);
+      }
+
+      if (value instanceof BigUint64Array) {
+        // unsigned number
+        // We use "m" instead of "n" since JSON can start with "null"
+        return serializeTypedArray(request, 'm', value);
+      }
+
+      if (value instanceof DataView) {
+        return serializeTypedArray(request, 'V', value);
+      }
+    }
+
     const iteratorFn = getIteratorFn(value);
 
     if (iteratorFn) {
@@ -1855,6 +2088,13 @@ function renderModelDestructive(request, task, parent, parentPropertyName, value
   }
 
   if (typeof value === 'string') {
+    {
+      const tainted = TaintRegistryValues.get(value);
+
+      if (tainted !== undefined) {
+        throwTaintViolation(tainted.message);
+      }
+    } // TODO: Maybe too clever. If we support URL there's no similar trick.
 
 
     if (value[value.length - 1] === 'Z') {
@@ -1898,6 +2138,14 @@ function renderModelDestructive(request, task, parent, parentPropertyName, value
       return serializeServerReference(request, value);
     }
 
+    {
+      const tainted = TaintRegistryObjects.get(value);
+
+      if (tainted !== undefined) {
+        throwTaintViolation(tainted);
+      }
+    }
+
     if (/^on[A-Z]/.test(parentPropertyName)) {
       throw new Error('Event handlers cannot be passed to Client Component props.' + describeObjectForErrorMessage(parent, parentPropertyName) + '\nIf you need interactivity, consider converting part of this to a Client Component.');
     } else {
@@ -1929,6 +2177,13 @@ function renderModelDestructive(request, task, parent, parentPropertyName, value
   }
 
   if (typeof value === 'bigint') {
+    {
+      const tainted = TaintRegistryValues.get(value);
+
+      if (tainted !== undefined) {
+        throwTaintViolation(tainted.message);
+      }
+    }
 
     return serializeBigInt(value);
   }
@@ -1977,6 +2232,9 @@ function logRecoverableError(request, error) {
 }
 
 function fatalError(request, error) {
+  {
+    cleanupTaintQueue(request);
+  } // This is called outside error handling code such as if an error happens in React internals.
 
 
   if (request.destination !== null) {
@@ -2101,6 +2359,13 @@ function retryTask(request, task) {
         const ping = task.ping;
         x.then(ping, ping);
         task.thenableState = getThenableStateAfterSuspending();
+        return;
+      } else if (x.$$typeof === REACT_POSTPONE_TYPE) {
+        request.abortableTasks.delete(task);
+        task.status = ERRORED$1;
+        const postponeInstance = x;
+        logPostpone(request, postponeInstance.message);
+        emitPostponeChunk(request, task.id);
         return;
       }
     }
@@ -2233,6 +2498,10 @@ function flushCompletedChunks(request, destination) {
   flushBuffered(destination);
 
   if (request.pendingChunks === 0) {
+    // We're done.
+    {
+      cleanupTaintQueue(request);
+    }
 
     close$1(destination);
   }
@@ -2296,7 +2565,11 @@ function abort(request, reason) {
       request.pendingChunks++;
       const errorId = request.nextChunkId++;
 
-      if (enablePostpone && typeof reason === 'object' && reason !== null && reason.$$typeof === REACT_POSTPONE_TYPE) ; else {
+      if (enablePostpone && typeof reason === 'object' && reason !== null && reason.$$typeof === REACT_POSTPONE_TYPE) {
+        const postponeInstance = reason;
+        logPostpone(request, postponeInstance.message);
+        emitPostponeChunk(request, errorId, postponeInstance);
+      } else {
         const error = reason === undefined ? new Error('The render was aborted by the server without a reason.') : reason;
         const digest = logRecoverableError(request, error);
         emitErrorChunk(request, errorId, digest, error);
