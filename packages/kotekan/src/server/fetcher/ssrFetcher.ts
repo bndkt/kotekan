@@ -66,7 +66,11 @@ export const ssrFetcher = async (
 			console.log("🥁 Requested build file:", path.basename(buildFilePath));
 		const buildFile = Bun.file(buildFilePath);
 
-		return new Response(buildFile);
+		return new Response(buildFile, {
+			headers: {
+				"Cache-Control": "public, max-age=3600, immutable",
+			},
+		});
 	}
 
 	const csr = (mode === "csr" && !bot) || searchParams.has("csr");
@@ -84,7 +88,10 @@ export const ssrFetcher = async (
 			const jsxStream = await fetch(jsxUrl);
 
 			return new Response(await jsxStream.text(), {
-				headers: { "Content-Type": "application/json; charset=utf-8" },
+				headers: {
+					"Content-Type": "application/json; charset=utf-8",
+					"Cache-Control": "no-cache",
+				},
 			});
 		}
 
@@ -111,7 +118,10 @@ export const ssrFetcher = async (
 		});
 
 		return new Response(stream, {
-			headers: { "Content-Type": "text/html; charset=utf-8" },
+			headers: {
+				"Content-Type": "text/html; charset=utf-8",
+				"Cache-Control": "no-cache",
+			},
 		});
 	}
 
