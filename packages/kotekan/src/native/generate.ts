@@ -88,6 +88,9 @@ export const generate = async ({
 				},
 			],
 		},
+		{
+			path: "metro.config.cjs",
+		},
 	];
 
 	const reactNativePath = resolveSync("react-native", ".");

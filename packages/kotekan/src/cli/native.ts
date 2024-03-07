@@ -20,11 +20,18 @@ export const nativeCommand = async () => {
 
 	await install({ buildPath });
 
-	await metro();
+	// await metro();
 
-	// await $`bunx react-native start --config ./build/mobile/metro.config.cjs`;
-	// await $`bunx react-native run-ios`;
-	// await $`bunx react-native run-ios --no-packager`.cwd(buildPath);
+	Bun.spawn(
+		["react-native", "start", "--config", "./build/mobile/metro.config.cjs"],
+		{
+			stdout: "inherit",
+			env: {
+				// PORT: ssrServerPort.toString(),
+				...process.env,
+			},
+		},
+	);
 
 	console.log("Native");
 };
