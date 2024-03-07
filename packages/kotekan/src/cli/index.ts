@@ -4,7 +4,6 @@
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
-import { devCommand } from "./dev";
 import { startCommand } from "./start";
 import { nativeCommand } from "./native";
 
@@ -13,7 +12,7 @@ yargs(hideBin(process.argv))
 		command: "dev",
 		describe: "Run the development script",
 		handler: () => {
-			devCommand();
+			startCommand(true);
 		},
 	})
 	.command({

@@ -33,6 +33,7 @@ export type ClientEntryPoints = Set<string>;
 export type ClientComponentsMap = Map<
 	string,
 	{
+		mode: RenderingStrategy;
 		id: string;
 		name: string;
 		chunks: string[];

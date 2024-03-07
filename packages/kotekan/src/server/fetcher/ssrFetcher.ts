@@ -12,11 +12,11 @@ import { renderToReadableStream as renderToHtmlStream } from "react-dom/server.e
 import { createFromFetch } from "react-server-dom-webpack/client.edge"; // @todo
 
 import type { BuildResult } from "../../builder";
-import type { RenderingStrategies } from "..";
+import type { RenderingStrategy } from "..";
 import { createDocumentElement } from "./createDocumentElement";
 
 interface FetchProps {
-	mode: RenderingStrategies;
+	mode: RenderingStrategy;
 	build: BuildResult;
 	router: FileSystemRouter;
 	buildPath: string;

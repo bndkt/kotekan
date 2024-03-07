@@ -2,13 +2,11 @@ import path from "node:path";
 
 import { router as routerFn } from "./router";
 import { builder } from "../builder";
-// import { jsxFetcher } from "./fetcher/jsxFetcher";
-// import { ssrFetcher } from "./fetcher/ssrFetcher";
 
-export type RenderingStrategies = "csr" | "ssr" | "jsx";
+export type RenderingStrategy = "csr" | "ssr" | "jsx";
 
 interface ServerProps {
-	mode?: RenderingStrategies;
+	mode?: RenderingStrategy;
 	buildDir?: string;
 	port?: number;
 	mdxEnabled?: boolean;
@@ -31,7 +29,6 @@ export const server = async (props: ServerProps = {}) => {
 	const dir = path.join(process.cwd(), "src", "pages");
 	const router = routerFn({ dir, mdxEnabled });
 	const { routes } = router;
-	console.log("🥁 Routes", routes);
 
 	// Build
 	const build = await builder({

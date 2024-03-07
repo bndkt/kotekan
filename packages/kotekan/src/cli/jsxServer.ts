@@ -1,4 +1,4 @@
-#!/usr/bin/env bun --hot --conditions react-server
+#!/usr/bin/env bun --conditions react-server
 import { server } from "../server";
 
 const development = Bun.env.NODE_ENV === "development";

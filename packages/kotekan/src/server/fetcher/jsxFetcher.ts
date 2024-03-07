@@ -4,11 +4,11 @@ import { type FunctionComponent } from "react";
 import { renderToReadableStream as renderToJsxStream } from "react-server-dom-webpack/server.edge"; // @todo
 
 import type { BuildResult } from "../../builder";
-import type { RenderingStrategies } from "..";
+import type { RenderingStrategy } from "..";
 import { createDocumentElement } from "./createDocumentElement";
 
 interface FetchProps {
-	mode: RenderingStrategies;
+	mode: RenderingStrategy;
 	build: BuildResult;
 	router: FileSystemRouter;
 	buildPath: string;

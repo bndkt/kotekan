@@ -1,4 +1,4 @@
-#!/usr/bin/env bun --hot
+#!/usr/bin/env bun
 import { server } from "../server";
 
 const development = Bun.env.NODE_ENV === "development";
