@@ -9,7 +9,7 @@ const port = Number(envPort ?? 3000);
 const jsxServer = await server({
 	mode: "ssr",
 	port,
-	mdxEnabled: false,
+	mdxEnabled: true,
 	development,
 });
 
