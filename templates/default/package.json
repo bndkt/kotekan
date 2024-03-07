@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "kotekan": "workspace:*",
-    "react": "18.3.0-canary-0066e0b68-20240306",
+    "react": "0.0.0-experimental-0066e0b68-20240306",
     "react-strict-dom": "0.0.2"
   },
   "devDependencies": {
