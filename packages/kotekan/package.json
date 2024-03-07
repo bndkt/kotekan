@@ -24,11 +24,11 @@
     "compile": "bun build --compile --minify --sourcemap ./src/cli/index.ts --outfile ./bin/kotekan"
   },
   "dependencies": {
-    "react": "18.3.0-canary-966d17483-20240305",
-    "react-dom": "18.3.0-canary-966d17483-20240305",
+    "react": "18.3.0-canary-0066e0b68-20240306",
+    "react-dom": "18.3.0-canary-0066e0b68-20240306",
     "react-native": "0.74.0-rc.2",
     "react-server-dom-esm": "workspace:*",
-    "react-server-dom-webpack": "18.3.0-canary-966d17483-20240305"
+    "react-server-dom-webpack": "18.3.0-canary-0066e0b68-20240306"
   },
   "devDependencies": {
     "@babel/core": "7.24.0",
