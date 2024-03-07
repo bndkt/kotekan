@@ -68,7 +68,7 @@ export const ssrFetcher = async (
 
 		return new Response(buildFile, {
 			headers: {
-				"Cache-Control": "public, max-age=3600, immutable",
+				"Cache-Control": `public, max-age=${3600 * 24 * 7}, immutable`,
 			},
 		});
 	}
