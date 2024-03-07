@@ -36,14 +36,14 @@ export const rscPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 					inputCode.startsWith(`'use client'`)
 				) {
 					config.clientEntryPoints.add(importPath);
-					console.log("CLIENT COMPONENT detected", config.clientEntryPoints);
-					console.log(args.path, args.importer);
+					// console.log("CLIENT COMPONENT detected", config.clientEntryPoints);
+					// console.log(args.path, args.importer);
 
 					const componentPath = resolveSync(
 						args.path,
 						path.dirname(args.importer),
 					);
-					console.log("New path:", componentPath);
+					// console.log("New path:", componentPath);
 
 					return {
 						path: componentPath,
@@ -56,15 +56,15 @@ export const rscPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 			});
 
 			build.onLoad({ filter: /.*/, namespace: "rsc" }, async (args) => {
-				console.log(args);
+				// console.log(args);
 				// const [, exports] = parse(args.path);
 				// console.log("resolveSync", args.path, process.cwd());
 				// const path = resolveSync(args.path, process.cwd());
-				console.log(args.path);
+				// console.log(args.path);
 				const file = Bun.file(args.path);
 
 				const input = await file.text();
-				console.log(input);
+				// console.log(input);
 
 				const transpiledInput = transpiler.transformSync(input);
 
@@ -75,12 +75,12 @@ export const rscPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 				for (const exp of exports) {
 					const key = Bun.hash(input + exp).toString();
 
-					config.clientComponentsMap.set(key, {
-						id: `/build${args.path}`,
-						name: exp.n,
-						chunks: [],
-						async: true,
-					});
+					// config.clientComponentsMap.set(key, {
+					// 	id: `/build${args.path}`,
+					// 	name: exp.n,
+					// 	chunks: [],
+					// 	async: true,
+					// });
 
 					const addContent = `
 						${exp.ln}.$$typeof = Symbol.for('react.client.reference');
@@ -94,7 +94,7 @@ export const rscPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 					// 	${exp.ln}.$$id = ${JSON.stringify(key)};
 					// `;
 
-					console.log({ addContent });
+					// console.log({ addContent });
 					contents += addContent;
 				}
 

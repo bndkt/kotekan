@@ -88,7 +88,7 @@ export const builder = async ({
 		development,
 	});
 
-	console.log({ clientComponentsMap });
+	// console.log({ clientComponentsMap });
 
 	return {
 		clientComponentsMap,

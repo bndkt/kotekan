@@ -12,8 +12,8 @@ export const startCommand = async (development = false) => {
 			jsxServerPath,
 		],
 		{
-			env: { PORT: jsxServerPort.toString(), ...process.env },
 			stdout: "inherit",
+			env: { PORT: jsxServerPort.toString(), ...process.env },
 		},
 	);
 
@@ -22,10 +22,10 @@ export const startCommand = async (development = false) => {
 	const ssrServer = Bun.spawn(
 		["bun", development ? "--hot" : "", ssrServerPath],
 		{
+			stdout: "inherit",
 			env: {
 				PORT: ssrServerPort.toString(),
 				...process.env,
-				stdout: "inherit",
 			},
 		},
 	);

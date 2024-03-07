@@ -1,9 +1,6 @@
 import path from "node:path";
 import { resolveSync } from "bun";
 
-// const renderFilePath = resolveSync("./../../client/render", import.meta.dir);
-// const hydrateFilePath = resolveSync("./../../client/hydrate", import.meta.dir);
-
 const renderFilePath = resolveSync("kotekan/client/render", import.meta.dir);
 const hydrateFilePath = resolveSync("kotekan/client/hydrate", import.meta.dir);
 
@@ -23,11 +20,6 @@ export const buildBootstrapScripts = async ({
 		minify: development ? false : true,
 		outdir: path.join(buildPath, "client", "bootstrap"),
 		naming: "[name]-[hash].[ext]",
-		define: {
-			// "process.env.LOCATION": JSON.stringify(""),
-			// "process.env.HYDRATE": JSON.stringify(mode === "ssr"),
-			// "process.env.STYLESHEET": JSON.stringify(stylexCssUrl),
-		},
 	});
 
 	if (!build.success || build.outputs.length !== 2) {
