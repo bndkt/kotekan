@@ -25,6 +25,7 @@ interface FetchProps {
 		hostname: string;
 		port: string;
 	};
+	jsxSocket?: string;
 	development?: boolean;
 }
 
@@ -37,6 +38,7 @@ export const ssrFetcher = async (
 		buildPath,
 		buildUrlSegment,
 		jsxServer,
+		jsxSocket,
 		development,
 	}: FetchProps,
 ): Promise<Response> => {
@@ -79,15 +81,18 @@ export const ssrFetcher = async (
 	// Router
 	const match = router.match(request.url);
 	if (match) {
+		// JSX Fetch
+		const jsxUrl = url;
+		url.hostname = jsxServer.hostname;
+		url.port = jsxServer.port;
+		const jsxFetch = fetch(jsxUrl, {
+			unix: jsxSocket,
+		});
+
 		// Forward JSX requests to JSX server
 		if (searchParams.has("jsx")) {
-			const jsxUrl = url;
-			url.hostname = jsxServer.hostname;
-			url.port = jsxServer.port;
-
-			const jsxStream = await fetch(jsxUrl);
-
-			return new Response(await jsxStream.text(), {
+			const jsxResponse = await jsxFetch;
+			return new Response(await jsxResponse.text(), {
 				headers: {
 					"Content-Type": "application/json; charset=utf-8",
 					"Cache-Control": "no-cache",
@@ -100,7 +105,7 @@ export const ssrFetcher = async (
 		const jsxStreamOptions = { ssrManifest: { moduleMap: {} } };
 		const DocumentElement = csr
 			? createDocumentElement({ build, buildUrlSegment })
-			: createFromFetch(fetch("http://localhost:3001"), jsxStreamOptions);
+			: createFromFetch(jsxFetch, jsxStreamOptions); // @todo
 		// : createFromJsxStream(jsxStream, buildPath, "./build/client/components");
 
 		// build.clientComponentsMap,

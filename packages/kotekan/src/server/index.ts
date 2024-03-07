@@ -5,18 +5,20 @@ import { builder } from "../builder";
 
 export type RenderingStrategy = "csr" | "ssr" | "jsx";
 
-interface ServerProps {
+type ServerProps = {
 	mode?: RenderingStrategy;
 	buildDir?: string;
 	port?: number;
+	socket?: string;
 	mdxEnabled?: boolean;
 	development?: boolean;
-}
+};
 
 export const server = async (props: ServerProps = {}) => {
 	// Defaults
 	const mode = props.mode ?? "ssr";
 	const port = props.port ?? 3000;
+	const socket = props.socket;
 	const buildDir = props.buildDir ?? "./build";
 	const mdxEnabled = props.mdxEnabled ?? true;
 	const development = props.development ?? false;
@@ -59,12 +61,21 @@ export const server = async (props: ServerProps = {}) => {
 			router,
 			buildPath,
 			buildUrlSegment,
+			jsxSocket: socket,
 			development,
 		});
 	};
 
+	// JSX server can optionally listen on unix socket
+	const listenerConfig =
+		mode === "jsx" && socket
+			? {
+					unix: socket,
+			  }
+			: { port };
+
 	return Bun.serve({
-		port,
+		...listenerConfig,
 		development,
 		fetch,
 		error: (error) => {

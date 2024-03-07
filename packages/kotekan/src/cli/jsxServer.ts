@@ -3,12 +3,14 @@ import { server } from "../server";
 
 const development = Bun.env.NODE_ENV === "development";
 const envPort = Bun.env.PORT;
+const socket = Bun.env.SOCKET;
 
 const port = Number(envPort ?? 3001);
 
 const jsxServer = await server({
 	mode: "jsx",
 	port,
+	socket,
 	mdxEnabled: true,
 	development,
 });
