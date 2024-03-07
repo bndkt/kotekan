@@ -128,5 +128,10 @@ export const ssrFetcher = async (
 	// Public files
 	const publicFileName = path.join(process.cwd(), "public", url.pathname);
 	const publicFile = Bun.file(publicFileName);
-	return new Response(publicFile);
+	return new Response(publicFile, {
+		headers: {
+			"Content-Type": "text/html; charset=utf-8",
+			"Cache-Control": `public, max-age=${3600}`,
+		},
+	});
 };
