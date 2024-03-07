@@ -16,6 +16,13 @@ primary_region = 'sin'
   min_machines_running = 1
   processes = ['app']
 
+[[http_service.checks]]
+  grace_period = "10s"
+  interval = "30s"
+  method = "GET"
+  timeout = "5s"
+  path = "/up"
+
 [[vm]]
   memory = '1gb'
   cpu_kind = 'shared'
