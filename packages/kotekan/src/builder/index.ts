@@ -6,7 +6,7 @@ import {
 } from "./buildRouteComponents";
 import { buildBootstrapScripts } from "./buildBootstrapScripts";
 import { buildClientComponents } from "./buildClientComponents";
-import { buildStylesheet } from "./buildStylesheet";
+import { createStylesheet } from "./createStylesheet";
 import { buildRootComponent } from "./buildRootComponent";
 
 export type StylexRules = Record<string, Rule[]>;
@@ -33,7 +33,6 @@ export type ClientEntryPoints = Set<string>;
 export type ClientComponentsMap = Map<
 	string,
 	{
-		mode: RenderingStrategy;
 		id: string;
 		name: string;
 		chunks: string[];
@@ -71,7 +70,7 @@ export const builder = async ({
 		development,
 	});
 
-	const stylesheetBuild = await buildStylesheet({
+	const stylesheetBuild = await createStylesheet({
 		stylexRules,
 		buildPath,
 	});

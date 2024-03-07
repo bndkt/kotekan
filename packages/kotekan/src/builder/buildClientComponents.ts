@@ -18,12 +18,9 @@ export const buildClientComponents = async ({
 		const build = await Bun.build({
 			entrypoints,
 			target: "browser",
-			// splitting: true,
-			sourcemap: "none", // development ? "inline" : "none",
+			sourcemap: development ? "inline" : "none",
 			minify: development ? false : true,
-			// naming: "[name]-[hash].[ext]",
 			outdir: `${buildPath}/client/components`,
-			// external: [],
 			define: {},
 			plugins: [
 				babelPlugin({

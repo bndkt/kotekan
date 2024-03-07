@@ -3,15 +3,15 @@ import stylexBabelPlugin, { type Rule } from "@stylexjs/babel-plugin";
 
 import type { StylexRules } from ".";
 
-interface BuildStylesheetProps {
+interface CreateStylesheetProps {
 	stylexRules: StylexRules;
 	buildPath: string;
 }
 
-export const buildStylesheet = async ({
+export const createStylesheet = async ({
 	stylexRules,
 	buildPath,
-}: BuildStylesheetProps) => {
+}: CreateStylesheetProps) => {
 	const rulesArray: Array<Rule> = Object.values(stylexRules).flat();
 
 	if (rulesArray.length === 0) {
