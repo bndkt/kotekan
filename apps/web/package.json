@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "biome lint ./src",
     "dev": "kotekan dev",
-    "start": "kotekan start",
+    "start": "NODE_ENV=production kotekan start",
     "kotekan-jsx": "kotekan-jsx",
     "kotekan-ssr": "kotekan-ssr",
     "native": "kotekan native",
@@ -26,8 +26,8 @@
   "devDependencies": {
     "@stylexjs/stylex": "0.5.1",
     "@types/bun": "1.0.8",
-    "@types/react": "18.2.63",
-    "@types/react-dom": "18.2.20",
-    "typescript": "5.3.3"
+    "@types/react": "18.2.64",
+    "@types/react-dom": "18.2.21",
+    "typescript": "5.4.2"
   }
 }

@@ -20,7 +20,7 @@
     "@manypkg/cli": "0.21.2",
     "@types/bun": "1.0.8",
     "npm-check-updates": "16.14.15",
-    "typescript": "5.3.3"
+    "typescript": "5.4.2"
   },
   "overrides": {
     "react": "18.3.0-canary-966d17483-20240305",

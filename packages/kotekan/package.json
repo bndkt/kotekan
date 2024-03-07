@@ -41,8 +41,8 @@
     "@stylexjs/babel-plugin": "0.5.1",
     "@types/babel__core": "7.20.5",
     "@types/bun": "1.0.8",
-    "@types/react": "18.2.63",
-    "@types/react-dom": "18.2.20",
+    "@types/react": "18.2.64",
+    "@types/react-dom": "18.2.21",
     "@types/react-refresh": "0.14.5",
     "@types/yargs": "17.0.32",
     "acorn-loose": "8.4.0",
@@ -51,7 +51,7 @@
     "metro": "0.80.6",
     "metro-core": "0.80.6",
     "react-refresh": "0.14.0",
-    "typescript": "5.3.3",
+    "typescript": "5.4.2",
     "yargs": "17.7.2"
   },
   "files": [
