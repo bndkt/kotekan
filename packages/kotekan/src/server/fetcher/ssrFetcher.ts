@@ -61,7 +61,6 @@ export const ssrFetcher = async (
 		if (pathSegments[1] === "modules") {
 			console.log("🥁 Requested module:", pathSegments.slice(2).join("/"));
 			const modulePath = pathSegments.slice(2).join("/");
-			console.log({ modulePath });
 
 			if (modulePath === "react-server-dom-esm/client") {
 				console.log("🥁 Requested react-server-dom-esm/client");
@@ -72,7 +71,9 @@ export const ssrFetcher = async (
 							resolveSync("react-server-dom-esm/client", process.cwd()),
 						),
 						"esm",
-						"react-server-dom-esm-client.browser.development.js",
+						development
+							? "react-server-dom-esm-client.browser.development.js"
+							: "react-server-dom-esm-client.browser.production.min.js",
 					),
 				);
 				return new Response(libraryFile, {
@@ -161,6 +162,8 @@ export const ssrFetcher = async (
 			importMap: {
 				imports: {
 					react: "https://esm.sh/react@experimental?pin=v135&dev",
+					"react/jsx-runtime":
+						"https://esm.sh/react@experimental/jsx-runtime?pin=v135&dev",
 					"react/jsx-dev-runtime":
 						"https://esm.sh/react@experimental/jsx-dev-runtime?pin=v135&dev",
 					"react-dom": "https://esm.sh/react-dom@experimental?pin=v135&dev",
@@ -169,6 +172,15 @@ export const ssrFetcher = async (
 					"react-server-dom-esm/client":
 						"/_build/modules/react-server-dom-esm/client",
 				},
+				// imports: {
+				// 	react: "/_build/modules/react",
+				// 	"react/jsx-runtime": "/_build/modules/jsx-runtime",
+				// 	"react/jsx-dev-runtime": "/_build/modules/jsx-dev-runtime",
+				// 	"react-dom": "/_build/modules/react-dom",
+				// 	"react-dom/client": "/_build/modules/react-dom/client",
+				// 	"react-server-dom-esm/client":
+				// 		"/_build/modules/react-server-dom-esm/client",
+				// },
 			},
 		});
 
