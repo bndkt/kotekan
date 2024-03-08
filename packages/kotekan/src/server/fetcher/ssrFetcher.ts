@@ -9,6 +9,7 @@ import type { RenderingStrategy } from "..";
 import { createDocumentElement } from "./createDocumentElement";
 import { createFromEsm } from "./createFromEsm";
 import { createFromWebpack } from "./createFromWebpack";
+import { createImportMap } from "./createImportMap";
 
 interface FetchProps {
 	mode: RenderingStrategy;
@@ -155,33 +156,12 @@ export const ssrFetcher = async (
 				: [`/${buildUrlSegment}/${build.hydrateBootstrapFileName}`]
 			: [];
 
+		const importMap = createImportMap(development);
 		const stream = await renderToReadableStream(DocumentElement, {
+			importMap,
 			bootstrapModules,
 			// Set JSX for initial hydration
 			// bootstrapScriptContent: `const jsx = ${JSON.stringify(jsxStream)}`,
-			importMap: {
-				imports: {
-					react: "https://esm.sh/react@experimental?pin=v135&dev",
-					"react/jsx-runtime":
-						"https://esm.sh/react@experimental/jsx-runtime?pin=v135&dev",
-					"react/jsx-dev-runtime":
-						"https://esm.sh/react@experimental/jsx-dev-runtime?pin=v135&dev",
-					"react-dom": "https://esm.sh/react-dom@experimental?pin=v135&dev",
-					"react-dom/client":
-						"https://esm.sh/react-dom@experimental/client?pin=v135&dev",
-					"react-server-dom-esm/client":
-						"/_build/modules/react-server-dom-esm/client",
-				},
-				// imports: {
-				// 	react: "/_build/modules/react",
-				// 	"react/jsx-runtime": "/_build/modules/jsx-runtime",
-				// 	"react/jsx-dev-runtime": "/_build/modules/jsx-dev-runtime",
-				// 	"react-dom": "/_build/modules/react-dom",
-				// 	"react-dom/client": "/_build/modules/react-dom/client",
-				// 	"react-server-dom-esm/client":
-				// 		"/_build/modules/react-server-dom-esm/client",
-				// },
-			},
 		});
 
 		return new Response(stream, {
