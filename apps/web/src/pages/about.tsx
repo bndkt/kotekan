@@ -15,7 +15,7 @@ export default function About() {
 			<title>About - Kotekan</title>
 			<h1 {...stylex.props(styles.orange)}>Kotekan - About</h1>
 			<a href="/">Home</a>
-			{/* <Counter /> */}
+			<Counter />
 			{/* <LikeButton /> */}
 		</>
 	);

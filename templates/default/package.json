@@ -1,6 +1,7 @@
 {
   "module": "index.ts",
   "type": "module",
+  "sideEffects": false,
   "scripts": {
     "lint": "biome lint ./src",
     "dev": "kotekan dev",

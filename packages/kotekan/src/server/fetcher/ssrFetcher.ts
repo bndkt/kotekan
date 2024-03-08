@@ -1,14 +1,14 @@
 import path from "node:path";
-import { pathToFileURL, type FileSystemRouter } from "bun";
+import { type FileSystemRouter } from "bun";
 import { isbot } from "isbot";
 // @ts-expect-error Untyped import
-import { renderToReadableStream as renderToHtmlStream } from "react-dom/server.edge"; // @todo
-// @ts-expect-error Untyped import
-import { createFromFetch } from "react-server-dom-esm/client.browser"; // @todo
+import { renderToReadableStream } from "react-dom/server.edge";
 
 import type { BuildResult } from "../../builder";
 import type { RenderingStrategy } from "..";
 import { createDocumentElement } from "./createDocumentElement";
+import { createFromEsm } from "./createFromEsm";
+import { createFromWebpack } from "./createFromWebpack";
 
 interface FetchProps {
 	mode: RenderingStrategy;
@@ -21,6 +21,7 @@ interface FetchProps {
 		port: string;
 	};
 	jsxSocket?: string;
+	rsdVariant?: "webpack" | "esm";
 	development?: boolean;
 }
 
@@ -34,6 +35,7 @@ export const ssrFetcher = async (
 		buildUrlSegment,
 		jsxServer,
 		jsxSocket,
+		rsdVariant,
 		development,
 	}: FetchProps,
 ): Promise<Response> => {
@@ -77,46 +79,56 @@ export const ssrFetcher = async (
 	const match = router.match(request.url);
 	if (match) {
 		// JSX Fetch
-		const jsxUrl = url;
+		const jsxUrl = url; // @todo
 		url.hostname = jsxServer.hostname;
 		url.port = jsxServer.port;
+		const method = request.method;
+
 		const jsxFetch = fetch(jsxUrl, {
 			unix: jsxSocket,
+			method,
 		});
 
-		// Forward JSX requests to JSX server
+		// Proxy JSX requests to JSX server
 		if (searchParams.has("jsx")) {
 			const jsxResponse = await jsxFetch;
-			return new Response(await jsxResponse.arrayBuffer(), {
+			return new Response(jsxResponse.body, {
 				headers: {
 					"Content-Type": "text/x-component; charset=utf-8",
 					"Cache-Control": "no-cache",
+					// "X-Forwarded-Host": req.hostname,
+					// "X-Forwarded-For": req.ips,
+					// "X-Forwarded-Port": 3000,
+					// "X-Forwarded-Proto": req.protocol,
 				},
 			});
 		}
 
-		// function createFromNodeStream(stream, moduleRootPath, moduleBaseURL)
-		// const clientComponentsPath = path.join(buildPath, "client", "components");
-		// const jsxStreamOptions = { ssrManifest: { moduleMap: {} } };
-		const moduleBaseURL = new URL("./src", pathToFileURL(process.cwd())).href;
-		console.log({ moduleBaseURL });
-		const options = {};
+		// Create HTML document
 		const DocumentElement = csr
 			? createDocumentElement({ build, buildUrlSegment })
-			: // createFromNodeStream(stream, moduleRootPath, moduleBaseURL, options)
-			  createFromFetch(jsxFetch, moduleBaseURL, options); // @todo
-		// : createFromJsxStream(jsxStream, buildPath, "./build/client/components");
+			: rsdVariant === "webpack"
+			  ? createFromWebpack(jsxFetch)
+			  : createFromEsm(jsxFetch);
 
 		// HTML document stream
 		const bootstrapModules = hydrate
 			? csr
-				? [`/${buildUrlSegment}/bootstrap/${build.renderBootstrapFileName}`]
-				: [`/${buildUrlSegment}/bootstrap/${build.hydrateBootstrapFileName}`]
-			: false;
-		const stream = await renderToHtmlStream(DocumentElement, {
+				? [`/${buildUrlSegment}/${build.renderBootstrapFileName}`]
+				: [`/${buildUrlSegment}/${build.hydrateBootstrapFileName}`]
+			: [];
+
+		const stream = await renderToReadableStream(DocumentElement, {
 			bootstrapModules,
 			// Set JSX for initial hydration
 			// bootstrapScriptContent: `const jsx = ${JSON.stringify(jsxStream)}`,
+			importMap: {
+				imports: {
+					react: "https://esm.sh/react@experimental?dev",
+					"react-dom": "https://esm.sh/react-dom@experimental?dev",
+					"react-dom/": "https://esm.sh/react-dom@experimental?dev/",
+				},
+			},
 		});
 
 		return new Response(stream, {

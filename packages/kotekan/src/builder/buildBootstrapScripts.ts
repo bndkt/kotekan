@@ -18,7 +18,7 @@ export const buildBootstrapScripts = async ({
 		target: "browser",
 		sourcemap: development ? "inline" : "none",
 		minify: development ? false : true,
-		outdir: path.join(buildPath, "client", "bootstrap"),
+		outdir: path.join(buildPath, "client"),
 		naming: "[name]-[hash].[ext]",
 	});
 

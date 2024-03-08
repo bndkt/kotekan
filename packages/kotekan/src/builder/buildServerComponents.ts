@@ -42,5 +42,6 @@ export const buildServerComponents = async ({
 		define: {
 			"process.env.PROJECT_ROOT": JSON.stringify(process.cwd()),
 		},
+		conditions: ["react-server"],
 	});
 };

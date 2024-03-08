@@ -1,8 +1,11 @@
-import { pathToFileURL, type FileSystemRouter } from "bun";
+import path from "node:path";
 import { PassThrough } from "node:stream";
+import { pathToFileURL, type FileSystemRouter } from "bun";
 import { type FunctionComponent } from "react";
 // @ts-expect-error Untyped import
-import { renderToPipeableStream as renderToJsxStream } from "react-server-dom-esm/server.node"; // @todo
+import { renderToPipeableStream } from "react-server-dom-esm/server.node";
+// @ts-expect-error Untyped import
+import { renderToReadableStream } from "react-server-dom-webpack/server.edge";
 
 import type { BuildResult } from "../../builder";
 import type { RenderingStrategy } from "..";
@@ -14,12 +17,21 @@ interface FetchProps {
 	router: FileSystemRouter;
 	buildPath: string;
 	buildUrlSegment: string;
+	rsdVariant?: "webpack" | "esm";
 	development?: boolean;
 }
 
 export const jsxFetcher = async (
 	request: Request,
-	{ mode, build, router, buildPath, buildUrlSegment, development }: FetchProps,
+	{
+		mode,
+		build,
+		router,
+		buildPath,
+		buildUrlSegment,
+		rsdVariant,
+		development,
+	}: FetchProps,
 ): Promise<Response> => {
 	const url = new URL(request.url);
 
@@ -47,13 +59,27 @@ export const jsxFetcher = async (
 			RouteComponent,
 		});
 
-		const moduleBasePath = new URL("./src", pathToFileURL(process.cwd())).href;
-		console.log({ moduleBasePath });
-		const { pipe } = await renderToJsxStream(
+		if (rsdVariant === "webpack") {
+			// Webpack
+			// renderToReadableStream(model, webpackMap, options)
+			const jsxStream = renderToReadableStream(JsxDocumentElement, {}, {});
+
+			// Send JSX
+			return new Response(jsxStream, {
+				headers: { "Content-Type": "text/x-component; charset=utf-8" },
+			});
+		}
+
+		// ESM
+		const moduleBasePath = pathToFileURL(
+			path.join(process.cwd(), "build", "client", "components"),
+		).href;
+		// renderToPipeableStream(model, moduleBasePath, options)
+		const { pipe } = await renderToPipeableStream(
 			JsxDocumentElement,
 			moduleBasePath,
 		);
-		const jsxStream = pipe(new PassThrough()); // @todo: renderToJsxStream(JsxDocumentElement, {});
+		const jsxStream = pipe(new PassThrough());
 
 		// Send JSX
 		return new Response(jsxStream, {

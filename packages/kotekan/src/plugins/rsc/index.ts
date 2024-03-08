@@ -1,6 +1,13 @@
 import path from "node:path";
-import { resolveSync, type BunPlugin } from "bun";
+import { resolveSync, type BunPlugin, pathToFileURL } from "bun";
 import { parse } from "es-module-lexer"; // @todo
+import {
+	resolve,
+	load as reactLoad,
+	getSource as getSourceImpl,
+	transformSource as reactTransformSource,
+	// @ts-expect-error Untyped import
+} from "react-server-dom-esm/node-loader";
 
 import type { ClientComponentsMap, ClientEntryPoints } from "../../builder";
 
@@ -43,7 +50,9 @@ export const rscPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 						args.path,
 						path.dirname(args.importer),
 					);
-					// console.log("New path:", componentPath);
+					// componentPath = componentPath.replace(".tsx", ".js");
+					// componentPath = componentPath.replace("src/", "build/client/");
+					// console.log({ componentPath });
 
 					return {
 						path: componentPath,
@@ -56,55 +65,78 @@ export const rscPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 			});
 
 			build.onLoad({ filter: /.*/, namespace: "rsc" }, async (args) => {
+				const file = Bun.file(args.path);
+				const source = await file.text();
+
+				const defaultLoad = (
+					url: string,
+					context: unknown,
+					defaultLoad: () => void,
+				) => {
+					return {
+						format: "module",
+						source,
+					};
+				};
+
+				const path = args.path
+					.replace(".tsx", ".js")
+					.replace("src/", "build/client/");
+				const url = new URL(pathToFileURL(path)).href;
+				console.log("🎯 OK 1", url);
+				const context = "";
+				const { source: contents } = await reactLoad(url, context, defaultLoad);
+				console.log("🎯 OK 2", contents);
+
 				// console.log(args);
 				// const [, exports] = parse(args.path);
 				// console.log("resolveSync", args.path, process.cwd());
 				// const path = resolveSync(args.path, process.cwd());
 				// console.log(args.path);
-				const file = Bun.file(args.path);
 
-				const input = await file.text();
 				// console.log(input);
 
-				const transpiledInput = transpiler.transformSync(input);
+				// const transpiledInput = transpiler.transformSync(input);
 
-				const [, exports] = parse(transpiledInput);
+				// const [, exports] = parse(transpiledInput);
 
-				let contents = input;
+				// let contents = input;
 
-				for (const exp of exports) {
-					const key = Bun.hash(input + exp).toString();
+				// for (const exp of exports) {
+				// 	const key = Bun.hash(input + exp).toString();
 
-					// config.clientComponentsMap.set(key, {
-					// 	id: `/build${args.path}`,
-					// 	name: exp.n,
-					// 	chunks: [],
-					// 	async: true,
-					// });
+				// 	// config.clientComponentsMap.set(key, {
+				// 	// 	id: `/build${args.path}`,
+				// 	// 	name: exp.n,
+				// 	// 	chunks: [],
+				// 	// 	async: true,
+				// 	// });
 
-					const addContent = `
-						${exp.ln}.$$typeof = Symbol.for('react.client.reference');
-						${exp.ln}.$$id = ${JSON.stringify(
-							`./build/client/components/Counter.js#${exp.n}"`,
-						)};
-					`;
+				// 	const addContent = `
+				// 		${exp.ln}.$$typeof = Symbol.for('react.client.reference');
+				// 		${exp.ln}.$$id = ${JSON.stringify(
+				// 			`/Users/bndkt/Developer/GitHub/kotekan/apps/web/src/components/Counter.js#${exp.n}`,
+				// 		)};
+				// 	`;
 
-					// const addContent = `
-					// 	${exp.ln}.$$typeof = Symbol.for('react.client.reference');
-					// 	${exp.ln}.$$id = ${JSON.stringify(key)};
-					// `;
+				// 	// const addContent = `
+				// 	// 	${exp.ln}.$$typeof = Symbol.for('react.client.reference');
+				// 	// 	${exp.ln}.$$id = ${JSON.stringify(key)};
+				// 	// `;
 
-					// console.log({ addContent });
-					contents += addContent;
-				}
+				// 	// console.log({ addContent });
+				// 	contents += addContent;
+				// }
 
 				const placeholderContent =
 					"export const Counter = () => {return (<div>Counter Placeholder</div>);}";
 
+				// contents = transformSource(input);
+
 				return {
-					// loader: "",
-					// contents,
-					contents: placeholderContent,
+					loader: "tsx",
+					contents,
+					// contents: placeholderContent,
 				};
 			});
 		},

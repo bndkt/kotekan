@@ -1,19 +1,64 @@
 /// <reference lib="dom" />
-import { StrictMode } from "react";
+import {
+	use,
+	useState,
+	type Usable,
+	createElement,
+	startTransition,
+	type Dispatch,
+	type FunctionComponent,
+} from "react";
 import { hydrateRoot } from "react-dom/client";
 // @ts-expect-error Untyped import
-import { createFromFetch } from "react-server-dom-esm/client";
+import { createFromFetch, encodeReply } from "react-server-dom-esm/client";
 
 import { setupNavigation } from "./setupNavigation";
 
-const hydrate = await createFromFetch(
+const moduleBaseURL = "/_build/components";
+let updateRoot: Dispatch<string>;
+
+async function callServer(id: string, args: string) {
+	const response = fetch("?jsx", {
+		method: "post",
+		headers: {
+			Accept: "text/x-component",
+			"rsc-action": id,
+		},
+		body: await encodeReply(args),
+	});
+
+	const { returnValue, root } = await createFromFetch(response, {
+		callServer,
+		moduleBaseURL,
+	});
+
+	startTransition(() => {
+		updateRoot(root);
+	});
+
+	return returnValue;
+}
+
+const data = createFromFetch(
 	fetch("?jsx", {
 		headers: {
 			Accept: "text/x-component",
 		},
 	}),
-	{},
+	{
+		callServer,
+		moduleBaseURL,
+	},
 );
-const root = hydrateRoot(document, <StrictMode>{hydrate}</StrictMode>);
+
+const Shell: FunctionComponent<{ data: Usable<() => string> }> = ({ data }) => {
+	const [root, setRoot] = useState(use(data));
+
+	updateRoot = setRoot;
+
+	return root;
+};
+
+const root = hydrateRoot(document, createElement(Shell, { data }));
 
 setupNavigation(root);
