@@ -1,7 +1,6 @@
-// @ts-expect-error Missing types
-import { css, html as h } from "react-strict-dom";
+import * as stylex from "@stylexjs/stylex";
 
-const styles = css.create({
+const styles = stylex.create({
 	green: {
 		color: "green",
 	},
@@ -10,17 +9,17 @@ const styles = css.create({
 export const ServerComponent = async () => {
 	const msBefore = Bun.nanoseconds();
 
-	await new Promise((resolve) => setTimeout(resolve, 1000));
+	await new Promise((resolve) => setTimeout(resolve, 3000));
 
 	const msAfter = Bun.nanoseconds();
 
 	return (
 		<>
-			<h.div style={styles.green}>Hello from the server!</h.div>
-			<h.ul>
-				<h.li>Before: {msBefore}</h.li>
-				<h.li>After: {msAfter}</h.li>
-			</h.ul>
+			<div {...stylex.props(styles.green)}>Hello from the server!</div>
+			<ul>
+				<li>Before: {msBefore}</li>
+				<li>After: {msAfter}</li>
+			</ul>
 		</>
 	);
 };

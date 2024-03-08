@@ -1,13 +1,12 @@
 import path from "node:path";
 import { Database } from "bun:sqlite";
-// @ts-expect-error Missing types
-import { css, html as h } from "react-strict-dom";
+import * as stylex from "@stylexjs/stylex";
 
 const db = new Database(
 	path.join(process.env.PROJECT_ROOT as string, "data/veekun-pokedex.sqlite"),
 );
 
-const styles = css.create({
+const styles = stylex.create({
 	green: {
 		color: "green",
 	},
@@ -25,11 +24,11 @@ export const PokemonDetail = async () => {
 
 	return (
 		<>
-			<h.div style={styles.green}>Hello from the server!</h.div>
-			<h.ul>
-				<h.li>Name: {pokemon.identifier}</h.li>
-				<h.li>Base experience: {pokemon.base_experience}</h.li>
-			</h.ul>
+			<div {...stylex.props(styles.green)}>Hello from the server!</div>
+			<ul>
+				<li>Name: {pokemon.identifier}</li>
+				<li>Base experience: {pokemon.base_experience}</li>
+			</ul>
 		</>
 	);
 };

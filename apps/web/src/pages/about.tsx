@@ -1,10 +1,9 @@
-// @ts-expect-error Missing types
-import { css, html as h } from "react-strict-dom";
+import * as stylex from "@stylexjs/stylex";
 
 import { Counter } from "../components/Counter.tsx";
 import { LikeButton } from "../components/LikeButton.tsx";
 
-const styles = css.create({
+const styles = stylex.create({
 	orange: {
 		color: "orange",
 	},
@@ -14,9 +13,9 @@ export default function About() {
 	return (
 		<>
 			<title>About - Kotekan</title>
-			<h.h1 style={styles.orange}>Kotekan - About</h.h1>
-			<h.a href="/">Home</h.a>
-			<Counter />
+			<h1 {...stylex.props(styles.orange)}>Kotekan - About</h1>
+			<a href="/">Home</a>
+			{/* <Counter /> */}
 			{/* <LikeButton /> */}
 		</>
 	);

@@ -1,10 +1,9 @@
 import type { ReactNode } from "react";
-// @ts-expect-error Missing types
-import { css, html as h } from "react-strict-dom";
+import * as stylex from "@stylexjs/stylex";
 
-const styles = css.create({
+const styles = stylex.create({
 	blue: {
-		color: "blue",
+		color: { default: "blue", ":visited": "red" },
 	},
 });
 
@@ -17,9 +16,11 @@ export default function Root({ children }: { children?: ReactNode }) {
 				<meta name="description" content="Kotekan" />
 			</head>
 			<body>
-				<h.h1 style={styles.blue}>
-					<h.a href="/">🥁 Kotekan</h.a>
-				</h.h1>
+				<h1>
+					<a href="/" {...stylex.props(styles.blue)}>
+						🥁 Kotekan
+					</a>
+				</h1>
 				{children}
 			</body>
 		</html>

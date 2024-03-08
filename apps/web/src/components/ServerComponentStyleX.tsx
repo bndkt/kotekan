@@ -1,5 +1,3 @@
-// @ts-expect-error Missing types
-// import { css, html as h } from "react-strict-dom";
 import * as stylex from "@stylexjs/stylex";
 
 // const styles = css.create({
