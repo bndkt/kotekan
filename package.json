@@ -16,14 +16,14 @@
     "docker:stop": "docker stop kotekan"
   },
   "dependencies": {
-    "@biomejs/biome": "1.5.3",
+    "@biomejs/biome": "1.6.0",
     "@manypkg/cli": "0.21.2",
     "@types/bun": "1.0.8",
     "npm-check-updates": "16.14.15",
     "typescript": "5.4.2"
   },
   "overrides": {
-    "react": "0.0.0-experimental-0066e0b68-20240306",
-    "react-dom": "0.0.0-experimental-0066e0b68-20240306"
+    "react": "0.0.0-experimental-338dddc08-20240307",
+    "react-dom": "0.0.0-experimental-338dddc08-20240307"
   }
 }
