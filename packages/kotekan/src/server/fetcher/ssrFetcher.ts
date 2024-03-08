@@ -1,5 +1,5 @@
 import path from "node:path";
-import { type FileSystemRouter } from "bun";
+import { resolveSync, type FileSystemRouter } from "bun";
 import { isbot } from "isbot";
 // @ts-expect-error Untyped import
 import { renderToReadableStream } from "react-dom/server.edge";
@@ -56,6 +56,41 @@ export const ssrFetcher = async (
 
 	// Build files
 	if (pathSegments[0] === buildUrlSegment) {
+		// Modules
+		console.log({ pathSegments });
+		if (pathSegments[1] === "modules") {
+			console.log("🥁 Requested module:", pathSegments.slice(2).join("/"));
+			const modulePath = pathSegments.slice(2).join("/");
+			console.log({ modulePath });
+
+			if (modulePath === "react-server-dom-esm/client") {
+				console.log("🥁 Requested react-server-dom-esm/client");
+
+				const libraryFile = Bun.file(
+					path.join(
+						path.dirname(
+							resolveSync("react-server-dom-esm/client", process.cwd()),
+						),
+						"esm",
+						"react-server-dom-esm-client.browser.development.js",
+					),
+				);
+				return new Response(libraryFile, {
+					headers: {
+						// "Cache-Control": `public, max-age=${3600 * 24 * 365}, immutable`,
+						"Cache-Control": "no-cache",
+					},
+				});
+			}
+
+			// const libraryFile = Bun.file(libraryPath);
+			// return new Response(libraryFile, {
+			// 	headers: {
+			// 		"Cache-Control": `public, max-age=${3600 * 24 * 365}, immutable`,
+			// 	},
+			// });
+		}
+
 		const buildFilePath = path.join(
 			buildPath,
 			"client",
@@ -67,7 +102,8 @@ export const ssrFetcher = async (
 
 		return new Response(buildFile, {
 			headers: {
-				"Cache-Control": `public, max-age=${3600 * 24 * 365}, immutable`,
+				// "Cache-Control": `public, max-age=${3600 * 24 * 365}, immutable`,
+				"Cache-Control": "no-cache",
 			},
 		});
 	}
@@ -124,9 +160,14 @@ export const ssrFetcher = async (
 			// bootstrapScriptContent: `const jsx = ${JSON.stringify(jsxStream)}`,
 			importMap: {
 				imports: {
-					react: "https://esm.sh/react@experimental?dev",
-					"react-dom": "https://esm.sh/react-dom@experimental?dev",
-					"react-dom/": "https://esm.sh/react-dom@experimental?dev/",
+					react: "https://esm.sh/react@experimental?pin=v135&dev",
+					"react/jsx-dev-runtime":
+						"https://esm.sh/react@experimental/jsx-dev-runtime?pin=v135&dev",
+					"react-dom": "https://esm.sh/react-dom@experimental?pin=v135&dev",
+					"react-dom/client":
+						"https://esm.sh/react-dom@experimental/client?pin=v135&dev",
+					"react-server-dom-esm/client":
+						"/_build/modules/react-server-dom-esm/client",
 				},
 			},
 		});

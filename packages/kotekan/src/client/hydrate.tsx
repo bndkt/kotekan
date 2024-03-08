@@ -7,6 +7,7 @@ import {
 	startTransition,
 	type Dispatch,
 	type FunctionComponent,
+	StrictMode,
 } from "react";
 import { hydrateRoot } from "react-dom/client";
 // @ts-expect-error Untyped import
@@ -16,6 +17,8 @@ import { setupNavigation } from "./setupNavigation";
 
 const moduleBaseURL = "/_build/components";
 let updateRoot: Dispatch<string>;
+
+console.log("🥁 Hydrate");
 
 async function callServer(id: string, args: string) {
 	const response = fetch("?jsx", {
@@ -60,5 +63,7 @@ const Shell: FunctionComponent<{ data: Usable<() => string> }> = ({ data }) => {
 };
 
 const root = hydrateRoot(document, createElement(Shell, { data }));
+
+// const root = hydrateRoot(document, <StrictMode>{hydrate}</StrictMode>);
 
 setupNavigation(root);

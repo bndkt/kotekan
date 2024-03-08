@@ -34,7 +34,7 @@ export const rscPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 				if (args.importer.includes("node_modules/")) return;
 
 				const importPath = resolveSync(args.path, path.dirname(args.importer));
-				console.log("Import:", importPath);
+				// console.log("Import:", importPath);
 				const file = Bun.file(importPath);
 				const inputCode = await file.text();
 
@@ -83,10 +83,10 @@ export const rscPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 					.replace(".tsx", ".js")
 					.replace("src/", "build/client/");
 				const url = new URL(pathToFileURL(path)).href;
-				console.log("🎯 OK 1", url);
+				// console.log("🎯 OK 1", url);
 				const context = "";
 				const { source: contents } = await reactLoad(url, context, defaultLoad);
-				console.log("🎯 OK 2", contents);
+				// console.log("🎯 OK 2", contents);
 
 				// console.log(args);
 				// const [, exports] = parse(args.path);

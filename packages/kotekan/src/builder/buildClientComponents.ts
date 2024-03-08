@@ -1,38 +1,32 @@
 import { babelPlugin } from "../plugins/babel";
-import type { StylexRules } from ".";
+import type { ClientEntryPoints, StylexRules } from ".";
 
 interface BuildClientComponentsProps {
-	entrypoints: string[];
+	clientEntryPoints: ClientEntryPoints;
 	buildPath: string;
 	stylexRules: StylexRules;
 	development: boolean;
 }
 
 export const buildClientComponents = async ({
-	entrypoints,
+	clientEntryPoints,
 	buildPath,
 	stylexRules,
 	development,
 }: BuildClientComponentsProps) => {
-	if (entrypoints.length > 0) {
-		const build = await Bun.build({
-			entrypoints,
-			target: "browser",
-			sourcemap: development ? "inline" : "none",
-			minify: development ? false : true,
-			outdir: `${buildPath}/client/components`,
-			external: ["react", "react-dom"],
-			plugins: [
-				babelPlugin({
-					stylexRules,
-					development,
-				}),
-			],
-		});
-
-		if (!build.success || build.outputs.length === 0) {
-			console.error("🥁 Build error:", build.logs);
-			throw new Error("🥁 Build failed or no outputs");
-		}
-	}
+	const build = await Bun.build({
+		entrypoints: Array.from(clientEntryPoints),
+		target: "browser",
+		sourcemap: development ? "inline" : "none",
+		minify: development ? false : true,
+		outdir: `${buildPath}/client/components`,
+		naming: "[name].[ext]",
+		external: ["react", "react-dom", "react-server-dom-esm"],
+		plugins: [
+			babelPlugin({
+				stylexRules,
+				development,
+			}),
+		],
+	});
 };

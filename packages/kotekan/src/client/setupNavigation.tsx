@@ -4,9 +4,18 @@ import { type Root } from "react-dom/client";
 // @ts-expect-error Untyped import
 import { createFromFetch } from "react-server-dom-esm/client";
 
+const moduleBaseURL = "/_build/components";
+
 export const setupNavigation = (root: Root) => {
 	const navigate = (pathname: string) => {
-		createFromFetch(fetch(`${pathname}?jsx`)).then((response: ReactNode) => {
+		createFromFetch(
+			fetch(`${pathname}?jsx`, {
+				headers: {
+					Accept: "text/x-component",
+				},
+			}),
+			{ moduleBaseURL },
+		).then((response: ReactNode) => {
 			root.render(<StrictMode>{response}</StrictMode>);
 		});
 	};

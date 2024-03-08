@@ -39,6 +39,7 @@ export const buildServerComponents = async ({
 		naming: "[name]-[hash].[ext]",
 		publicPath: "/_build/",
 		plugins,
+		external: ["react", "react-dom", "react-server-dom-esm"],
 		define: {
 			"process.env.PROJECT_ROOT": JSON.stringify(process.cwd()),
 		},

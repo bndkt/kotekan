@@ -80,8 +80,8 @@ export const builder = async ({
 		development,
 	});
 
-	const clientComponentsBuild = buildClientComponents({
-		entrypoints: Array.from(clientEntryPoints),
+	const clientComponentsBuild = await buildClientComponents({
+		clientEntryPoints,
 		buildPath,
 		stylexRules,
 		development,
@@ -93,6 +93,7 @@ export const builder = async ({
 		clientComponentsMap,
 		...rootComponentBuild,
 		...bootstrapScriptsBuild,
+		// ...clientComponentsBuild,
 		...routeComponentsBuild,
 		...stylesheetBuild,
 	};

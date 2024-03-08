@@ -31,7 +31,6 @@ export const buildRouteComponents = async ({
 	const routeComponentPaths: RouteComponentPaths = new Map();
 
 	for (const [routeName, routePath] of Object.entries(routes)) {
-		// console.log({ routePath });
 		const build = await buildServerComponents({
 			entrypoints: [routePath],
 			mdxEnabled,
