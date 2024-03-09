@@ -12,6 +12,9 @@ export const Nav = () => {
 					<a href="/blog">Blog</a>
 				</li>
 				<li>
+					<a href="/docs">Docs</a>
+				</li>
+				<li>
 					<a href="/pokemon">Pokémon (Demo)</a>
 				</li>
 				<li>
