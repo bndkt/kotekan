@@ -5,7 +5,7 @@
   "sideEffects": false,
   "scripts": {
     "lint": "biome lint ./src",
-    "dev": "kotekan dev",
+    "dev": "DOCKER_BUILD_TIMESTAMP=1709948626 kotekan dev",
     "start": "NODE_ENV=production kotekan start",
     "kotekan-jsx": "kotekan-jsx",
     "kotekan-ssr": "kotekan-ssr",
