@@ -28,7 +28,7 @@ export const server = async (props: ServerProps = {}) => {
 	const buildUrlSegment = "_build";
 
 	// Router
-	const dir = path.join(process.cwd(), "src", "pages");
+	const dir = path.join(process.cwd(), "src", "routes");
 	const router = routerFn({ dir, mdxEnabled });
 	const { routes } = router;
 

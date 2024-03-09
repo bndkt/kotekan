@@ -20,9 +20,9 @@ export const buildRootComponent = async ({
 	mdxEnabled,
 	development,
 }: BuildRootComponentProps) => {
-	const routePath = resolveSync("./src/root", process.cwd());
+	const rootComponentPath = resolveSync("./src/Root", process.cwd());
 	const build = await buildServerComponents({
-		entrypoints: [routePath],
+		entrypoints: [rootComponentPath],
 		stylexRules,
 		clientEntryPoints,
 		mdxEnabled,
