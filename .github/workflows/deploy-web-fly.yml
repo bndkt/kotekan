@@ -14,6 +14,6 @@ jobs:
                 curl -L https://fly.io/install.sh | bash
                 echo "$HOME/.fly/bin" >> $GITHUB_PATH
             - name: Deploy
-              run: fly deploy --remote-only
+              run: fly deploy --remote-only --build-arg BUILD_TIMESTAMP=$(date +%s)
               env:
                 FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
