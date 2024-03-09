@@ -1,11 +1,6 @@
 import type { ReactNode } from "react";
-import * as stylex from "@stylexjs/stylex";
 
-const styles = stylex.create({
-	blue: {
-		color: { default: "blue", ":visited": "red" },
-	},
-});
+import { Layout } from "./components/Layout";
 
 export default function Root({ children }: { children?: ReactNode }) {
 	return (
@@ -16,12 +11,7 @@ export default function Root({ children }: { children?: ReactNode }) {
 				<meta name="description" content="Kotekan" />
 			</head>
 			<body>
-				<h1>
-					<a href="/" {...stylex.props(styles.blue)}>
-						🥁 Kotekan
-					</a>
-				</h1>
-				{children}
+				<Layout>{children}</Layout>
 			</body>
 		</html>
 	);

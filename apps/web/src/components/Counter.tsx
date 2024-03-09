@@ -16,7 +16,7 @@ export const Counter = ({ start }: { start: number }) => {
 		<button
 			type="button"
 			onClick={() => setCounter(counter + 1)}
-			style={styles.button}
+			{...stylex.props(styles.button)}
 		>
 			Counter: {counter}
 		</button>
