@@ -18,7 +18,12 @@ export const buildBootstrapScripts = async ({
 		target: "browser",
 		sourcemap: development ? "inline" : "none",
 		minify: development ? false : true,
-		external: ["react", "react-dom", "react-server-dom-esm"],
+		external: [
+			"react",
+			"react-dom",
+			"react-server-dom-esm",
+			"react-strict-dom",
+		],
 		outdir: path.join(buildPath, "client"),
 		naming: "[name]-[hash].[ext]",
 	});

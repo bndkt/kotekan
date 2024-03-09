@@ -8,11 +8,10 @@ import {
 	// @ts-expect-error Untyped import
 } from "react-server-dom-esm/node-loader";
 
-import type { ClientComponentsMap, ClientEntryPoints } from "../../builder";
+import type { ClientEntryPoints } from "../../builder";
 
 interface PluginConfig {
 	clientEntryPoints: ClientEntryPoints;
-	clientComponentsMap: ClientComponentsMap;
 	development?: boolean;
 }
 
@@ -82,55 +81,8 @@ export const rscPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 					.replace(".tsx", ".js")
 					.replace("src/components", "build/client/components");
 				const url = new URL(pathToFileURL(path)).href;
-				// console.log("🎯 RSC Plugin, url:", url);
 				const context = "";
 				const { source: contents } = await reactLoad(url, context, defaultLoad);
-				// console.log("🎯 OK 2", contents);
-
-				// console.log(args);
-				// const [, exports] = parse(args.path);
-				// console.log("resolveSync", args.path, process.cwd());
-				// const path = resolveSync(args.path, process.cwd());
-				// console.log(args.path);
-
-				// console.log(input);
-
-				// const transpiledInput = transpiler.transformSync(input);
-
-				// const [, exports] = parse(transpiledInput);
-
-				// let contents = input;
-
-				// for (const exp of exports) {
-				// 	const key = Bun.hash(input + exp).toString();
-
-				// 	// config.clientComponentsMap.set(key, {
-				// 	// 	id: `/build${args.path}`,
-				// 	// 	name: exp.n,
-				// 	// 	chunks: [],
-				// 	// 	async: true,
-				// 	// });
-
-				// 	const addContent = `
-				// 		${exp.ln}.$$typeof = Symbol.for('react.client.reference');
-				// 		${exp.ln}.$$id = ${JSON.stringify(
-				// 			`/Users/bndkt/Developer/GitHub/kotekan/apps/web/src/components/Counter.js#${exp.n}`,
-				// 		)};
-				// 	`;
-
-				// 	// const addContent = `
-				// 	// 	${exp.ln}.$$typeof = Symbol.for('react.client.reference');
-				// 	// 	${exp.ln}.$$id = ${JSON.stringify(key)};
-				// 	// `;
-
-				// 	// console.log({ addContent });
-				// 	contents += addContent;
-				// }
-
-				const placeholderContent =
-					"export const Counter = () => {return (<div>Counter Placeholder</div>);}";
-
-				// contents = transformSource(input);
 
 				return {
 					loader: "tsx",

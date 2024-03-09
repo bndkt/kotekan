@@ -7,6 +7,8 @@ import typescriptSyntaxPlugin from "@babel/plugin-syntax-typescript";
 // import jsxSyntaxPlugin from "@babel/plugin-syntax-jsx";
 import type { Rule } from "@stylexjs/babel-plugin";
 // import reactRefreshBabelPlugin from "react-refresh/babel";
+// @ts-expect-error Missing types
+import rsdPlugin from "react-strict-dom/babel";
 
 import { stylexPlugin } from "./stylex";
 import type { StylexRules } from "../../builder";
@@ -19,22 +21,11 @@ interface PluginConfig {
 const BABEL_PLUGIN_ONLOAD_FILTER = /\.(jsx|js|tsx|ts|mjs|cjs|mts|cts)$/;
 
 export const babelPlugin: (config: PluginConfig) => BunPlugin = (config) => {
-	// const stylexImports = ["@stylexjs/stylex", "react-strict-dom"];
 	const development = config.development ?? false;
 
 	return {
 		name: "babelPlugin",
 		setup(build) {
-			// console.log(builder.config, config);
-
-			// const stylexRules: Record<string, Rule[]> = {};
-
-			// builder.onResolve(
-			// 	{ filter: /node_modules\/underscore/ },
-			// 	async (args) => {
-			// 		return null;
-			// 	},
-			// );
 			build.onLoad(
 				{
 					filter: BABEL_PLUGIN_ONLOAD_FILTER,
@@ -44,42 +35,38 @@ export const babelPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 					const file = Bun.file(currFilePath);
 					const inputCode = await file.text();
 
-					// if (
-					// 	!stylexImports.some((importName) => inputCode.includes(importName))
-					// ) {
-					// 	// No transform needed if files doesn't import StyleX
-					// 	return;
-					// }
-
 					if (
 						currFilePath.includes("node_modules/") &&
-						!currFilePath.includes("react-strict-dom")
+						!currFilePath.includes("react-strict-dom") &&
+						!currFilePath.includes("@stylexjs/stylex")
 					)
 						return;
+
+					console.log("💅 StyleX", args.path);
 
 					const transformResult = await transformAsync(inputCode, {
 						filename: currFilePath,
 						plugins: [
 							[typescriptSyntaxPlugin, { isTSX: true }],
 							// jsxSyntaxPlugin,
+							rsdPlugin,
 							stylexPlugin({ development }),
 							// [reactRefreshBabelPlugin, { skipEnvCheck: true }],
 						],
-						exclude: "node_modules/**",
+						// exclude: "node_modules/**",
 					});
 
 					const loader = args.loader;
 
 					if (transformResult === null) {
-						console.warn("StyleX: transformAsync returned null");
+						console.warn("💅 StyleX: transformAsync returned null");
 						return { contents: inputCode, loader };
 					}
 
 					const { code, metadata } = transformResult;
-					// const { code } = transformResult;
 
 					if (!code) {
-						console.warn("StyleX: transformAsync returned null");
+						console.warn("💅 StyleX: transformAsync returned null");
 						return { contents: inputCode, loader };
 					}
 

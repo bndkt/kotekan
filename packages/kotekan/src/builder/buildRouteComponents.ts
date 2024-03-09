@@ -13,7 +13,6 @@ interface BuildRouteComponentsProps {
 	mdxEnabled: boolean;
 	stylexRules: StylexRules;
 	clientEntryPoints: ClientEntryPoints;
-	clientComponentsMap: ClientComponentsMap;
 	development: boolean;
 }
 
@@ -25,7 +24,6 @@ export const buildRouteComponents = async ({
 	mdxEnabled,
 	stylexRules,
 	clientEntryPoints,
-	clientComponentsMap,
 	development,
 }: BuildRouteComponentsProps) => {
 	const routeComponentPaths: RouteComponentPaths = new Map();
@@ -36,7 +34,6 @@ export const buildRouteComponents = async ({
 			mdxEnabled,
 			stylexRules,
 			clientEntryPoints,
-			clientComponentsMap,
 			development,
 		});
 

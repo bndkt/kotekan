@@ -21,7 +21,12 @@ export const buildClientComponents = async ({
 		minify: development ? false : true,
 		outdir: `${buildPath}/client/components`,
 		naming: "[name].[ext]",
-		external: ["react", "react-dom", "react-server-dom-esm"],
+		external: [
+			"react",
+			"react-dom",
+			"react-server-dom-esm",
+			"react-strict-dom",
+		],
 		plugins: [
 			babelPlugin({
 				stylexRules,

@@ -9,7 +9,6 @@ interface BuildRootComponentProps {
 	buildPath: string;
 	stylexRules: StylexRules;
 	clientEntryPoints: ClientEntryPoints;
-	clientComponentsMap: ClientComponentsMap;
 	mdxEnabled: boolean;
 	development: boolean;
 }
@@ -18,7 +17,6 @@ export const buildRootComponent = async ({
 	buildPath,
 	stylexRules,
 	clientEntryPoints,
-	clientComponentsMap,
 	mdxEnabled,
 	development,
 }: BuildRootComponentProps) => {
@@ -27,7 +25,6 @@ export const buildRootComponent = async ({
 		entrypoints: [routePath],
 		stylexRules,
 		clientEntryPoints,
-		clientComponentsMap,
 		mdxEnabled,
 		development,
 	});

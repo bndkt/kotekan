@@ -52,17 +52,17 @@ export const jsxFetcher = async (
 		const moduleBasePath = pathToFileURL(
 			path.join(process.cwd(), "build", "client", "components"),
 		).href;
-		console.log({ moduleBasePath });
 		const options = {
 			onError: undefined,
 			identifierPrefix: undefined,
 			onPostpone: undefined,
-			environmentName: development ? "development" : "production",
+			// environmentName: "Server",
 		};
 		// renderToPipeableStream(model, moduleBasePath, options)
 		const { pipe } = await renderToPipeableStream(
 			JsxDocumentElement,
 			moduleBasePath,
+			options,
 		);
 		const jsxStream = pipe(new PassThrough());
 

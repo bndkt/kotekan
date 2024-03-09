@@ -7,7 +7,6 @@ interface BuildServerComponentsProps {
 	entrypoints: string[];
 	stylexRules: StylexRules;
 	clientEntryPoints: ClientEntryPoints;
-	clientComponentsMap: ClientComponentsMap;
 	mdxEnabled: boolean;
 	development: boolean;
 }
@@ -16,12 +15,11 @@ export const buildServerComponents = async ({
 	entrypoints,
 	stylexRules,
 	clientEntryPoints,
-	clientComponentsMap,
 	mdxEnabled,
 	development,
 }: BuildServerComponentsProps) => {
 	const plugins = [
-		rscPlugin({ clientEntryPoints, clientComponentsMap, development }),
+		rscPlugin({ clientEntryPoints, development }),
 		babelPlugin({
 			stylexRules,
 			development,
@@ -39,10 +37,16 @@ export const buildServerComponents = async ({
 		naming: "[name]-[hash].[ext]",
 		publicPath: "/_build/",
 		plugins,
-		external: ["react", "react-dom", "react-server-dom-esm"],
+		external: [
+			"react",
+			"react-dom",
+			"react-server-dom-esm",
+			"react-strict-dom",
+		],
 		define: {
 			"process.env.PROJECT_ROOT": JSON.stringify(process.cwd()),
 		},
+		// @ts-expect-error Untyped, should be fixed with next stable Bun release // @todo
 		conditions: ["react-server"],
 	});
 };

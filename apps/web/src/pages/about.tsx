@@ -2,6 +2,8 @@ import * as stylex from "@stylexjs/stylex";
 
 import { Counter } from "../components/Counter.tsx";
 import { LikeButton } from "../components/LikeButton.tsx";
+import { ServerComponentStrict } from "../components/ServerComponentStrict.tsx";
+import { Suspense } from "react";
 
 const styles = stylex.create({
 	orange: {
@@ -16,7 +18,7 @@ export default function About() {
 			<h1 {...stylex.props(styles.orange)}>Kotekan - About</h1>
 			<a href="/">Home</a>
 			<Counter start={8 /* Bun.nanoseconds() */} />
-			{/* <LikeButton /> */}
+			<LikeButton />
 		</>
 	);
 }
