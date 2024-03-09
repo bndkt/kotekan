@@ -80,9 +80,9 @@ export const rscPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 
 				const path = args.path
 					.replace(".tsx", ".js")
-					.replace("src/", "build/client/");
+					.replace("src/components", "build/client/components");
 				const url = new URL(pathToFileURL(path)).href;
-				// console.log("🎯 OK 1", url);
+				// console.log("🎯 RSC Plugin, url:", url);
 				const context = "";
 				const { source: contents } = await reactLoad(url, context, defaultLoad);
 				// console.log("🎯 OK 2", contents);
