@@ -42,7 +42,7 @@ export const babelPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 					)
 						return;
 
-					console.log("💅 StyleX", args.path);
+					// console.log("💅 StyleX", args.path);
 
 					const transformResult = await transformAsync(inputCode, {
 						filename: currFilePath,
