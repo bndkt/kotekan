@@ -1,6 +1,5 @@
 import path from "node:path";
 import { resolveSync, type BunPlugin, pathToFileURL } from "bun";
-import { parse } from "es-module-lexer"; // @todo
 import {
 	resolve,
 	load as reactLoad,

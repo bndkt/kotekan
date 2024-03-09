@@ -2,11 +2,9 @@ import path from "node:path";
 import { Transform } from "node:stream";
 import { pathToFileURL } from "bun";
 // @ts-expect-error Untyped import
-import { createFromFetch } from "react-server-dom-esm/client.browser";
-// @ts-expect-error Untyped import
 import { createFromNodeStream } from "react-server-dom-esm/client.node";
 
-export const createFromEsm = async (jsxFetch: Promise<Response>) => {
+export const createFromJsx = async (jsxFetch: Promise<Response>) => {
 	const moduleRootPath = pathToFileURL(
 		path.join(process.cwd(), "build", "client", "components"),
 	).href;

@@ -7,8 +7,7 @@ import { renderToReadableStream } from "react-dom/server.edge";
 import type { BuildResult } from "../../builder";
 import type { RenderingStrategy } from "..";
 import { createDocumentElement } from "./createDocumentElement";
-import { createFromEsm } from "./createFromEsm";
-import { createFromWebpack } from "./createFromWebpack";
+import { createFromJsx } from "./createFromJsx";
 import { createImportMap } from "./createImportMap";
 
 interface FetchProps {
@@ -22,7 +21,6 @@ interface FetchProps {
 		port: string;
 	};
 	jsxSocket?: string;
-	rsdVariant?: "webpack" | "esm";
 	development?: boolean;
 }
 
@@ -36,7 +34,6 @@ export const ssrFetcher = async (
 		buildUrlSegment,
 		jsxServer,
 		jsxSocket,
-		rsdVariant,
 		development,
 	}: FetchProps,
 ): Promise<Response> => {
@@ -123,6 +120,7 @@ export const ssrFetcher = async (
 		const method = request.method;
 
 		const jsxFetch = fetch(jsxUrl, {
+			// @ts-expect-error Untyped, should be fixed with next stable Bun release // @todo
 			unix: jsxSocket,
 			method,
 		});
@@ -145,9 +143,7 @@ export const ssrFetcher = async (
 		// Create HTML document
 		const DocumentElement = csr
 			? createDocumentElement({ build, buildUrlSegment })
-			: rsdVariant === "webpack"
-			  ? createFromWebpack(jsxFetch)
-			  : createFromEsm(jsxFetch);
+			: createFromJsx(jsxFetch);
 
 		// HTML document stream
 		const bootstrapModules = hydrate

@@ -4,8 +4,6 @@ import { pathToFileURL, type FileSystemRouter } from "bun";
 import { type FunctionComponent } from "react";
 // @ts-expect-error Untyped import
 import { renderToPipeableStream } from "react-server-dom-esm/server.node";
-// @ts-expect-error Untyped import
-import { renderToReadableStream } from "react-server-dom-webpack/server.edge";
 
 import type { BuildResult } from "../../builder";
 import type { RenderingStrategy } from "..";
@@ -17,21 +15,12 @@ interface FetchProps {
 	router: FileSystemRouter;
 	buildPath: string;
 	buildUrlSegment: string;
-	rsdVariant?: "webpack" | "esm";
 	development?: boolean;
 }
 
 export const jsxFetcher = async (
 	request: Request,
-	{
-		mode,
-		build,
-		router,
-		buildPath,
-		buildUrlSegment,
-		rsdVariant,
-		development,
-	}: FetchProps,
+	{ mode, build, router, buildPath, buildUrlSegment, development }: FetchProps,
 ): Promise<Response> => {
 	const url = new URL(request.url);
 
@@ -59,21 +48,17 @@ export const jsxFetcher = async (
 			RouteComponent,
 		});
 
-		if (rsdVariant === "webpack") {
-			// Webpack
-			// renderToReadableStream(model, webpackMap, options)
-			const jsxStream = renderToReadableStream(JsxDocumentElement, {}, {});
-
-			// Send JSX
-			return new Response(jsxStream, {
-				headers: { "Content-Type": "text/x-component; charset=utf-8" },
-			});
-		}
-
 		// ESM
 		const moduleBasePath = pathToFileURL(
 			path.join(process.cwd(), "build", "client", "components"),
 		).href;
+		console.log({ moduleBasePath });
+		const options = {
+			onError: undefined,
+			identifierPrefix: undefined,
+			onPostpone: undefined,
+			environmentName: development ? "development" : "production",
+		};
 		// renderToPipeableStream(model, moduleBasePath, options)
 		const { pipe } = await renderToPipeableStream(
 			JsxDocumentElement,
