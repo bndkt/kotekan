@@ -8,7 +8,7 @@ const styles = stylex.create({
 	},
 });
 
-export const Counter = ({ start }: { start: number }) => {
+export const Counter = ({ start = 0 }: { start?: number }) => {
 	const [counter, setCounter] = useState(start);
 	// const counter = 1;
 

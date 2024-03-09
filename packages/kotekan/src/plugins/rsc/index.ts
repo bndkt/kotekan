@@ -17,10 +17,6 @@ interface PluginConfig {
 
 const PLUGIN_FILTER = /\.(jsx|js|tsx|ts|mjs|cjs|mts|cts)$/;
 
-const transpiler = new Bun.Transpiler({
-	loader: "tsx",
-});
-
 export const rscPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 	return {
 		name: "rscPlugin",

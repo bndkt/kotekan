@@ -19,8 +19,6 @@ export default function Index() {
 			<a href="/blog">Blog</a>
 			<a href="/pokemon">Pokémon</a>
 
-			<div>Hello from react-strict-dom</div>
-
 			<Suspense fallback={<div>Loading &hellip;</div>}>
 				{/* @ts-expect-error Async component */}
 				<ServerComponent />

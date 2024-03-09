@@ -23,7 +23,7 @@ export const reactNativePlugin: (config: PluginConfig) => BunPlugin = (
 	return {
 		name: "reactNativePlugin",
 		setup(builder) {
-			builder.onResolve({ filter: RESOLVE_FILTER }, async (args) => {
+			builder.onResolve({ filter: /\.\/Libraries(.*)$/ }, async (args) => {
 				console.log(args);
 				// throw new Error("react-native imports are not supported");
 				return null;
