@@ -15,10 +15,9 @@ export const createImportMap = (development?: boolean) => {
 			"react-dom": "https://esm.sh/react-dom@experimental?pin=v135".concat(
 				development ? "&dev" : "",
 			),
-			"react-dom/client":
-				"https://esm.sh/react-dom@experimental/client?pin=v135".concat(
-					development ? "&dev" : "",
-				),
+			"react-dom/": "https://esm.sh/react-dom@experimental&pin=v135"
+				.concat(development ? "&dev" : "")
+				.concat("/"),
 			"react-server-dom-esm/client":
 				"/_build/modules/react-server-dom-esm/client",
 		},
