@@ -1,23 +1,26 @@
 export const createImportMap = (development?: boolean) => {
 	const importMap = {
 		imports: {
-			react: "https://esm.sh/react@experimental?pin=v135".concat(
-				development ? "&dev" : "",
-			),
+			react:
+				"https://esm.sh/react@0.0.0-experimental-338dddc08-20240307?pin=v135".concat(
+					development ? "&dev" : "",
+				),
 			"react/jsx-runtime":
-				"https://esm.sh/react@experimental/jsx-runtime?pin=v135".concat(
+				"https://esm.sh/react@0.0.0-experimental-338dddc08-20240307/jsx-runtime?pin=v135".concat(
 					development ? "&dev" : "",
 				),
 			"react/jsx-dev-runtime":
-				"https://esm.sh/react@experimental/jsx-dev-runtime?pin=v135".concat(
+				"https://esm.sh/react@0.0.0-experimental-338dddc08-20240307/jsx-dev-runtime?pin=v135".concat(
 					development ? "&dev" : "",
 				),
-			"react-dom": "https://esm.sh/react-dom@experimental?pin=v135".concat(
-				development ? "&dev" : "",
-			),
-			"react-dom/": "https://esm.sh/react-dom@experimental&pin=v135"
-				.concat(development ? "&dev" : "")
-				.concat("/"),
+			"react-dom":
+				"https://esm.sh/react-dom@0.0.0-experimental-338dddc08-20240307?pin=v135".concat(
+					development ? "&dev" : "",
+				),
+			"react-dom/":
+				"https://esm.sh/react-dom@0.0.0-experimental-338dddc08-20240307&pin=v135"
+					.concat(development ? "&dev" : "")
+					.concat("/"),
 			"react-server-dom-esm/client":
 				"/_build/modules/react-server-dom-esm/client",
 		},
