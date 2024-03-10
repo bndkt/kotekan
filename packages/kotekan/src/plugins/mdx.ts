@@ -3,12 +3,12 @@ import { createFormatAwareProcessors } from "@mdx-js/mdx/internal-create-format-
 import { extnamesToRegex } from "@mdx-js/mdx/internal-extnames-to-regex";
 import type { CompileOptions } from "@mdx-js/mdx";
 
-interface PluginConfig {
+interface MdxPluginConfig {
 	options?: CompileOptions;
 	development?: boolean;
 }
 
-export const mdxPlugin: (config: PluginConfig) => BunPlugin = (config) => {
+export const mdxPlugin: (config: MdxPluginConfig) => BunPlugin = (config) => {
 	return {
 		name: "mdxPlugin",
 		setup(build) {

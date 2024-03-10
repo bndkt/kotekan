@@ -1,6 +1,8 @@
 import type { BunPlugin } from "bun";
 import { transformAsync } from "@babel/core";
+// @ts-expect-error Untyped import
 import typescriptSyntaxPlugin from "@babel/plugin-syntax-typescript";
+// @ts-expect-error Untyped import
 import jsxSyntaxPlugin from "@babel/plugin-syntax-jsx";
 import reactRefreshBabelPlugin from "react-refresh/babel";
 
