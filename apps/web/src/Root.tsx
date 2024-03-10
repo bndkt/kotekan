@@ -1,7 +1,5 @@
 import type { ReactNode } from "react";
 
-import { Layout } from "./components/Layout";
-
 export default function Root({ children }: { children?: ReactNode }) {
 	return (
 		<html lang="en">
@@ -10,9 +8,7 @@ export default function Root({ children }: { children?: ReactNode }) {
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<meta name="description" content="Kotekan" />
 			</head>
-			<body>
-				<Layout>{children}</Layout>
-			</body>
+			<body>{children}23235</body>
 		</html>
 	);
 }

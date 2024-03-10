@@ -1,11 +1,3 @@
-import * as stylex from "@stylexjs/stylex";
-
-const styles = stylex.create({
-	green: {
-		color: "green",
-	},
-});
-
 const dockerBuildTimestamp = Number(process.env.DOCKER_BUILD_TIMESTAMP);
 // const dockerBuildTimestamp = Number(process.env.DOCKER_BUILD_TIMESTAMP);
 const dockerBuildDate = Number.isNaN(dockerBuildTimestamp)
@@ -21,7 +13,7 @@ export const ServerComponent = async () => {
 
 	return (
 		<>
-			<div {...stylex.props(styles.green)}>Hello from the server!</div>
+			<div>Hello from the server!</div>
 			<ul>
 				<li>
 					Docker build timestamp:{" "}

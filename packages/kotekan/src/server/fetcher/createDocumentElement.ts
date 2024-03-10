@@ -1,31 +1,34 @@
+import path from "node:path";
 import { createElement, type FunctionComponent } from "react";
 
 import type { BuildResult } from "../../builder";
+import { resolveSync } from "bun";
 
 interface CreateDocumentElementProps {
-	build: BuildResult;
+	// build: BuildResult;
 	buildUrlSegment: string;
 	RouteComponent?: FunctionComponent;
 }
 
 export const createDocumentElement = async ({
-	build,
+	// build,
 	buildUrlSegment,
 	RouteComponent,
 }: CreateDocumentElementProps) => {
 	// StyleX
-	const href = `/${buildUrlSegment}/styles/${build.stylesheetFileName}`;
-	const StylesheetElement = build.stylesheetFileName
-		? createElement("link", {
-				href,
-				rel: "stylesheet",
-				precedence: "default",
-				key: "stylesheet",
-		  })
-		: null;
+	// const href = `/${buildUrlSegment}/styles/${build.stylesheetFileName}`;
+	// const StylesheetElement = build.stylesheetFileName
+	// 	? createElement("link", {
+	// 			href,
+	// 			rel: "stylesheet",
+	// 			precedence: "default",
+	// 			key: "stylesheet",
+	// 	  })
+	// 	: null;
 
 	// Root component
-	const rootComponentFile = await import(build.rootComponentFilePath);
+	const rootComponentFilePath = resolveSync("./src/Root", process.cwd()); // build.rootComponentFilePath
+	const rootComponentFile = await import(rootComponentFilePath);
 	const RootComponent = rootComponentFile.default as FunctionComponent;
 
 	// Route component element
@@ -37,7 +40,7 @@ export const createDocumentElement = async ({
 
 	// Document element
 	const DocumentElement = createElement(RootComponent, {}, [
-		StylesheetElement,
+		// StylesheetElement,
 		RouteComponentElement,
 	]);
 

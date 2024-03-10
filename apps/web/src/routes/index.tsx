@@ -1,28 +1,20 @@
 import { Suspense } from "react";
-import * as stylex from "@stylexjs/stylex";
-
-import { ServerComponent } from "../components/ServerComponent.tsx";
-
-const styles = stylex.create({
-	red: {
-		color: "red",
-	},
-});
+import { Counter } from "../components/Counter";
+import { ServerComponent } from "../components/ServerComponent";
 
 export default function Index() {
 	return (
 		<>
-			<title>Kotekan</title>
-
-			<h1 style={styles.red}>Kotekan - Index</h1>
+			<title>Home - Kotekan</title>
+			<h1>Hello, world!</h1>
 			<a href="/about">About</a>
-			<a href="/blog">Blog</a>
-			<a href="/pokemon">Pokémon</a>
-
-			<Suspense fallback={<div>Loading &hellip;</div>}>
-				{/* @ts-expect-error Async component */}
+			<p className="text-red-500">
+				This should be red if Tailwind works 23456.
+			</p>
+			<Suspense fallback={<div>Loading server component &hellip;</div>}>
 				<ServerComponent />
 			</Suspense>
+			<Counter />
 		</>
 	);
 }

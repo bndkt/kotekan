@@ -4,8 +4,8 @@ import { isbot } from "isbot";
 // @ts-expect-error Untyped import
 import { renderToReadableStream } from "react-dom/server.edge";
 
-import type { BuildResult } from "../../builder";
 import type { RenderingStrategy } from "..";
+import type { BuildResult } from "../../builder";
 import { createDocumentElement } from "./createDocumentElement";
 import { createFromJsx } from "./createFromJsx";
 import { createImportMap } from "./createImportMap";
@@ -90,20 +90,22 @@ export const ssrFetcher = async (
 			// });
 		}
 
-		const buildFilePath = path.join(
-			buildPath,
-			"client",
-			pathSegments.slice(1).join("/"),
-		);
-		development &&
-			console.log("🥁 Requested build file:", path.basename(buildFilePath));
-		const buildFile = Bun.file(buildFilePath);
+		// Serve client build file, either from memory or from file
+		const filePath = [".", ...pathSegments.slice(1)].join("/");
+		console.log("🥁 Requested file:", filePath);
+		const clientBuildOutput = build.clientBuildOutputs.get(filePath);
 
-		return new Response(buildFile, {
-			headers: {
-				// "Cache-Control": `public, max-age=${3600 * 24 * 365}, immutable`,
-				"Cache-Control": "no-cache",
-			},
+		if (clientBuildOutput?.artifact) {
+			return new Response(clientBuildOutput.artifact, {
+				headers: {
+					// "Cache-Control": `public, max-age=${3600 * 24 * 365}, immutable`,
+					"Cache-Control": "no-cache",
+				},
+			});
+		}
+
+		return new Response("Not found", {
+			status: 404,
 		});
 	}
 
@@ -142,15 +144,17 @@ export const ssrFetcher = async (
 
 		// Create HTML document
 		const DocumentElement = csr
-			? createDocumentElement({ build, buildUrlSegment })
+			? createDocumentElement({ buildUrlSegment })
 			: createFromJsx(jsxFetch);
 
 		// HTML document stream
 		const bootstrapModules = hydrate
 			? csr
-				? [`/${buildUrlSegment}/${build.renderBootstrapFileName}`]
-				: [`/${buildUrlSegment}/${build.hydrateBootstrapFileName}`]
+				? [`/${buildUrlSegment}/${build.renderScript.name}`]
+				: [`/${buildUrlSegment}/${build.hydrateScript.name}`]
 			: [];
+
+		console.log({ bootstrapModules });
 
 		const importMap = createImportMap(development);
 		const stream = await renderToReadableStream(DocumentElement, {

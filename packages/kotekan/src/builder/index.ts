@@ -1,93 +1,109 @@
-import type { Rule } from "@stylexjs/babel-plugin";
+import path from "node:path";
+import { resolveSync, type BuildConfig, type BuildArtifact } from "bun";
 
-import {
-	buildRouteComponents,
-	type RouteComponentPaths,
-} from "./buildRouteComponents";
-import { buildBootstrapScripts } from "./buildBootstrapScripts";
-import { buildClientComponents } from "./buildClientComponents";
-import { createStylesheet } from "./createStylesheet";
-import { buildRootComponent } from "./buildRootComponent";
+import { rscPlugin } from "../plugins/rsc";
 
-export type StylexRules = Record<string, Rule[]>;
-
-interface BuildProps {
+interface BuilderProps {
 	routes: Record<string, string>;
-	buildPath: string;
-	buildUrlSegment: string;
-	mdxEnabled: boolean;
+	buildPath?: string;
 	development: boolean;
 }
 
-export interface BuildResult {
-	rootComponentFilePath: string;
-	renderBootstrapFileName: string;
-	hydrateBootstrapFileName: string;
-	routeComponentPaths: RouteComponentPaths;
-	stylesheetFileName?: string;
+interface BuildOutput {
+	name: string;
+	// path?: string;
+	artifact: BuildArtifact;
 }
 
-export type ClientEntryPoints = Set<string>;
-
-export type ClientComponentsMap = Map<
-	string,
-	{
-		id: string;
-		name: string;
-		chunks: string[];
-		async: boolean;
-	}
->;
+export interface BuildResult {
+	// clientComponents: Record<string, BuildOutputFile>;
+	renderScript: BuildOutput;
+	hydrateScript: BuildOutput;
+	clientBuildOutputs: Map<string, BuildOutput>;
+}
 
 export const builder = async ({
 	routes,
 	buildPath,
-	buildUrlSegment,
-	mdxEnabled,
 	development,
-}: BuildProps): Promise<BuildResult> => {
-	const stylexRules: StylexRules = {};
-	const clientEntryPoints: ClientEntryPoints = new Set();
+}: BuilderProps): Promise<BuildResult> => {
+	const root = path.join(process.cwd(), "src");
+	const clientComponentPaths = new Set<string>();
 
-	const rootComponentBuild = await buildRootComponent({
-		buildPath,
-		stylexRules,
-		clientEntryPoints,
-		mdxEnabled,
-		development,
+	// Server build
+	const rootComponentPath = resolveSync("./Root", root);
+	const routeComponentPaths = Object.values(routes);
+	const serverBuild = await Bun.build({
+		entrypoints: [rootComponentPath, ...routeComponentPaths],
+		target: "bun",
+		sourcemap: development ? "inline" : "none",
+		minify: development ? false : true,
+		outdir: `${buildPath}/server`,
+		naming: "[dir]/[name].[ext]",
+		plugins: [rscPlugin({ clientComponentPaths, development })],
 	});
 
-	const routeComponentsBuild = await buildRouteComponents({
-		routes,
-		buildPath,
-		stylexRules,
-		clientEntryPoints,
-		mdxEnabled,
-		development,
-	});
+	console.log(`🥁 Built ${serverBuild.outputs.length} server files`);
 
-	const bootstrapScriptsBuild = await buildBootstrapScripts({
-		buildPath,
-		development,
-	});
+	// Client build
+	const clientDir = path.join(import.meta.dir, "..", "client");
+	const renderScriptFilePath = resolveSync("./render", clientDir);
+	const hydrateScriptFilePath = resolveSync("./hydrate", clientDir);
 
-	const clientComponentsBuild = await buildClientComponents({
-		clientEntryPoints,
-		buildPath,
-		stylexRules,
-		development,
-	});
-
-	const stylesheetBuild = await createStylesheet({
-		stylexRules,
-		buildPath,
-	});
-
-	return {
-		...rootComponentBuild,
-		...bootstrapScriptsBuild,
-		// ...clientComponentsBuild,
-		...routeComponentsBuild,
-		...stylesheetBuild,
+	const clientBuildConfig: Partial<BuildConfig> = {
+		target: "browser",
+		sourcemap: development ? "inline" : "none",
+		minify: development ? false : true,
+		outdir: buildPath ? `${buildPath}/client` : undefined,
+		external: [
+			"react",
+			"react-dom",
+			"react-strict-dom",
+			"react-server-dom-esm",
+		],
 	};
+
+	const clientComponentsBuild = await Bun.build({
+		entrypoints: Array.from(clientComponentPaths),
+		naming: "[dir]/[name].[ext]",
+		root,
+		...clientBuildConfig,
+	});
+
+	const clientBuildOutputs: Map<string, BuildOutput> = new Map();
+	for (const buildArtifact of clientComponentsBuild.outputs) {
+		clientBuildOutputs.set(buildArtifact.path, {
+			name: path.basename(buildArtifact.path),
+			artifact: buildArtifact,
+		});
+	}
+
+	console.log(
+		`🥁 Built ${clientComponentsBuild.outputs.length} client component files`,
+	);
+
+	const clientScriptsBuild = await Bun.build({
+		entrypoints: [renderScriptFilePath, hydrateScriptFilePath],
+		naming: "[name].[ext]",
+		...clientBuildConfig,
+	});
+
+	const renderScript: BuildOutput = {
+		name: path.basename(clientScriptsBuild.outputs[0].path),
+		artifact: clientScriptsBuild.outputs[0], // @todo stream()?
+	};
+
+	const hydrateScript: BuildOutput = {
+		name: path.basename(clientScriptsBuild.outputs[1].path),
+		artifact: clientScriptsBuild.outputs[1], // @todo stream()?
+	};
+
+	clientBuildOutputs.set(renderScript.artifact.path, renderScript);
+	clientBuildOutputs.set(hydrateScript.artifact.path, hydrateScript);
+
+	console.log(
+		`🥁 Built ${clientScriptsBuild.outputs.length} client script files`,
+	);
+
+	return { renderScript, hydrateScript, clientBuildOutputs };
 };

@@ -7,15 +7,14 @@ import {
 	startTransition,
 	type Dispatch,
 	type FunctionComponent,
-	StrictMode,
 } from "react";
 import { hydrateRoot } from "react-dom/client";
 // @ts-expect-error Untyped import
 import { createFromFetch, encodeReply } from "react-server-dom-esm/client";
 
+import { moduleBaseURL } from "./config";
 import { setupNavigation } from "./setupNavigation";
 
-const moduleBaseURL = "/_build/components";
 let updateRoot: Dispatch<string>;
 
 console.log("🥁 Hydrate");

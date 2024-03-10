@@ -1,10 +1,10 @@
 /// <reference lib="dom" />
 import { StrictMode, type ReactNode } from "react";
-import { type Root } from "react-dom/client";
+import type { Root } from "react-dom/client";
 // @ts-expect-error Untyped import
 import { createFromFetch } from "react-server-dom-esm/client";
 
-const moduleBaseURL = "/_build/components";
+import { moduleBaseURL } from "./config";
 
 export const setupNavigation = (root: Root) => {
 	const navigate = (pathname: string) => {

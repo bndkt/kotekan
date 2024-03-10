@@ -9,8 +9,17 @@ export const startCommand = async (development = false) => {
 	const jsxServerPort = 3001;
 
 	const jsxServerPath = path.join(import.meta.dir, "jsxServer.ts");
+	const preloadPath = path.join(import.meta.dir, "preload.ts");
 	const jsxServer = Bun.spawn(
-		["bun", "--conditions", "react-server", jsxServerPath],
+		[
+			"bun",
+			"--conditions",
+			"react-server",
+			"--preload",
+			preloadPath,
+			development ? "--hot" : "",
+			jsxServerPath,
+		],
 		{
 			stdout: "inherit",
 			env: {

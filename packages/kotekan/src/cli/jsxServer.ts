@@ -1,4 +1,4 @@
-#!/usr/bin/env bun --conditions react-server
+#!/usr/bin/env bun --conditions react-server --preload ../../packages/kotekan/src/cli/preload.ts
 import { server } from "../server";
 
 const development = Bun.env.NODE_ENV === "development";

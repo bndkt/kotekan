@@ -35,9 +35,7 @@ export const server = async (props: ServerProps = {}) => {
 	// Build
 	const build = await builder({
 		routes,
-		buildPath,
-		buildUrlSegment,
-		mdxEnabled,
+		// buildPath,
 		development,
 	});
 

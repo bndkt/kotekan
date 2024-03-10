@@ -1,23 +1,11 @@
-import * as stylex from "@stylexjs/stylex";
-
-import { Counter } from "../components/Counter.tsx";
-import { LikeButton } from "../components/LikeButton.tsx";
-import { ServerComponentStrict } from "../components/ServerComponentStrict.tsx";
-import { Suspense } from "react";
-
-const styles = stylex.create({
-	orange: {
-		color: "orange",
-	},
-});
+import { LikeButton } from "../components/LikeButton";
 
 export default function About() {
 	return (
 		<>
 			<title>About - Kotekan</title>
-			<h1 {...stylex.props(styles.orange)}>Kotekan - About</h1>
-			<a href="/">Home</a>
-			<Counter start={8 /* Bun.nanoseconds() */} />
+			<h1>About Kotekan</h1>
+			<p className="text-red-500">This should be red if Tailwind works 234.</p>
 			<LikeButton />
 		</>
 	);
