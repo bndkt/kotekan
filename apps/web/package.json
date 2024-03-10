@@ -18,6 +18,9 @@
     "rn:doctor": "react-native doctor"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.18",
+    "clsx": "2.1.0",
+    "framer-motion": "11.0.8",
     "kotekan": "workspace:*",
     "react": "0.0.0-experimental-338dddc08-20240307",
     "react-aria-components": "1.1.1",
