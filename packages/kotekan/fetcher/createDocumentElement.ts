@@ -26,6 +26,13 @@ export const createDocumentElement = async ({
 	// 	  })
 	// 	: null;
 
+	const TailwindStylesheetElement = createElement("link", {
+		href: `/${buildUrlSegment}/styles.css`,
+		rel: "stylesheet",
+		precedence: "default",
+		key: "stylesheet",
+	});
+
 	// Root component
 	const rootComponentFilePath = resolveSync("./src/Root", process.cwd()); // build.rootComponentFilePath
 	const rootComponentFile = await import(rootComponentFilePath);
@@ -40,7 +47,7 @@ export const createDocumentElement = async ({
 
 	// Document element
 	const DocumentElement = createElement(RootComponent, {}, [
-		// StylesheetElement,
+		TailwindStylesheetElement,
 		RouteComponentElement,
 	]);
 

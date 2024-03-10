@@ -104,9 +104,8 @@ export const ssrFetcher = async (
 			});
 		}
 
-		return new Response("Not found", {
-			status: 404,
-		});
+		const file = Bun.file(path.join(buildPath, "client", filePath));
+		return new Response(file);
 	}
 
 	const csr = (mode === "csr" && !bot) || searchParams.has("csr");

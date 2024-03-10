@@ -3,6 +3,7 @@ import { resolveSync, type BuildConfig, type BuildArtifact } from "bun";
 
 import { rscPlugin } from "../plugins/rsc";
 import { mdxPlugin } from "../plugins/mdx";
+import { tailwindPlugin } from "../plugins/tailwind";
 
 interface BuilderProps {
 	routes: Record<string, string>;
@@ -44,6 +45,7 @@ export const builder = async ({
 		plugins: [
 			rscPlugin({ clientComponentPaths, development }),
 			mdxPlugin({ development }),
+			// tailwindPlugin({ development }),
 		],
 	});
 
