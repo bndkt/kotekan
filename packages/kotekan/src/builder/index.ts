@@ -2,6 +2,7 @@ import path from "node:path";
 import { resolveSync, type BuildConfig, type BuildArtifact } from "bun";
 
 import { rscPlugin } from "../plugins/rsc";
+import { mdxPlugin } from "../plugins/mdx";
 
 interface BuilderProps {
 	routes: Record<string, string>;
@@ -40,7 +41,10 @@ export const builder = async ({
 		minify: development ? false : true,
 		outdir: `${buildPath}/server`,
 		naming: "[dir]/[name].[ext]",
-		plugins: [rscPlugin({ clientComponentPaths, development })],
+		plugins: [
+			rscPlugin({ clientComponentPaths, development }),
+			mdxPlugin({ development }),
+		],
 	});
 
 	console.log(`🥁 Built ${serverBuild.outputs.length} server files`);

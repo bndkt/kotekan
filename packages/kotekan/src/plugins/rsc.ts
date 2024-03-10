@@ -18,7 +18,7 @@ export const rscPlugin: (config: RscPluginConfig) => BunPlugin = (config) => {
 			build.onLoad({ filter: RSC_PLUGIN_FILTER }, async (args) => {
 				const source = await Bun.file(args.path).text();
 
-				console.log("🥁 RSC PLUGIN ON LOAD", args.path);
+				// console.log("🥁 RSC PLUGIN ON LOAD", args.path);
 
 				// If source doesn't contain either use client or use server, return immediately
 				if (

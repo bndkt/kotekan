@@ -1,9 +1,8 @@
 import path from "node:path";
 import { Database } from "bun:sqlite";
 
-const db = new Database(
-	path.join(process.env.PROJECT_ROOT as string, "data/veekun-pokedex.sqlite"),
-);
+const dbPath = path.join(process.cwd(), "data", "veekun-pokedex.sqlite");
+const db = new Database(dbPath);
 
 export const PokemonDetail = async () => {
 	const query = db.query(
