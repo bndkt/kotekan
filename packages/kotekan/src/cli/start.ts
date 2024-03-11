@@ -40,13 +40,14 @@ export const startCommand = async (development = false) => {
 			env: {
 				PORT: jsxServerPort.toString(),
 				SOCKET,
-				...process.env,
+				...Bun.env,
 			},
 		},
 	);
 
 	await server({
 		mode: "ssr",
+		hostname: Bun.env.HOSTNAME,
 		port: ssrServerPort,
 		socket: SOCKET,
 		mdxEnabled: true,

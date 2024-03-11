@@ -8,6 +8,9 @@ primary_region = 'sin'
 
 [build]
 
+[env]
+  HOSTNAME = "kotekan.dev"
+
 [http_service]
   internal_port = 3000
   force_https = true

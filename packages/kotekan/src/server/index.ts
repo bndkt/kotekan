@@ -8,6 +8,7 @@ export type RenderingStrategy = "csr" | "ssr" | "jsx";
 type ServerProps = {
 	mode?: RenderingStrategy;
 	buildDir?: string;
+	hostname?: string;
 	port?: number;
 	socket?: string;
 	mdxEnabled?: boolean;
@@ -17,6 +18,7 @@ type ServerProps = {
 export const server = async (props: ServerProps = {}) => {
 	// Defaults
 	const mode = props.mode ?? "ssr";
+	const hostname = props.hostname ?? "localhost";
 	const port = props.port ?? 3000;
 	const socket = props.socket;
 	const buildDir = props.buildDir ?? "./build";
@@ -75,6 +77,7 @@ export const server = async (props: ServerProps = {}) => {
 	return Bun.serve({
 		...listenerConfig,
 		development,
+		hostname,
 		fetch,
 		error: (error) => {
 			console.error(error);
