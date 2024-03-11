@@ -9,7 +9,7 @@ const rsdeDir = path.join(
 	"react-server-dom-esm",
 );
 
-// Dev
+// Browser Dev
 await Bun.build({
 	entrypoints: [
 		path.join(
@@ -18,12 +18,12 @@ await Bun.build({
 			"react-server-dom-esm-client.browser.development.js",
 		),
 	],
-	minify: true,
+	minify: false,
 	outdir,
 	target: "browser",
 });
 
-// Prod
+// Browser Prod
 await Bun.build({
 	entrypoints: [
 		path.join(
@@ -32,7 +32,7 @@ await Bun.build({
 			"react-server-dom-esm-client.browser.production.min.js",
 		),
 	],
-	minify: false,
+	minify: true,
 	outdir,
 	target: "browser",
 });
