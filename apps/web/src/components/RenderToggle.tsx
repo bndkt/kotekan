@@ -5,8 +5,6 @@ import { RadioGroup, Radio, Label } from "react-aria-components";
 export const RenderToggle = () => {
 	const [renderMode, setRenderMode] = useState<"ssr" | "csr">("ssr");
 
-	console.log({ renderMode });
-
 	return (
 		<div>
 			Toggle

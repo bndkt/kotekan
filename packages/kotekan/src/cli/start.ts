@@ -11,7 +11,7 @@ export const startCommand = async (development = false) => {
 	Bun.spawn(
 		[
 			"bunx",
-			"@tailwindcss/cli@4.0.0-alpha.7",
+			"tailwindcss",
 			development ? "-w" : "-m",
 			"-i",
 			"src/styles.css",

@@ -5,6 +5,7 @@
   "sideEffects": false,
   "scripts": {
     "lint": "biome lint ./src",
+    "css": "tailwindcss -m -i src/styles.css -o build/client/styles.css",
     "dev": "DOCKER_BUILD_TIMESTAMP=1709948626 kotekan dev",
     "start": "NODE_ENV=production kotekan start",
     "kotekan-jsx": "kotekan-jsx",

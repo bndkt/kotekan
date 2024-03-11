@@ -17,8 +17,6 @@ export const MobileNavigationDialog = ({
 	const initialPathname = useRef(pathname).current;
 	const initialSearchParams = useRef(searchParams).current;
 
-	console.log("MobileNavigationDialog", { isOpen });
-
 	useEffect(() => {
 		if (pathname !== initialPathname || searchParams !== initialSearchParams) {
 			close();
