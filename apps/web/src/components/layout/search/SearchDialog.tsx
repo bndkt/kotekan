@@ -1,8 +1,84 @@
+"use client";
+
+import { Fragment, useEffect, useId, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import clsx from "clsx";
-import { Fragment, useEffect, useRef } from "react";
+import {
+	createAutocomplete,
+	type AutocompleteState,
+} from "@algolia/autocomplete-core";
 
-import { SearchInput } from "./SearchInput";
+import {
+	type Autocomplete,
+	type EmptyObject,
+	type Result,
+	SearchInput,
+} from "./SearchInput";
+import { SearchResults } from "./SearchResults";
+
+function useAutocomplete({ close }: { close: () => void }) {
+	const id = useId();
+	// const router = useRouter();
+	const [autocompleteState, setAutocompleteState] = useState<
+		AutocompleteState<Result> | EmptyObject
+	>({});
+
+	function navigate({ itemUrl }: { itemUrl?: string }) {
+		if (!itemUrl) {
+			return;
+		}
+
+		// router.push(itemUrl);
+
+		if (
+			itemUrl ===
+			window.location.pathname + window.location.search + window.location.hash
+		) {
+			close();
+		}
+	}
+
+	const [autocomplete] = useState<Autocomplete>(() =>
+		createAutocomplete<
+			Result,
+			React.SyntheticEvent,
+			React.MouseEvent,
+			React.KeyboardEvent
+		>({
+			id,
+			placeholder: "Find something...",
+			defaultActiveItemId: 0,
+			onStateChange({ state }) {
+				setAutocompleteState(state);
+			},
+			shouldPanelOpen({ state }) {
+				return state.query !== "";
+			},
+			navigator: {
+				navigate,
+			},
+			getSources({ query }) {
+				return [];
+				// return import("@/mdx/search.mjs").then(({ search }) => {
+				// 	return [
+				// 		{
+				// 			sourceId: "documentation",
+				// 			getItems() {
+				// 				return search(query, { limit: 5 });
+				// 			},
+				// 			getItemUrl({ item }) {
+				// 				return item.url;
+				// 			},
+				// 			onSelect: navigate,
+				// 		},
+				// 	];
+				// });
+			},
+		}),
+	);
+
+	return { autocomplete, autocompleteState };
+}
 
 export const SearchDialog = ({
 	open,
@@ -16,11 +92,11 @@ export const SearchDialog = ({
 	const formRef = useRef<React.ElementRef<"form">>(null);
 	const panelRef = useRef<React.ElementRef<"div">>(null);
 	const inputRef = useRef<React.ElementRef<typeof SearchInput>>(null);
-	// const { autocomplete, autocompleteState } = useAutocomplete({
-	//   close() {
-	//     setOpen(false)
-	//   },
-	// })
+	const { autocomplete, autocompleteState } = useAutocomplete({
+		close() {
+			setOpen(false);
+		},
+	});
 	const pathname = ""; // usePathname() @todo
 	const searchParams = ""; // useSearchParams() @todo
 
@@ -51,7 +127,7 @@ export const SearchDialog = ({
 		<Transition.Root
 			show={open}
 			as={Fragment}
-			// afterLeave={() => autocomplete.setQuery("")} // @todo
+			afterLeave={() => autocomplete.setQuery("")} // @todo
 		>
 			<Dialog
 				onClose={setOpen}
@@ -80,7 +156,7 @@ export const SearchDialog = ({
 						leaveTo="opacity-0 scale-95"
 					>
 						<Dialog.Panel className="mx-auto transform-gpu overflow-hidden rounded-lg bg-zinc-50 shadow-xl ring-1 ring-zinc-900/7.5 sm:max-w-xl dark:bg-zinc-900 dark:ring-zinc-800">
-							{/* <div {...autocomplete.getRootProps({})}>
+							<div {...autocomplete.getRootProps({})}>
 								<form
 									ref={formRef}
 									{...autocomplete.getFormProps({
@@ -107,7 +183,7 @@ export const SearchDialog = ({
 										)}
 									</div>
 								</form>
-										</div> */}
+							</div>
 						</Dialog.Panel>
 					</Transition.Child>
 				</div>

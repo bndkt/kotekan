@@ -6,15 +6,15 @@ import type {
 import clsx from "clsx";
 import { SearchIcon } from "./SearchIcon";
 
-type Result = {
+export type Result = {
 	url: string;
 	title: string;
 	pageTitle?: string;
 };
 
-type EmptyObject = Record<string, never>;
+export type EmptyObject = Record<string, never>;
 
-type Autocomplete = AutocompleteApi<
+export type Autocomplete = AutocompleteApi<
 	Result,
 	React.SyntheticEvent,
 	React.MouseEvent,
