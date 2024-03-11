@@ -2,7 +2,10 @@ import clsx from "clsx";
 import type { CSSProperties } from "react";
 
 import { TopLevelNavItem } from "../nav/TopLevelNavItem";
-import { Button } from "../Button";
+import { Button } from "../../Button";
+import { MobileSearch, Search } from "../search/Search";
+import { MobileNavigation } from "../nav/MobileNavigation";
+import { ThemeToggle } from "./ThemeToggle";
 
 export const Header = () => {
 	// let { isOpen: mobileNavIsOpen } = useMobileNavigationStore();
@@ -38,9 +41,9 @@ export const Header = () => {
 						"bg-zinc-900/7.5 dark:bg-white/7.5",
 				)}
 			/>
-			{/* <Search /> */}
+			<Search />
 			<div className="flex items-center gap-5 lg:hidden">
-				{/* <MobileNavigation /> */}
+				<MobileNavigation />
 				<a href="/" aria-label="Home">
 					🥁 Kotekan
 				</a>
@@ -55,8 +58,8 @@ export const Header = () => {
 				</nav>
 				<div className="hidden md:block md:h-5 md:w-px md:bg-zinc-900/10 md:dark:bg-white/15" />
 				<div className="flex gap-4">
-					{/* <MobileSearch /> */}
-					{/* <ThemeToggle /> */}
+					<MobileSearch />
+					<ThemeToggle />
 				</div>
 				<div className="hidden min-[416px]:contents">
 					<Button href="/">Sign in</Button>

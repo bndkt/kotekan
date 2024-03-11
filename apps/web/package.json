@@ -18,7 +18,8 @@
     "rn:doctor": "react-native doctor"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.18",
+    "@algolia/autocomplete-core": "1.17.0",
+    "@headlessui/react": "1.7.18",
     "clsx": "2.1.0",
     "framer-motion": "11.0.8",
     "kotekan": "workspace:*",

@@ -1,3 +1,5 @@
+// import { css, html as h } from "react-strict-dom";
+
 const dockerBuildTimestamp = Number(process.env.DOCKER_BUILD_TIMESTAMP);
 // const dockerBuildTimestamp = Number(process.env.DOCKER_BUILD_TIMESTAMP);
 const dockerBuildDate = Number.isNaN(dockerBuildTimestamp)

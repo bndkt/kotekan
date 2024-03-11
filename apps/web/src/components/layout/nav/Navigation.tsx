@@ -1,4 +1,4 @@
-import { Button } from "../Button";
+import { Button } from "../../Button";
 import { NavigationGroup } from "./NavigationGroup";
 import { TopLevelNavItem } from "./TopLevelNavItem";
 

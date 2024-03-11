@@ -1,7 +1,7 @@
 "use client";
 import { motion, useIsPresent } from "framer-motion";
 
-import { remToPx } from "../../lib/remToPx";
+import { remToPx } from "../../../lib/remToPx";
 import type { NavGroup } from "./Navigation";
 
 export const VisibleSectionHighlight = ({

@@ -2,7 +2,7 @@
 import { useEffect, useRef } from "react";
 import { useInView } from "framer-motion";
 
-import { Tag } from "../nav/Tag";
+import { Tag } from "../layout/nav/Tag";
 import { remToPx } from "../../lib/remToPx";
 
 const AnchorIcon = (props: React.ComponentPropsWithoutRef<"svg">) => {
