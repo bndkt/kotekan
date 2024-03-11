@@ -10,6 +10,7 @@
     "start": "NODE_ENV=production kotekan start",
     "kotekan-jsx": "kotekan-jsx",
     "kotekan-ssr": "kotekan-ssr",
+    "test": "npx playwright test",
     "native": "kotekan native",
     "rn:start": "react-native start --config ./build/mobile/metro.config.cjs",
     "rn:run-ios": "react-native run-ios --no-packager",
@@ -30,6 +31,7 @@
     "react-strict-dom": "0.0.3"
   },
   "devDependencies": {
+    "@playwright/test": "1.42.1",
     "@stylexjs/stylex": "0.5.1",
     "@types/bun": "1.0.8",
     "@types/react": "18.2.64",
