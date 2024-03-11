@@ -1,4 +1,5 @@
 "use client";
+
 import { motion, useIsPresent } from "framer-motion";
 
 import { remToPx } from "../../../lib/remToPx";
@@ -19,14 +20,14 @@ export const VisibleSectionHighlight = ({
 	// 	useIsInsideMobileNavigation(),
 	// );
 
-	// const isPresent = useIsPresent();
+	const isPresent = useIsPresent();
 	// const firstVisibleSectionIndex = Math.max(
 	// 	0,
 	// 	[{ id: "_top" }, ...sections].findIndex(
 	// 		(section) => section.id === visibleSections[0],
 	// 	),
 	// );
-	// const itemHeight = remToPx(2);
+	const itemHeight = remToPx(2);
 	// const height = isPresent
 	// 	? Math.max(1, visibleSections.length) * itemHeight
 	// 	: itemHeight;

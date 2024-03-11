@@ -3,13 +3,13 @@ import { Button } from "../../Button";
 import { NavigationGroup } from "./NavigationGroup";
 import { TopLevelNavItem } from "./TopLevelNavItem";
 
-export const Navigation = () => {
+export const Navigation = (props: React.ComponentPropsWithoutRef<"nav">) => {
 	return (
-		<nav className="hidden lg:mt-10 lg:block">
+		<nav {...props}>
 			<ul>
-				<TopLevelNavItem href="/">API</TopLevelNavItem>
-				<TopLevelNavItem href="#">Documentation</TopLevelNavItem>
-				<TopLevelNavItem href="#">Support</TopLevelNavItem>
+				<TopLevelNavItem href="/api">(Mobile) API</TopLevelNavItem>
+				<TopLevelNavItem href="/docs">Documentation</TopLevelNavItem>
+				<TopLevelNavItem href="/support">Support</TopLevelNavItem>
 				{navItems.map((group, groupIndex) => (
 					<NavigationGroup
 						key={group.title}
@@ -19,7 +19,7 @@ export const Navigation = () => {
 				))}
 				<li className="sticky bottom-0 z-10 mt-6 min-[416px]:hidden">
 					<Button href="/" variant="filled" className="w-full">
-						Try it
+						Mobile Try it
 					</Button>
 				</li>
 			</ul>

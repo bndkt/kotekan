@@ -1,11 +1,18 @@
 "use client";
 import clsx from "clsx";
-import { AnimatePresence, motion, useIsPresent } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 import type { NavGroup } from "./navItems";
 import { NavLink } from "./NavLink";
 import { ActivePageMarker } from "./ActivePageMarker";
 import { VisibleSectionHighlight } from "./VisibleSectionHighlight";
+
+interface Section {
+	id: string;
+	href: string;
+	tag: string;
+	title: string;
+}
 
 export const NavigationGroup = ({
 	group,
@@ -23,7 +30,9 @@ export const NavigationGroup = ({
 	// 	[usePathname(), useSectionStore((s) => s.sections)],
 	// 	isInsideMobileNavigation,
 	// );
-	const sections = []; // @todo
+	const sections: Section[] = [
+		{ id: "test", href: "test", tag: "test", title: "test" },
+	]; // @todo
 	const pathname = ""; // @todo
 
 	// let isActiveGroup = group.links.findIndex((link) => link.href === pathname) !== -1;

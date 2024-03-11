@@ -1,9 +1,9 @@
-import { navigation } from "../nav/navItems";
+import { navItems } from "../nav/navItems";
 import { PageLink } from "./PageLink";
 
 export const PageNavigation = () => {
 	const pathname = ""; // usePathname(); @todo
-	const allPages = navigation.flatMap((group) => group.links);
+	const allPages = navItems.flatMap((group) => group.links);
 	const currentPageIndex = allPages.findIndex((page) => page.href === pathname);
 
 	if (currentPageIndex === -1) {

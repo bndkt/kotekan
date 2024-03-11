@@ -8,10 +8,10 @@ export const TopLevelNavItem = ({
 	children: ReactNode;
 }) => {
 	return (
-		<li className="md:hidden">
+		<li>
 			<a
 				href={href}
-				className="block py-1 text-sm text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+				className="text-sm leading-5 text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
 			>
 				{children}
 			</a>
