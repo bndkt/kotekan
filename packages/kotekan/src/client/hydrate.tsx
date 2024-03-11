@@ -17,8 +17,6 @@ import { setupNavigation } from "./setupNavigation";
 
 let updateRoot: Dispatch<string>;
 
-console.log("🥁 Hydrate");
-
 async function callServer(id: string, args: string) {
 	const response = fetch("?jsx", {
 		method: "post",

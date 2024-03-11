@@ -5,8 +5,8 @@ import type { FunctionComponent } from "react";
 // @ts-expect-error Untyped import
 import { renderToPipeableStream } from "react-server-dom-esm/server.node";
 
-import type { RenderingStrategy } from "../src/server";
-import type { BuildResult } from "../src/builder";
+import type { RenderingStrategy } from "../server";
+import type { BuildResult } from "../builder";
 import { createDocumentElement } from "./createDocumentElement";
 
 interface FetchProps {

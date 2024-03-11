@@ -4,8 +4,8 @@ import { isbot } from "isbot";
 // @ts-expect-error Untyped import
 import { renderToReadableStream } from "react-dom/server.edge";
 
-import type { RenderingStrategy } from "../src/server";
-import type { BuildResult } from "../src/builder";
+import type { RenderingStrategy } from "../server";
+import type { BuildResult } from "../builder";
 import { createDocumentElement } from "./createDocumentElement";
 import { createFromJsx } from "./createFromJsx";
 import { createImportMap } from "./createImportMap";

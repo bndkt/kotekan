@@ -41,7 +41,7 @@ export const server = async (props: ServerProps = {}) => {
 
 	const fetch = async (request: Request) => {
 		if (mode === "jsx") {
-			const { jsxFetcher } = await import("../../fetcher/jsxFetcher");
+			const { jsxFetcher } = await import("../fetcher/jsxFetcher");
 			return jsxFetcher(request, {
 				mode,
 				build,
@@ -52,7 +52,7 @@ export const server = async (props: ServerProps = {}) => {
 			});
 		}
 
-		const { ssrFetcher } = await import("../../fetcher/ssrFetcher");
+		const { ssrFetcher } = await import("../fetcher/ssrFetcher");
 		return ssrFetcher(request, {
 			mode,
 			build,
