@@ -18,7 +18,7 @@ type ServerProps = {
 export const server = async (props: ServerProps = {}) => {
 	// Defaults
 	const mode = props.mode ?? "ssr";
-	const hostname = props.hostname ?? "localhost";
+	const hostname = props.hostname ?? "0.0.0.0";
 	const port = props.port ?? 3000;
 	const socket = props.socket;
 	const buildDir = props.buildDir ?? "./build";
@@ -73,6 +73,8 @@ export const server = async (props: ServerProps = {}) => {
 					unix: socket,
 			  }
 			: { hostname, port };
+
+	console.log("Running server with", { mode, listenerConfig });
 	return Bun.serve({
 		...listenerConfig,
 		development,
