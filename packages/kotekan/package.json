@@ -21,6 +21,7 @@
   },
   "scripts": {
     "lint": "biome lint ./src",
+    "vendor": "bun ./src/scripts/vendor.ts",
     "compile": "bun build --compile --minify --sourcemap ./src/cli/index.ts --outfile ./bin/kotekan"
   },
   "dependencies": {

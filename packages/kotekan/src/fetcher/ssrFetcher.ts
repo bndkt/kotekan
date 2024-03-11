@@ -65,19 +65,18 @@ export const ssrFetcher = async (
 
 				const libraryFile = Bun.file(
 					path.join(
-						path.dirname(
-							resolveSync("react-server-dom-esm/client", process.cwd()),
-						),
-						"esm",
-						development
+						import.meta.dir,
+						"..",
+						"vendor",
+						searchParams.has("dev")
 							? "react-server-dom-esm-client.browser.development.js"
 							: "react-server-dom-esm-client.browser.production.min.js",
 					),
 				);
 				return new Response(libraryFile, {
 					headers: {
-						// "Cache-Control": `public, max-age=${3600 * 24 * 365}, immutable`,
-						"Cache-Control": "no-cache",
+						"Cache-Control": `public, max-age=${3600 * 24 * 7}, immutable`,
+						// "Cache-Control": "no-cache",
 					},
 				});
 			}

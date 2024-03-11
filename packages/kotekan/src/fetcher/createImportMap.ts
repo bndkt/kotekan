@@ -12,8 +12,7 @@ export const createImportMap = (development?: boolean) => {
 			// "react/jsx-dev-runtime": `https://esm.sh/react@${reactVersion}/jsx-dev-runtime${queryString}`,
 			"react-dom": `https://esm.sh/react-dom@0.0.0-experimental-338dddc08-20240307${queryString}`,
 			"react-dom/client": `https://esm.sh/react-dom@${reactVersion}/client${queryString}`,
-			"react-server-dom-esm/client":
-				"/_build/modules/react-server-dom-esm/client",
+			"react-server-dom-esm/client": `/_build/modules/react-server-dom-esm/client${queryString}`,
 		},
 		// imports: {
 		// 	react: "/_build/modules/react",
