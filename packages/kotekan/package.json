@@ -41,7 +41,6 @@
     "@shikijs/rehype": "1.1.7",
     "@stylexjs/babel-plugin": "0.5.1",
     "@tailwindcss/cli": "4.0.0-alpha.7",
-    "@tailwindcss/oxide": "4.0.0-alpha.7",
     "@types/babel__core": "7.20.5",
     "@types/bun": "1.0.8",
     "@types/react": "18.2.64",

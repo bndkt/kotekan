@@ -22,9 +22,9 @@ const colorStyles = {
 			"ring-amber-300 bg-amber-400/10 text-amber-500 dark:ring-amber-400/30 dark:bg-amber-400/10 dark:text-amber-400",
 	},
 	rose: {
-		small: "text-red-500 dark:text-rose-500",
+		small: "text-rose-500 dark:text-rose-500",
 		medium:
-			"ring-rose-200 bg-rose-50 text-red-500 dark:ring-rose-500/20 dark:bg-rose-400/10 dark:text-rose-400",
+			"ring-rose-200 bg-rose-50 text-rose-500 dark:ring-rose-500/20 dark:bg-rose-400/10 dark:text-rose-400",
 	},
 	zinc: {
 		small: "text-zinc-400 dark:text-zinc-500",
