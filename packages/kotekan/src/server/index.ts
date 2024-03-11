@@ -72,12 +72,10 @@ export const server = async (props: ServerProps = {}) => {
 			? {
 					unix: socket,
 			  }
-			: { port };
-
+			: { hostname, port };
 	return Bun.serve({
 		...listenerConfig,
 		development,
-		hostname,
 		fetch,
 		error: (error) => {
 			console.error(error);

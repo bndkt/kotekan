@@ -2,7 +2,7 @@ import path from "node:path";
 
 import { server } from "../server";
 
-const SOCKET = "/tmp/kotekan.sock";
+const socket = "/tmp/kotekan.sock";
 
 export const startCommand = async (development = false) => {
 	const ssrServerPort = 3000;
@@ -38,8 +38,8 @@ export const startCommand = async (development = false) => {
 		{
 			stdout: "inherit",
 			env: {
-				PORT: jsxServerPort.toString(),
-				SOCKET,
+				JSX_PORT: jsxServerPort.toString(),
+				JSX_SOCKET: socket,
 				...Bun.env,
 			},
 		},
@@ -49,7 +49,7 @@ export const startCommand = async (development = false) => {
 		mode: "ssr",
 		hostname: Bun.env.HOSTNAME,
 		port: ssrServerPort,
-		socket: SOCKET,
+		socket,
 		mdxEnabled: true,
 		development,
 	});
