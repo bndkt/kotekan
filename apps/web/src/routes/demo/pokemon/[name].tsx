@@ -1,16 +1,16 @@
 import { Suspense } from "react";
 
-import { PokemonList } from "../../components/PokemonList.tsx";
+import { PokemonDetail } from "../../../components/demo/PokemonDetail.tsx";
 
 export default function Pokemon() {
 	return (
 		<>
 			<title>Pokémon - Kotekan</title>
 			<h1>Kotekan - Pokémon</h1>
-			<a href="/">Home</a>
+			<a href="/demo/pokemon">All Pokémon</a>
 			<Suspense fallback={<div>Loading Pokémon &hellip;</div>}>
 				{/* @ts-expect-error Async component */}
-				<PokemonList />
+				<PokemonDetail />
 			</Suspense>
 		</>
 	);

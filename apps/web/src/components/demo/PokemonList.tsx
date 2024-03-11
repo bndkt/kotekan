@@ -16,7 +16,7 @@ export const PokemonList = async () => {
 				{pokemon.map((pokemon) => {
 					return (
 						<li key={pokemon.identifier}>
-							<a href={`/pokemon/${pokemon.identifier}`}>
+							<a href={`/demo/pokemon/${pokemon.identifier}`}>
 								{pokemon.identifier}
 							</a>
 						</li>

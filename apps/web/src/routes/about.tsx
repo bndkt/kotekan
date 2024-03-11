@@ -1,4 +1,4 @@
-import { LikeButton } from "../components/LikeButton";
+import { LikeButton } from "../components/demo/LikeButton";
 
 export default function About() {
 	return (
