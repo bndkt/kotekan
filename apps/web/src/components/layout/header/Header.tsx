@@ -52,7 +52,7 @@ export const Header = forwardRef<
 			<Search />
 			<div className="flex items-center gap-5 lg:hidden">
 				<MobileNavigation />
-				<a href="/" aria-label="Home">
+				<a href="/" aria-label="Home" className="text-zinc-900 dark:text-white">
 					🥁 Kotekan
 				</a>
 			</div>

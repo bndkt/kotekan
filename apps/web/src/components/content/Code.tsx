@@ -11,7 +11,6 @@ import {
 } from "react";
 import { Tab } from "@headlessui/react";
 import clsx from "clsx";
-// import { create } from "zustand";
 
 const languageNames: Record<string, string> = {
 	js: "JavaScript",
@@ -260,25 +259,26 @@ function usePreventLayoutShift() {
 	};
 }
 
-const usePreferredLanguageStore = create<{
-	preferredLanguages: Array<string>;
-	addPreferredLanguage: (language: string) => void;
-}>()((set) => ({
-	preferredLanguages: [],
-	addPreferredLanguage: (language) =>
-		set((state) => ({
-			preferredLanguages: [
-				...state.preferredLanguages.filter(
-					(preferredLanguage) => preferredLanguage !== language,
-				),
-				language,
-			],
-		})),
-}));
+// const usePreferredLanguageStore = create<{
+// 	preferredLanguages: Array<string>;
+// 	addPreferredLanguage: (language: string) => void;
+// }>()((set) => ({
+// 	preferredLanguages: [],
+// 	addPreferredLanguage: (language) =>
+// 		set((state) => ({
+// 			preferredLanguages: [
+// 				...state.preferredLanguages.filter(
+// 					(preferredLanguage) => preferredLanguage !== language,
+// 				),
+// 				language,
+// 			],
+// 		})),
+// }));
 
 function useTabGroupProps(availableLanguages: Array<string>) {
-	const { preferredLanguages, addPreferredLanguage } =
-		usePreferredLanguageStore();
+	// const { preferredLanguages, addPreferredLanguage } = usePreferredLanguageStore();
+	const preferredLanguages = "";
+	const addPreferredLanguage = () => {};
 	const [selectedIndex, setSelectedIndex] = useState(0);
 	const activeLanguage = [...availableLanguages].sort(
 		(a, z) => preferredLanguages.indexOf(z) - preferredLanguages.indexOf(a),

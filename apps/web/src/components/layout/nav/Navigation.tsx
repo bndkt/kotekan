@@ -7,7 +7,7 @@ export const Navigation = (props: React.ComponentPropsWithoutRef<"nav">) => {
 	return (
 		<nav {...props}>
 			<ul>
-				<TopLevelNavItem href="/api">(Mobile) API</TopLevelNavItem>
+				<TopLevelNavItem href="/api">API</TopLevelNavItem>
 				<TopLevelNavItem href="/docs">Documentation</TopLevelNavItem>
 				<TopLevelNavItem href="/support">Support</TopLevelNavItem>
 				{navItems.map((group, groupIndex) => (
@@ -19,7 +19,7 @@ export const Navigation = (props: React.ComponentPropsWithoutRef<"nav">) => {
 				))}
 				<li className="sticky bottom-0 z-10 mt-6 min-[416px]:hidden">
 					<Button href="/" variant="filled" className="w-full">
-						Mobile Try it
+						Try it
 					</Button>
 				</li>
 			</ul>

@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useRef } from "react";
+
+import { useEffect, useRef, type ReactNode } from "react";
 import { useInView } from "framer-motion";
 
 import { Tag } from "../layout/nav/Tag";
@@ -33,6 +34,7 @@ const Eyebrow = ({ tag, label }: { tag?: string; label?: string }) => {
 			{label && (
 				<span className="font-mono text-xs text-zinc-400">{label}</span>
 			)}
+			Test
 		</div>
 	);
 };
@@ -44,7 +46,7 @@ const Anchor = ({
 }: {
 	id: string;
 	inView: boolean;
-	children: React.ReactNode;
+	children: ReactNode;
 }) => {
 	return (
 		<a
