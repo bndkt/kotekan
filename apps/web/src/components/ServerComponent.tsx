@@ -7,7 +7,7 @@ const dockerBuildDate = Number.isNaN(dockerBuildTimestamp)
 export const ServerComponent = async () => {
 	const msBefore = Bun.nanoseconds();
 
-	await new Promise((resolve) => setTimeout(resolve, 3000));
+	// await new Promise((resolve) => setTimeout(resolve, 3000));
 
 	const msAfter = Bun.nanoseconds();
 
