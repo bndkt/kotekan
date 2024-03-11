@@ -1,4 +1,4 @@
-import { navigation } from "../nav/Navigation";
+import { navigation } from "../nav/navItems";
 import { PageLink } from "./PageLink";
 
 export const PageNavigation = () => {

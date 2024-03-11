@@ -1,37 +1,7 @@
+import { navItems } from "./navItems";
 import { Button } from "../../Button";
 import { NavigationGroup } from "./NavigationGroup";
 import { TopLevelNavItem } from "./TopLevelNavItem";
-
-export interface NavGroup {
-	title: string;
-	links: Array<{
-		title: string;
-		href: string;
-	}>;
-}
-
-export const navigation: Array<NavGroup> = [
-	{
-		title: "Demo",
-		links: [
-			{ title: "Home", href: "/" },
-			{ title: "About", href: "/about" },
-			{ title: "Docs", href: "/docs" },
-			{ title: "Pokemon", href: "/pokemon" },
-			{ title: "Movies", href: "/movies" },
-		],
-	},
-	{
-		title: "Resources",
-		links: [
-			{ title: "Contacts", href: "/contacts" },
-			{ title: "Conversations", href: "/conversations" },
-			{ title: "Messages", href: "/messages" },
-			{ title: "Groups", href: "/groups" },
-			{ title: "Attachments", href: "/attachments" },
-		],
-	},
-];
 
 export const Navigation = () => {
 	return (
@@ -40,7 +10,7 @@ export const Navigation = () => {
 				<TopLevelNavItem href="/">API</TopLevelNavItem>
 				<TopLevelNavItem href="#">Documentation</TopLevelNavItem>
 				<TopLevelNavItem href="#">Support</TopLevelNavItem>
-				{navigation.map((group, groupIndex) => (
+				{navItems.map((group, groupIndex) => (
 					<NavigationGroup
 						key={group.title}
 						group={group}
@@ -48,8 +18,8 @@ export const Navigation = () => {
 					/>
 				))}
 				<li className="sticky bottom-0 z-10 mt-6 min-[416px]:hidden">
-					<Button href="#" variant="filled" className="w-full">
-						Sign in
+					<Button href="/" variant="filled" className="w-full">
+						Try it
 					</Button>
 				</li>
 			</ul>

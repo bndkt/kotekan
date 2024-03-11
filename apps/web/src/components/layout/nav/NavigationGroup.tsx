@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import { AnimatePresence, motion, useIsPresent } from "framer-motion";
 
-import type { NavGroup } from "./Navigation";
+import type { NavGroup } from "./navItems";
 import { NavLink } from "./NavLink";
 import { ActivePageMarker } from "./ActivePageMarker";
 import { VisibleSectionHighlight } from "./VisibleSectionHighlight";

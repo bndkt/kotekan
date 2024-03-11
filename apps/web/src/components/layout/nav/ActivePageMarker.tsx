@@ -1,8 +1,9 @@
 "use client";
+
 import { motion } from "framer-motion";
 
 import { remToPx } from "../../../lib/remToPx";
-import type { NavGroup } from "./Navigation";
+import type { NavGroup } from "./navItems";
 
 export const ActivePageMarker = ({
 	group,
