@@ -2,7 +2,7 @@
 import { StrictMode, type ReactNode } from "react";
 import type { Root } from "react-dom/client";
 // @ts-expect-error Untyped import
-import { createFromFetch } from "react-server-dom-esm/client";
+import { createFromFetch } from "@physis/react-server-dom-esm/client";
 
 import { moduleBaseURL } from "./config";
 

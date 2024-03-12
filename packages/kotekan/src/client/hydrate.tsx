@@ -10,7 +10,10 @@ import {
 } from "react";
 import { hydrateRoot } from "react-dom/client";
 // @ts-expect-error Untyped import
-import { createFromFetch, encodeReply } from "react-server-dom-esm/client";
+import {
+	createFromFetch,
+	encodeReply,
+} from "@physis/react-server-dom-esm/client";
 
 import { moduleBaseURL } from "./config";
 import { setupNavigation } from "./setupNavigation";

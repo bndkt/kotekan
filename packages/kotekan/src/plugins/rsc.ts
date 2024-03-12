@@ -1,6 +1,6 @@
 import { pathToFileURL, type BunPlugin } from "bun";
 // @ts-expect-error Untyped import
-import { load } from "react-server-dom-esm/node-loader";
+import { load } from "@physis/react-server-dom-esm/node-loader";
 
 interface RscPluginConfig {
 	clientComponentPaths?: Set<string>;
@@ -53,6 +53,13 @@ export const rscPlugin: (config: RscPluginConfig) => BunPlugin = (config) => {
 					null,
 					defaultLoad,
 				);
+
+				if (transformed.source) {
+					transformed.source = transformed.source.replaceAll(
+						"react-server-dom-esm/server",
+						"@physis/react-server-dom-esm/server",
+					);
+				}
 
 				const contents = transformed.source ?? source;
 

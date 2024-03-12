@@ -74,7 +74,6 @@ export const server = async (props: ServerProps = {}) => {
 			  }
 			: { hostname, port };
 
-	console.log("Running server with", { mode, listenerConfig });
 	return Bun.serve({
 		...listenerConfig,
 		development,

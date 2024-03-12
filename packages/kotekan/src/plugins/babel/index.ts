@@ -11,10 +11,10 @@ import type { Rule } from "@stylexjs/babel-plugin";
 import rsdPlugin from "react-strict-dom/babel";
 
 import { stylexPlugin } from "./stylex";
-import type { StylexRules } from "../../builder";
+// import type { StylexRules } from "../../builder";
 
 interface PluginConfig {
-	stylexRules?: StylexRules;
+	// stylexRules?: StylexRules;
 	development?: boolean;
 }
 
@@ -32,8 +32,6 @@ export const babelPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 				},
 				async (args) => {
 					const currFilePath = args.path;
-					const file = Bun.file(currFilePath);
-					const inputCode = await file.text();
 
 					if (
 						currFilePath.includes("node_modules/") &&
@@ -41,6 +39,11 @@ export const babelPlugin: (config: PluginConfig) => BunPlugin = (config) => {
 						!currFilePath.includes("@stylexjs/stylex")
 					)
 						return;
+
+					const file = Bun.file(currFilePath);
+					const inputCode = await file.text();
+
+					if (!inputCode) return;
 
 					// console.log("💅 StyleX", args.path);
 

@@ -2,7 +2,7 @@ import path from "node:path";
 import { Transform } from "node:stream";
 import { pathToFileURL } from "bun";
 // @ts-expect-error Untyped import
-import { createFromNodeStream } from "react-server-dom-esm/client.node";
+import { createFromNodeStream } from "@physis/react-server-dom-esm/client.node";
 
 export const createFromJsx = async (jsxFetch: Promise<Response>) => {
 	const moduleRootPath2 = pathToFileURL(

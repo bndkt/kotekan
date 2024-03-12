@@ -26,11 +26,11 @@
     "publish:dry": "npm publish --dry-run"
   },
   "dependencies": {
-    "react": "0.0.0-experimental-338dddc08-20240307",
-    "react-dom": "0.0.0-experimental-338dddc08-20240307",
+    "react": "0.0.0-experimental-56e20051c-20240311",
+    "react-dom": "0.0.0-experimental-56e20051c-20240311",
     "react-error-boundary": "4.0.13",
     "react-native": "0.74.0-rc.3",
-    "react-server-dom-esm": "workspace:*"
+    "@physis/react-server-dom-esm": "workspace:*"
   },
   "devDependencies": {
     "@babel/core": "7.24.0",
@@ -58,9 +58,8 @@
     "yargs": "17.7.2"
   },
   "files": [
-    "bin",
-    "src/index.ts",
-    "src/client",
-    "README.md"
+    "src/",
+    "README.md",
+    "tsconfig.json"
   ]
 }

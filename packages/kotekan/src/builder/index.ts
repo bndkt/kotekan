@@ -4,6 +4,7 @@ import { resolveSync, type BuildConfig, type BuildArtifact } from "bun";
 import { rscPlugin } from "../plugins/rsc";
 import { mdxPlugin } from "../plugins/mdx";
 import { tailwindPlugin } from "../plugins/tailwind";
+import { stylexPlugin } from "../plugins/stylex";
 
 interface BuilderProps {
 	routes: Record<string, string>;
@@ -46,6 +47,7 @@ export const builder = async ({
 			rscPlugin({ clientComponentPaths, development }),
 			mdxPlugin({ development }),
 			// tailwindPlugin({ development }),
+			stylexPlugin({ development }),
 		],
 	});
 
@@ -65,7 +67,7 @@ export const builder = async ({
 			"react",
 			"react-dom",
 			"react-strict-dom",
-			"react-server-dom-esm",
+			"@physis/react-server-dom-esm",
 		],
 	};
 

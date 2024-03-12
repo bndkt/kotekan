@@ -3,7 +3,7 @@ import { PassThrough } from "node:stream";
 import { pathToFileURL, type FileSystemRouter } from "bun";
 import type { FunctionComponent } from "react";
 // @ts-expect-error Untyped import
-import { renderToPipeableStream } from "react-server-dom-esm/server.node";
+import { renderToPipeableStream } from "@physis/react-server-dom-esm/server.node";
 
 import type { RenderingStrategy } from "../server";
 import type { BuildResult } from "../builder";
