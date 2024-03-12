@@ -1,13 +1,12 @@
+import { Wrapper } from "@/components/content/Wrapper";
 import { Button } from "@/components/Button";
-import { HeroPattern } from "@/components/layout/HeroPattern";
 import { Resources } from "@/components/content/Resources";
 import { Guides } from "@/components/content/Guides";
 
 export default function Index() {
 	return (
-		<>
+		<Wrapper>
 			<title>Kotekan</title>
-			<HeroPattern />
 			<h1>Kotekan</h1>
 			<p>
 				Use the Protocol API to access contacts, conversations, group messages,
@@ -39,6 +38,6 @@ export default function Index() {
 			<Guides />
 
 			<Resources />
-		</>
+		</Wrapper>
 	);
 }

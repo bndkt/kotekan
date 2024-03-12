@@ -11,3 +11,15 @@
       font-family: InterVariable, sans-serif;
     }
   }
+
+  @theme {
+    --tw-prose-headings: #9f1239;
+    --spacing-2:
+  }
+
+  h1 {
+    color: var(--tw-prose-headings);
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-2);
+  }

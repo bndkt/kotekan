@@ -7,6 +7,7 @@ import { LayoutContextProvider } from "./LayoutContext";
 import { Header } from "./header/Header";
 import { Footer } from "./footer/Footer";
 import { Navigation } from "./nav/Navigation";
+import { HeroPattern } from "./HeroPattern";
 
 export const Layout = ({ children }: { children: ReactNode }) => {
 	return (
@@ -27,6 +28,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 					</div>
 				</motion.header>
 				<div className="relative flex h-full flex-col px-4 pt-14 sm:px-6 lg:px-8">
+					<HeroPattern />
 					<main className="flex-auto">{children}</main>
 					<Footer />
 				</div>
