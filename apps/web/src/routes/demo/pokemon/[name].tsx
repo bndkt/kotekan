@@ -1,10 +1,11 @@
 import { Suspense } from "react";
 
+import { Wrapper } from "@/components/content/Wrapper.tsx";
 import { PokemonDetail } from "../../../components/demo/PokemonDetail.tsx";
 
 export default function Pokemon() {
 	return (
-		<>
+		<Wrapper>
 			<title>Pokémon - Kotekan</title>
 			<h1>Kotekan - Pokémon</h1>
 			<a href="/demo/pokemon">All Pokémon</a>
@@ -12,6 +13,6 @@ export default function Pokemon() {
 				{/* @ts-expect-error Async component */}
 				<PokemonDetail />
 			</Suspense>
-		</>
+		</Wrapper>
 	);
 }
