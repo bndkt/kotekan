@@ -28,7 +28,7 @@
     "react": "0.0.0-experimental-338dddc08-20240307",
     "react-aria-components": "1.1.1",
     "react-highlight-words": "0.20.0",
-    "react-native": "0.74.0-rc.2",
+    "react-native": "0.74.0-rc.3",
     "react-strict-dom": "0.0.3"
   },
   "devDependencies": {

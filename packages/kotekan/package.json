@@ -22,13 +22,14 @@
   "scripts": {
     "lint": "biome lint ./src",
     "vendor": "bun ./src/scripts/vendor.ts",
-    "compile": "bun build --compile --minify --sourcemap ./src/cli/index.ts --outfile ./bin/kotekan"
+    "compile": "bun build --compile --minify --sourcemap ./src/cli/index.ts --outfile ./bin/kotekan",
+    "publish:dry": "npm publish --dry-run"
   },
   "dependencies": {
     "react": "0.0.0-experimental-338dddc08-20240307",
     "react-dom": "0.0.0-experimental-338dddc08-20240307",
     "react-error-boundary": "4.0.13",
-    "react-native": "0.74.0-rc.2",
+    "react-native": "0.74.0-rc.3",
     "react-server-dom-esm": "workspace:*"
   },
   "devDependencies": {
