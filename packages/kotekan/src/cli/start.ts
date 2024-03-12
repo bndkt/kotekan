@@ -2,7 +2,7 @@ import path from "node:path";
 
 import { server } from "../server";
 
-const socket = "/tmp/kotekan.sock";
+const socket = undefined; // "/tmp/kotekan.sock";
 
 export const startCommand = async (development = false) => {
 	const ssrServerPort = 3000;
@@ -25,6 +25,17 @@ export const startCommand = async (development = false) => {
 
 	const jsxServerPath = path.join(import.meta.dir, "jsxServer.ts");
 	const preloadPath = path.join(import.meta.dir, "preload.ts");
+	console.log(
+		[
+			"bun",
+			"--conditions",
+			"react-server",
+			"--preload",
+			preloadPath,
+			development ? "--hot" : "",
+			jsxServerPath,
+		].join(" "),
+	);
 	const jsxServer = Bun.spawn(
 		[
 			"bun",

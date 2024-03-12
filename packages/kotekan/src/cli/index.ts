@@ -7,6 +7,8 @@ import { hideBin } from "yargs/helpers";
 import { startCommand } from "./start";
 import { nativeCommand } from "./native";
 
+console.log("HELLO");
+
 yargs(hideBin(process.argv))
 	.command({
 		command: "dev",

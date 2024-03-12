@@ -41,7 +41,7 @@ export const builder = async ({
 		target: "bun",
 		sourcemap: development ? "inline" : "none",
 		minify: development ? false : true,
-		outdir: `${buildPath}/server`,
+		outdir: buildPath ? `${buildPath}/server` : undefined,
 		naming: "[dir]/[name].[ext]",
 		plugins: [
 			rscPlugin({ clientComponentPaths, development }),
@@ -71,24 +71,27 @@ export const builder = async ({
 		],
 	};
 
-	const clientComponentsBuild = await Bun.build({
-		entrypoints: Array.from(clientComponentPaths),
-		naming: "[dir]/[name].[ext]",
-		root,
-		...clientBuildConfig,
-	});
-
 	const clientBuildOutputs: Map<string, BuildOutput> = new Map();
-	for (const buildArtifact of clientComponentsBuild.outputs) {
-		clientBuildOutputs.set(buildArtifact.path, {
-			name: path.basename(buildArtifact.path),
-			artifact: buildArtifact,
+	const clientComponentEintrypoints = Array.from(clientComponentPaths);
+	if (clientComponentEintrypoints.length) {
+		const clientComponentsBuild = await Bun.build({
+			entrypoints: clientComponentEintrypoints,
+			naming: "[dir]/[name].[ext]",
+			root,
+			...clientBuildConfig,
 		});
-	}
 
-	console.log(
-		`🥁 Built ${clientComponentsBuild.outputs.length} client component files`,
-	);
+		for (const buildArtifact of clientComponentsBuild.outputs) {
+			clientBuildOutputs.set(buildArtifact.path, {
+				name: path.basename(buildArtifact.path),
+				artifact: buildArtifact,
+			});
+		}
+
+		console.log(
+			`🥁 Built ${clientComponentsBuild.outputs.length} client component files`,
+		);
+	}
 
 	const clientScriptsBuild = await Bun.build({
 		entrypoints: [renderScriptFilePath, hydrateScriptFilePath],

@@ -1,5 +1,5 @@
 import path from "node:path";
-import { resolveSync, type FileSystemRouter } from "bun";
+import type { FileSystemRouter } from "bun";
 import { isbot } from "isbot";
 // @ts-expect-error Untyped import
 import { renderToReadableStream } from "react-dom/server.edge";
@@ -37,7 +37,7 @@ export const ssrFetcher = async (
 		development,
 	}: FetchProps,
 ): Promise<Response> => {
-	jsxServer ??= { hostname: "localhost", port: "3001" };
+	jsxServer ??= { hostname: "0.0.0.0", port: "3001" };
 
 	const userAgent = request.headers.get("user-agent");
 	const bot = isbot(userAgent); // @todo
