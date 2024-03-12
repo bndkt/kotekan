@@ -1,4 +1,3 @@
-// @ts-expect-error Missing types
 import { css, html as h } from "react-strict-dom";
 
 // const styles = css.create({

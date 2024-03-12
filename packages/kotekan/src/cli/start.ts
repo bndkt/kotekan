@@ -26,8 +26,9 @@ export const startCommand = async (development = false) => {
 		},
 	);
 
-	const preloadPath = path.join(import.meta.dir, "preload.ts");
+	const jsxPreloadPath = path.join(import.meta.dir, "jsxPreload.ts");
 	const jsxServerPath = path.join(import.meta.dir, "jsxServer.ts");
+	const ssrPreloadPath = path.join(import.meta.dir, "ssrPreload.ts");
 	const ssrServerPath = path.join(import.meta.dir, "ssrServer.ts");
 
 	const jsxServer = Bun.spawn(
@@ -36,7 +37,7 @@ export const startCommand = async (development = false) => {
 			"--conditions",
 			"react-server",
 			"--preload",
-			preloadPath,
+			jsxPreloadPath,
 			development ? "--hot" : "",
 			jsxServerPath,
 		],
@@ -53,8 +54,8 @@ export const startCommand = async (development = false) => {
 	const ssrServer = Bun.spawn(
 		[
 			"bun",
-			// "--preload",
-			// preloadPath,
+			"--preload",
+			ssrPreloadPath,
 			development ? "--hot" : "",
 			ssrServerPath,
 		],

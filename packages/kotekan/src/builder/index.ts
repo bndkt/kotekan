@@ -1,10 +1,10 @@
 import path from "node:path";
 import { resolveSync, type BuildConfig, type BuildArtifact } from "bun";
+import type { Rule } from "@stylexjs/babel-plugin";
 
-import { rscPlugin } from "../plugins/rsc";
 import { mdxPlugin } from "../plugins/mdx";
-import { tailwindPlugin } from "../plugins/tailwind";
-import { stylexPlugin } from "../plugins/stylex";
+import { kotekanPlugin } from "../plugins/kotekan";
+import { stylex } from "./stylex";
 
 interface BuilderProps {
 	routes: Record<string, string>;
@@ -15,7 +15,8 @@ interface BuilderProps {
 interface BuildOutput {
 	name: string;
 	// path?: string;
-	artifact: BuildArtifact;
+	artifact?: BuildArtifact;
+	contents?: string;
 }
 
 export interface BuildResult {
@@ -32,6 +33,7 @@ export const builder = async ({
 }: BuilderProps): Promise<BuildResult> => {
 	const root = path.join(process.cwd(), "src");
 	const clientComponentPaths = new Set<string>();
+	const stylexRules: Record<string, Rule[]> = {};
 
 	// Server build
 	const rootComponentPath = resolveSync("./Root", root);
@@ -44,19 +46,32 @@ export const builder = async ({
 		outdir: buildPath ? `${buildPath}/server` : undefined,
 		naming: "[dir]/[name].[ext]",
 		plugins: [
-			rscPlugin({ clientComponentPaths, development }),
+			kotekanPlugin({
+				clientComponentPaths,
+				development,
+				server: true,
+				stylexRules,
+			}),
 			mdxPlugin({ development }),
-			// tailwindPlugin({ development }),
-			stylexPlugin({ development }),
 		],
 	});
 
 	// console.log(`🥁 Built ${serverBuild.outputs.length} server files`);
 
 	// Client build
+	const clientBuildOutputs: Map<string, BuildOutput> = new Map();
 	const clientDir = path.join(import.meta.dir, "..", "client");
 	const renderScriptFilePath = resolveSync("./render", clientDir);
 	const hydrateScriptFilePath = resolveSync("./hydrate", clientDir);
+
+	// StyleX
+	const stylexResult = await stylex({ stylexRules, buildPath });
+	if (stylexResult) {
+		clientBuildOutputs.set("stylex.css", {
+			name: stylexResult.stylexPath,
+			contents: stylexResult.stylexCSS,
+		});
+	}
 
 	const clientBuildConfig: Partial<BuildConfig> = {
 		target: "browser",
@@ -71,7 +86,6 @@ export const builder = async ({
 		],
 	};
 
-	const clientBuildOutputs: Map<string, BuildOutput> = new Map();
 	const clientComponentEintrypoints = Array.from(clientComponentPaths);
 	if (clientComponentEintrypoints.length) {
 		const clientComponentsBuild = await Bun.build({
@@ -101,14 +115,13 @@ export const builder = async ({
 		name: path.basename(clientScriptsBuild.outputs[0].path),
 		artifact: clientScriptsBuild.outputs[0], // @todo stream()?
 	};
+	clientBuildOutputs.set(clientScriptsBuild.outputs[0].path, renderScript);
 
 	const hydrateScript: BuildOutput = {
 		name: path.basename(clientScriptsBuild.outputs[1].path),
 		artifact: clientScriptsBuild.outputs[1], // @todo stream()?
 	};
-
-	clientBuildOutputs.set(renderScript.artifact.path, renderScript);
-	clientBuildOutputs.set(hydrateScript.artifact.path, hydrateScript);
+	clientBuildOutputs.set(clientScriptsBuild.outputs[1].path, hydrateScript);
 
 	// console.log(`🥁 Built ${clientScriptsBuild.outputs.length} client script files`);
 

@@ -1,11 +1,5 @@
 import * as stylex from "@stylexjs/stylex";
 
-// const styles = css.create({
-// 	green: {
-// 		color: "green",
-// 	},
-// });
-
 const styles = stylex.create({
 	green: {
 		color: "green",

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "css": "tailwindcss -m -i src/styles.css -o build/client/styles.css",
-    "dev": "DOCKER_BUILD_TIMESTAMP=1709948626 kotekan-dev",
+    "dev": "DOCKER_BUILD_TIMESTAMP=1709948626 kotekan dev",
     "kotekan-jsx": "kotekan-jsx",
     "kotekan-ssr": "kotekan-ssr",
     "lint": "biome lint ./src",

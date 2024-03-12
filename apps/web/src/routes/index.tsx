@@ -2,6 +2,10 @@ import { Wrapper } from "@/components/content/Wrapper";
 import { Button } from "@/components/Button";
 import { Resources } from "@/components/content/Resources";
 import { Guides } from "@/components/content/Guides";
+import { Suspense } from "react";
+import { ServerComponent } from "@/components/demo/ServerComponent";
+import { ServerComponentStyleX } from "@/components/demo/ServerComponentStyleX";
+import { ServerComponentStrict } from "@/components/demo/ServerComponentStrict";
 
 export default function Index() {
 	return (
@@ -38,6 +42,15 @@ export default function Index() {
 			<Guides />
 
 			<Resources />
+
+			<Suspense fallback={<div>Loading &hellip;</div>}>
+				{/* @ts-expect-error Async component */}
+				<ServerComponent />
+				{/* @ ts-expect-error Async component */}
+				{/* <ServerComponentStyleX /> */}
+				{/* @ ts-expect-error Async component */}
+				{/* <ServerComponentStrict /> */}
+			</Suspense>
 		</Wrapper>
 	);
 }
