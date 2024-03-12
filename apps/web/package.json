@@ -23,7 +23,7 @@
     "@algolia/autocomplete-core": "1.17.0",
     "@headlessui/react": "1.7.18",
     "clsx": "2.1.0",
-    "framer-motion": "11.0.8",
+    "framer-motion": "11.0.12",
     "kotekan": "workspace:*",
     "react": "0.0.0-experimental-56e20051c-20240311",
     "react-aria-components": "1.1.1",

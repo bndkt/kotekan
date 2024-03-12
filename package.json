@@ -17,7 +17,7 @@
     "ncu": "ncu"
   },
   "dependencies": {
-    "@biomejs/biome": "1.6.0",
+    "@biomejs/biome": "1.6.1",
     "@changesets/cli": "2.27.1",
     "@manypkg/cli": "0.21.2",
     "@types/bun": "1.0.8",
