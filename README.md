@@ -9,18 +9,18 @@ A minimal React framework based on the [Bun](https://bun.sh/) runtime, with buil
 - [x] CSR
 - [x] SSR
 - [x] Streaming
-- [x] Server components
-- [ ] Client components
-- [ ] Server actions
+- [x] Server Components
+- [x] Client Components
+- [ ] Server Actions
 - [x] MDX
 - [x] StyleX
-- [ ] Tailwind CSS (waiting for v4)
+- [x] Tailwind CSS (waiting for v4)
 - [ ] HMR/Fast Refresh
 
 ## Supported React rendering strategies:
 - [x] CSR
 - [x] SSR
-- [ ] RSC 👷
+- [x] RSC
 - [ ] SSG
 
 ## Major dependencies:
@@ -41,7 +41,7 @@ A minimal React framework based on the [Bun](https://bun.sh/) runtime, with buil
 ## Major missing pieces
 - [ ] [Bundle splitting](https://github.com/bndkt/kotekan/issues/7)
 - [x] [Generate CSS file for StyleX](https://github.com/bndkt/kotekan/issues/2) (currently working via debug-mode)
-- [ ] [RSC](https://github.com/bndkt/kotekan/issues/9)
+- [x] [RSC](https://github.com/bndkt/kotekan/issues/9)
 - [ ] [Fast Refresh/HMR](https://github.com/bndkt/kotekan/issues/4)
 - [ ] [Remove last Babel transpilations](https://github.com/bndkt/kotekan/issues/10)
 
