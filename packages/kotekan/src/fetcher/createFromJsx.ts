@@ -5,11 +5,11 @@ import { pathToFileURL } from "bun";
 import { createFromNodeStream } from "@physis/react-server-dom-esm/client.node";
 
 export const createFromJsx = async (jsxFetch: Promise<Response>) => {
-	const moduleRootPath2 = pathToFileURL(
-		path.join(process.cwd(), "build", "client", "components"),
-	).href;
+	// const moduleRootPath = pathToFileURL(
+	// 	path.join(process.cwd(), "build", "client", "components"),
+	// ).href;
 	const moduleRootPath = pathToFileURL(path.join(process.cwd(), "src")).href;
-	const moduleBaseURL = "http://localhost:4000/"; // "/Users/bndkt/Developer/GitHub/kotekan/apps/web/";
+	const moduleBaseURL = "http://localhost:3000/";
 	const options = {};
 
 	// >>> createFromFetch

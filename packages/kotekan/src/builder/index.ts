@@ -51,7 +51,7 @@ export const builder = async ({
 		],
 	});
 
-	console.log(`🥁 Built ${serverBuild.outputs.length} server files`);
+	// console.log(`🥁 Built ${serverBuild.outputs.length} server files`);
 
 	// Client build
 	const clientDir = path.join(import.meta.dir, "..", "client");
@@ -88,9 +88,7 @@ export const builder = async ({
 			});
 		}
 
-		console.log(
-			`🥁 Built ${clientComponentsBuild.outputs.length} client component files`,
-		);
+		// console.log(`🥁 Built ${clientComponentsBuild.outputs.length} client component files`);
 	}
 
 	const clientScriptsBuild = await Bun.build({
@@ -112,9 +110,7 @@ export const builder = async ({
 	clientBuildOutputs.set(renderScript.artifact.path, renderScript);
 	clientBuildOutputs.set(hydrateScript.artifact.path, hydrateScript);
 
-	console.log(
-		`🥁 Built ${clientScriptsBuild.outputs.length} client script files`,
-	);
+	// console.log(`🥁 Built ${clientScriptsBuild.outputs.length} client script files`);
 
 	return { renderScript, hydrateScript, clientBuildOutputs };
 };

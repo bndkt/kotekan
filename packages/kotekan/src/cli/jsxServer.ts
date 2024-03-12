@@ -1,3 +1,4 @@
+#!/usr/bin/env bun --conditions react-server --preload ./node_modules/kotekan/src/cli/preload.ts
 import { server } from "../server";
 
 const development = Bun.env.NODE_ENV === "development";
@@ -16,4 +17,8 @@ const jsxServer = await server({
 	development,
 });
 
-console.log(`JSX server listening on ${jsxServer.port}`);
+const listening = jsxServer.hostname
+	? `at http://${jsxServer.hostname}:${jsxServer.port}`
+	: "on a socket";
+
+console.log(`🥁 Kotekan JSX server listening ${listening}`);

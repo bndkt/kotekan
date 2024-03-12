@@ -55,7 +55,6 @@ export const ssrFetcher = async (
 	// Build files
 	if (pathSegments[0] === buildUrlSegment) {
 		// Modules
-		console.log({ pathSegments });
 		if (pathSegments[1] === "modules") {
 			console.log("🥁 Requested module:", pathSegments.slice(2).join("/"));
 			const modulePath = pathSegments.slice(2).join("/");
@@ -151,8 +150,6 @@ export const ssrFetcher = async (
 				? [`/${buildUrlSegment}/${build.renderScript.name}`]
 				: [`/${buildUrlSegment}/${build.hydrateScript.name}`]
 			: [];
-
-		console.log({ bootstrapModules });
 
 		const importMap = createImportMap(development);
 		const stream = await renderToReadableStream(DocumentElement, {

@@ -33,6 +33,11 @@ export const SmallPrint = () => {
 		<div className="flex flex-col items-center justify-between gap-5 border-t border-zinc-900/5 pt-8 sm:flex-row dark:border-white/5">
 			<p className="text-xs text-zinc-600 dark:text-zinc-400">
 				&copy; {new Date().getFullYear()} physis.fm OÜ. All rights reserved.
+				Built with{" "}
+				<a href="https://kotekan.dev" className="underline">
+					Kotekan
+				</a>
+				.
 			</p>
 			<div className="flex gap-4">
 				<SocialLink href="https://x.com/bndkt" icon={XIcon}>

@@ -13,7 +13,7 @@ export const rscPlugin: (config: RscPluginConfig) => BunPlugin = (config) => {
 	return {
 		name: "rscPlugin",
 		setup(build) {
-			console.log("🥁 RSC PLUGIN SETUP");
+			// console.log("🥁 RSC PLUGIN SETUP");
 
 			build.onLoad({ filter: RSC_PLUGIN_FILTER }, async (args) => {
 				const source = await Bun.file(args.path).text();

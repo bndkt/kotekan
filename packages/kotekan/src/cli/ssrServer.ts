@@ -1,3 +1,4 @@
+#!/usr/bin/env bun
 import { server } from "../server";
 
 const development = Bun.env.NODE_ENV === "development";
@@ -7,7 +8,7 @@ const socket = Bun.env.SSR_SOCKET;
 
 const port = Number(envPort ?? 3000);
 
-const jsxServer = await server({
+const ssrServer = await server({
 	mode: "ssr",
 	hostname,
 	port,
@@ -16,4 +17,6 @@ const jsxServer = await server({
 	development,
 });
 
-// console.log(`SSR server listening on ${jsxServer.port}`);
+console.log(
+	`🥁 Kotekan SSR server listening at http://${ssrServer.hostname}:${ssrServer.port}`,
+);

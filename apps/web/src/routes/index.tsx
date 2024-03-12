@@ -14,11 +14,11 @@ export default function Index() {
 				dozens of devoted Protocol users.
 			</p>
 			<div className="not-prose mb-16 mt-6 flex gap-3">
-				<Button href="/quickstart" arrow="right">
+				<Button href="/docs/quickstart" arrow="right">
 					Quickstart
 				</Button>
-				<Button href="/sdks" variant="outline">
-					Explore SDKs
+				<Button href="/blog/announcement" variant="outline">
+					Read the announcement
 				</Button>
 			</div>
 			<h2>Getting started</h2>

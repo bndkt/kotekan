@@ -44,7 +44,7 @@
     "@tailwindcss/cli": "4.0.0-alpha.8",
     "@types/babel__core": "7.20.5",
     "@types/bun": "1.0.8",
-    "@types/react": "18.2.64",
+    "@types/react": "18.2.65",
     "@types/react-dom": "18.2.21",
     "@types/react-refresh": "0.14.5",
     "@types/yargs": "17.0.32",

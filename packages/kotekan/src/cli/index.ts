@@ -1,13 +1,9 @@
 #!/usr/bin/env bun
-// --conditions react-server
-// --hot
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
 import { startCommand } from "./start";
 import { nativeCommand } from "./native";
-
-console.log("HELLO");
 
 yargs(hideBin(process.argv))
 	.command({
