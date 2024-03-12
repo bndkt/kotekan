@@ -12,7 +12,7 @@ COPY package.json bun.lockb /temp/dev/
 COPY apps/web/package.json /temp/dev/apps/web/
 COPY packages/kotekan/package.json /temp/dev/packages/kotekan/
 # TMP
-COPY packages/react-server-dom-esm/package.json /temp/dev/packages/react-server-dom-esm/
+# COPY packages/react-server-dom-esm/package.json /temp/dev/packages/react-server-dom-esm/
 # RUN cd /temp/dev && bun install --frozen-lockfile
 RUN cd /temp/dev && bun install
 
@@ -22,7 +22,7 @@ COPY package.json bun.lockb /temp/prod/
 COPY apps/web/package.json /temp/prod/apps/web/
 COPY packages/kotekan/package.json /temp/prod/packages/kotekan/
 # TMP
-COPY packages/react-server-dom-esm/package.json /temp/prod/packages/react-server-dom-esm/
+# COPY packages/react-server-dom-esm/package.json /temp/prod/packages/react-server-dom-esm/
 # RUN cd /temp/prod && bun install --frozen-lockfile --production
 RUN cd /temp/prod && bun install
 

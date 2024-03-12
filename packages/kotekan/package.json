@@ -30,7 +30,7 @@
     "react-dom": "0.0.0-experimental-56e20051c-20240311",
     "react-error-boundary": "4.0.13",
     "react-native": "0.74.0-rc.3",
-    "@physis/react-server-dom-esm": "workspace:*"
+    "@physis/react-server-dom-esm": "0.0.0-experimental-89021fb4e-20240311"
   },
   "devDependencies": {
     "@babel/core": "7.24.0",
