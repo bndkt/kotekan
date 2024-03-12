@@ -6,6 +6,7 @@
   ],
   "scripts": {
     "biome": "biome",
+    "changeset": "changeset",
     "clean": "rm -rf node_modules && rm bun.lockb && bun install --force",
     "docker": "bun run docker:build && bun run docker:remove && bun run docker:run",
     "docker:build": "docker build -t kotekan .",

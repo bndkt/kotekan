@@ -16,6 +16,7 @@
   },
   "bin": {
     "kotekan": "./src/cli/index.ts",
+    "kotekan-dev": "./src/cli/dev.ts",
     "kotekan-jsx": "./src/cli/jsxServer.ts",
     "kotekan-ssr": "./src/cli/ssrServer.ts"
   },

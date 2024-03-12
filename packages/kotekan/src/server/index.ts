@@ -34,6 +34,14 @@ export const server = async (props: ServerProps = {}) => {
 	const router = routerFn({ dir, mdxEnabled });
 	const { routes } = router;
 
+	if (development) {
+		Promise.all(
+			Object.values(routes).map(async (route) => {
+				import(route);
+			}),
+		);
+	}
+
 	// Build
 	const build = await builder({
 		routes,
