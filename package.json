@@ -21,9 +21,5 @@
     "@types/bun": "1.0.8",
     "npm-check-updates": "16.14.15",
     "typescript": "5.4.2"
-  },
-  "overrides": {
-    "react": "0.0.0-experimental-56e20051c-20240311",
-    "react-dom": "0.0.0-experimental-56e20051c-20240311"
   }
 }
