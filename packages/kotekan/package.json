@@ -41,7 +41,7 @@
     "@react-native/metro-config": "0.74.2",
     "@shikijs/rehype": "1.1.7",
     "@stylexjs/babel-plugin": "0.5.1",
-    "@tailwindcss/cli": "4.0.0-alpha.7",
+    "@tailwindcss/cli": "4.0.0-alpha.8",
     "@types/babel__core": "7.20.5",
     "@types/bun": "1.0.8",
     "@types/react": "18.2.64",
@@ -53,7 +53,7 @@
     "metro": "0.80.6",
     "metro-core": "0.80.6",
     "react-refresh": "0.14.0",
-    "tailwindcss": "4.0.0-alpha.7",
+    "tailwindcss": "4.0.0-alpha.8",
     "typescript": "5.4.2",
     "yargs": "17.7.2"
   },

@@ -34,11 +34,11 @@
   "devDependencies": {
     "@playwright/test": "1.42.1",
     "@stylexjs/stylex": "0.5.1",
-    "@tailwindcss/cli": "4.0.0-alpha.7",
+    "@tailwindcss/cli": "4.0.0-alpha.8",
     "@types/bun": "1.0.8",
     "@types/react": "18.2.64",
     "@types/react-dom": "18.2.21",
-    "tailwindcss": "4.0.0-alpha.7",
+    "tailwindcss": "4.0.0-alpha.8",
     "typescript": "5.4.2"
   }
 }
