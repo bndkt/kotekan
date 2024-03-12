@@ -5,18 +5,19 @@
     "packages/*"
   ],
   "scripts": {
-    "ncu": "ncu",
-    "clean": "rm -rf node_modules && rm bun.lockb && bun install --force",
-    "manypkg": "manypkg check",
     "biome": "biome",
+    "clean": "rm -rf node_modules && rm bun.lockb && bun install --force",
     "docker": "bun run docker:build && bun run docker:remove && bun run docker:run",
     "docker:build": "docker build -t kotekan .",
     "docker:remove": "docker rm -f kotekan",
     "docker:run": "docker run -d -p 3000:3000 --name kotekan kotekan",
-    "docker:stop": "docker stop kotekan"
+    "docker:stop": "docker stop kotekan",
+    "manypkg": "manypkg check",
+    "ncu": "ncu"
   },
   "dependencies": {
     "@biomejs/biome": "1.6.0",
+    "@changesets/cli": "2.27.1",
     "@manypkg/cli": "0.21.2",
     "@types/bun": "1.0.8",
     "npm-check-updates": "16.14.15",

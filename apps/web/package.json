@@ -1,23 +1,23 @@
 {
   "name": "kotekan-web",
   "version": "0.0.1",
-  "type": "module",
   "sideEffects": false,
+  "type": "module",
   "scripts": {
-    "lint": "biome lint ./src",
     "css": "tailwindcss -m -i src/styles.css -o build/client/styles.css",
     "dev": "DOCKER_BUILD_TIMESTAMP=1709948626 kotekan dev",
-    "start": "NODE_ENV=production kotekan start",
     "kotekan-jsx": "kotekan-jsx",
     "kotekan-ssr": "kotekan-ssr",
-    "test": "npx playwright test",
+    "lint": "biome lint ./src",
     "native": "kotekan native",
-    "rn:start": "react-native start --config ./build/mobile/metro.config.cjs",
-    "rn:run-ios": "react-native run-ios --no-packager",
     "rn:build-ios": "react-native build-ios",
     "rn:clean": "react-native clean",
+    "rn:doctor": "react-native doctor",
     "rn:info": "react-native info",
-    "rn:doctor": "react-native doctor"
+    "rn:run-ios": "react-native run-ios --no-packager",
+    "rn:start": "react-native start --config ./build/mobile/metro.config.cjs",
+    "start": "NODE_ENV=production kotekan start",
+    "test": "npx playwright test"
   },
   "dependencies": {
     "@algolia/autocomplete-core": "1.17.0",
