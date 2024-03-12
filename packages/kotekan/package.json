@@ -23,7 +23,7 @@
     "lint": "biome lint ./src",
     "vendor": "bun ./src/scripts/vendor.ts",
     "compile": "bun build --compile --minify --sourcemap ./src/cli/index.ts --outfile ./bin/kotekan",
-    "publish:dry": "npm publish --dry-run"
+    "publish-dry": "npm publish --dry-run"
   },
   "dependencies": {
     "react": "0.0.0-experimental-56e20051c-20240311",
