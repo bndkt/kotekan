@@ -11,6 +11,7 @@ export const packageJson = (name: string) => {
 			start: "kotekan start",
 		},
 		dependencies: {
+			"@physis/react-server-dom-esm": "0.0.0-experimental-89021fb4e-20240311",
 			kotekan: "latest",
 			react: "0.0.0-experimental-56e20051c-20240311",
 			"react-dom": "0.0.0-experimental-56e20051c-20240311",
