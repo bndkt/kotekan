@@ -1,6 +1,28 @@
 {
   "name": "create-kotekan",
   "version": "0.0.1",
+  "description": "Create a new Kotekan project.",
+  "keywords": [
+    "react",
+    "bun",
+    "kotekan",
+    "rsc"
+  ],
+  "homepage": "https://kotekan.dev",
+  "bugs": {
+    "url": "https://github.com/bndkt/kotekan/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bndkt/kotekan.git",
+    "directory": "packages/create-kotekan"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Benedikt Müller",
+    "email": "hello@bndkt.com",
+    "url": "http://bndkt.com"
+  },
   "type": "module",
   "bin": "index.ts",
   "dependencies": {
