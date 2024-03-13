@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 
-import { ServerTime } from "@/components/ServerTime";
-import { Counter } from "@/components/Counter";
+import { ServerTime } from "../components/ServerTime";
+import { Counter } from "../components/Counter";
 
 export default function Index() {
 	return (
