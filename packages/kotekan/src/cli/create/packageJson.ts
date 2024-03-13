@@ -1,10 +1,6 @@
-import path from "node:path";
-
-export const createCommand = (name?: string) => {
-	const createPath = path.join(process.cwd(), name ?? "");
-
+export const packageJson = (name: string) => {
 	const packageJson = {
-		name: name ?? "kotekan-app",
+		name: name,
 		version: "0.0.1",
 		module: "index.ts",
 		type: "module",
@@ -29,8 +25,5 @@ export const createCommand = (name?: string) => {
 		},
 	};
 
-	Bun.write(
-		path.join(createPath, "package.json"),
-		JSON.stringify(packageJson, null, 2),
-	);
+	return packageJson;
 };
