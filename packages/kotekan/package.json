@@ -4,6 +4,9 @@
   "sideEffects": false,
   "type": "module",
   "exports": {
+    "./cli": {
+      "import": "./src/cli/index.ts"
+    },
     "./client/render": {
       "import": "./src/client/render.tsx"
     },
@@ -15,7 +18,7 @@
     }
   },
   "bin": {
-    "kotekan": "./src/cli/index.ts",
+    "kotekan": "./src/cli/cli.ts",
     "kotekan-jsx": "./src/cli/jsxServer.ts",
     "kotekan-ssr": "./src/cli/ssrServer.ts"
   },
