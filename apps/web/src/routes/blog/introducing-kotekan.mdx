@@ -1,0 +1,25 @@
+export { Wrapper as default } from "@/components/content/Wrapper"
+
+# Introducing Kotekan
+
+Modern application development is amazing. Developers can build backends and frontends using the same language, and frameworks like React make it relatively easy to create powerful applications offering geat user experiences on web and mobile.
+
+But due to the history of the web and JavaScript as a language, modern application development can also feel overwhelmingly complicated. Yes, you can use the same language for backend and frontend. Except, your JavaScript on the server is not really the same as your JavaScript in the browser. And also, you probably want to write in TypeScript, which of course the browser doesn't understand. Also, you want to optimize what get's send to the browser to reduce the number of requests and the amount of bytes sent over the wire. And before you know it, you're knee deep into managing a zoo of transpilers and bundlers that do things to your code that you only halfheartedly understand (if at all).
+
+Don't get me wrong. All those tools exists for a reason and enabled developers to do things that otherwise wouldn't be possible. We should be grateful for their existance and should thank the people building and maintaining them. But I still feel that with all the progress the web development industry is making, it's worth exploring how to scale back complexity and move towards simpler setups.
+
+When Jarred Sumner introduced [Bun](https://bun.sh/) as an "all-in-one JavaScript runtime & toolkit," I was really excited about this premise. But although Bun's reception has been really well and many developers have embraced it as a package manager and script runner due to it's phenomenal performance, I haven't really seen it adapted in the React world more broadly. I was curious, **what would a React framework look like if Bun were the only tool in the toolchain?**
+
+Besides Bun, there was a second emerging technology that had me excited and got me thinking: React Server Components. Although they were initially [announced in December 2020](https://react.dev/blog/2020/12/21/data-fetching-with-react-server-components) alreay, they've not been broadly adopted so far. More than that, their potential and the extend of the second-order effects on topics like data loading and routing have been massively underestimated so far. In my opionion, there's a lot of things that current React frameworks like [Next.js](https://nextjs.org/) and [Remix](https://remix.run/) do that simply won't be necessary (or will at least be vastly simplified) with Server Components anymore. So that was my second question, **what would a modern, minimalistic React framework based on Server Components look like?**
+
+There was a third question, which I'll talk about in conjunction with a future version of Kotekan.
+
+Today, I'm excited to release the first version of Kotekan, a modern React framework built on Bun.
+
+```sh
+bun create kotekan
+```
+
+```sh
+bun dev
+```
