@@ -3,13 +3,13 @@ import path from "node:path";
 import { packageJson } from "./packageJson";
 import { tsconfigJson } from "./tsconfigJson";
 
-export const createCommand = (name?: string) => {
+export const createCommand = async (name?: string) => {
 	const createPath = path.join(process.cwd(), name ?? "");
 
 	const projectName = name ?? "kotekan-app";
 
 	// package.json
-	const packageJsonContent = packageJson(projectName);
+	const packageJsonContent = await packageJson(projectName);
 	Bun.write(
 		path.join(createPath, "package.json"),
 		JSON.stringify(packageJsonContent, null, 2),

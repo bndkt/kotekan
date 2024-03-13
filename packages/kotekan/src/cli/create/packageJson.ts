@@ -1,4 +1,39 @@
-export const packageJson = (name: string) => {
+import pkg from "../../../package.json";
+
+const dependenciesArray = [
+	"@physis/react-server-dom-esm",
+	"react",
+	"react-dom",
+	"kotekan",
+];
+
+const devDependenciesArray = [
+	"@tailwindcss/cli",
+	"@types/bun",
+	"@types/react",
+	"@types/react-dom",
+	"tailwindcss",
+	"typescript",
+];
+
+export const packageJson = async (name: string) => {
+	const dependencies: Record<string, string> = {};
+
+	dependenciesArray.sort();
+	for (const dep of dependenciesArray) {
+		dependencies[dep] =
+			dep === "kotekan"
+				? pkg.version
+				: pkg.dependencies[dep as keyof typeof pkg.dependencies];
+	}
+
+	devDependenciesArray.sort();
+	const devDependencies: Record<string, string> = {};
+	for (const dep of devDependenciesArray) {
+		devDependencies[dep] =
+			pkg.devDependencies[dep as keyof typeof pkg.devDependencies];
+	}
+
 	const packageJson = {
 		name: name,
 		version: "0.0.1",
@@ -10,20 +45,8 @@ export const packageJson = (name: string) => {
 			dev: "kotekan dev",
 			start: "kotekan start",
 		},
-		dependencies: {
-			"@physis/react-server-dom-esm": "0.0.0-experimental-89021fb4e-20240311",
-			kotekan: "latest",
-			react: "0.0.0-experimental-56e20051c-20240311",
-			"react-dom": "0.0.0-experimental-56e20051c-20240311",
-		},
-		devDependencies: {
-			"@tailwindcss/cli": "4.0.0-alpha.8",
-			"@types/bun": "1.0.8",
-			"@types/react": "18.2.65",
-			"@types/react-dom": "18.2.21",
-			tailwindcss: "4.0.0-alpha.8",
-			typescript: "5.4.2",
-		},
+		dependencies,
+		devDependencies,
 	};
 
 	return packageJson;
