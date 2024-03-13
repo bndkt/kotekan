@@ -25,8 +25,8 @@
     "clsx": "2.1.0",
     "framer-motion": "11.0.12",
     "kotekan": "workspace:*",
-    "react": "0.0.0-experimental-56e20051c-20240311",
-    "react-aria-components": "1.1.1",
+    "react": "0.0.0-experimental-eb33bd747-20240312",
+    "react-dom": "0.0.0-experimental-eb33bd747-20240312",
     "react-highlight-words": "0.20.0",
     "react-native": "0.74.0-rc.3",
     "react-strict-dom": "0.0.3"

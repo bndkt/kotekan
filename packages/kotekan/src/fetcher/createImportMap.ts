@@ -1,6 +1,6 @@
 export const createImportMap = (development?: boolean) => {
 	const jsxRuntimeImport = development ? "jsx-dev-runtime" : "jsx-runtime";
-	const reactVersion = "0.0.0-experimental-56e20051c-20240311";
+	const reactVersion = "0.0.0-experimental-eb33bd747-20240312";
 	const queryString = `?pin=v135${development ? "&dev" : ""}`;
 
 	const importMap = {

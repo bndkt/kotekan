@@ -107,7 +107,7 @@ var require_react_development = __commonJS((exports, module) => {
           Function.prototype.apply.call(console[level], console, argsWithFormat);
         }
       }
-      var ReactVersion = "18.3.0-experimental-56e20051c-20240311";
+      var ReactVersion = "18.3.0-experimental-eb33bd747-20240312";
       var REACT_ELEMENT_TYPE = Symbol.for("react.element");
       var REACT_PORTAL_TYPE = Symbol.for("react.portal");
       var REACT_FRAGMENT_TYPE = Symbol.for("react.fragment");
@@ -7176,11 +7176,6 @@ var require_react_dom_development = __commonJS((exports) => {
           didSuspendOrErrorDEV = true;
         }
       }
-      function didSuspendOrErrorWhileHydratingDEV() {
-        {
-          return didSuspendOrErrorDEV;
-        }
-      }
       function enterHydrationState(fiber) {
         var parentInstance = fiber.stateNode.containerInfo;
         nextHydratableInstance = getFirstHydratableChildWithinContainer(parentInstance);
@@ -13174,12 +13169,6 @@ var require_react_dom_development = __commonJS((exports) => {
             var source = errorInfo.source;
             var stack = errorInfo.stack;
             var componentStack = stack !== null ? stack : "";
-            if (error2 != null && error2._suppressLogging) {
-              if (boundary.tag === ClassComponent) {
-                return;
-              }
-              console["error"](error2);
-            }
             var componentName = source ? getComponentNameFromFiber(source) : null;
             var componentNameMessage = componentName ? "The above error occurred in the <" + componentName + "> component:" : "The above error occurred in one of your React components:";
             var errorBoundaryMessage;
@@ -13189,8 +13178,7 @@ var require_react_dom_development = __commonJS((exports) => {
               var errorBoundaryName = getComponentNameFromFiber(boundary) || "Anonymous";
               errorBoundaryMessage = "React will try to recreate this component tree from scratch " + ("using the error boundary you provided, " + errorBoundaryName + ".");
             }
-            var combinedMessage = componentNameMessage + "\n" + componentStack + "\n\n" + ("" + errorBoundaryMessage);
-            console["error"](combinedMessage);
+            console["error"]("%o\n\n%s\n%s\n\n%s", error2, componentNameMessage, componentStack, errorBoundaryMessage);
           }
         } catch (e) {
           setTimeout(function() {
@@ -15075,7 +15063,7 @@ var require_react_dom_development = __commonJS((exports) => {
         }
         return bailoutOnAlreadyFinishedWork(current2, workInProgress2, renderLanes2);
       }
-      function beginWork$1(current2, workInProgress2, renderLanes2) {
+      function beginWork(current2, workInProgress2, renderLanes2) {
         {
           if (workInProgress2._debugNeedsRemount && current2 !== null) {
             return remountFiber(current2, workInProgress2, createFiberFromTypeAndProps(workInProgress2.type, workInProgress2.key, workInProgress2.pendingProps, workInProgress2._debugOwner || null, workInProgress2.mode, workInProgress2.lanes));
@@ -16378,128 +16366,6 @@ var require_react_dom_development = __commonJS((exports) => {
             break;
         }
       }
-      var fakeNode = null;
-      {
-        if (typeof window !== "undefined" && typeof window.dispatchEvent === "function" && typeof document !== "undefined" && typeof document.createEvent === "function") {
-          fakeNode = document.createElement("react");
-        }
-      }
-      function invokeGuardedCallbackImpl(name, func, context) {
-        {
-          if (fakeNode) {
-            var evt = document.createEvent("Event");
-            var didCall = false;
-            var didError = true;
-            var windowEvent = window.event;
-            var windowEventDescriptor = Object.getOwnPropertyDescriptor(window, "event");
-            var restoreAfterDispatch = function() {
-              fakeNode.removeEventListener(evtType, callCallback2, false);
-              if (typeof window.event !== "undefined" && window.hasOwnProperty("event")) {
-                window.event = windowEvent;
-              }
-            };
-            var _funcArgs = Array.prototype.slice.call(arguments, 3);
-            var callCallback2 = function() {
-              didCall = true;
-              restoreAfterDispatch();
-              func.apply(context, _funcArgs);
-              didError = false;
-            };
-            var error2;
-            var didSetError = false;
-            var isCrossOriginError = false;
-            var handleWindowError = function(event) {
-              error2 = event.error;
-              didSetError = true;
-              if (error2 === null && event.colno === 0 && event.lineno === 0) {
-                isCrossOriginError = true;
-              }
-              if (event.defaultPrevented) {
-                if (error2 != null && typeof error2 === "object") {
-                  try {
-                    error2._suppressLogging = true;
-                  } catch (inner) {
-                  }
-                }
-              }
-            };
-            var evtType = "react-" + (name ? name : "invokeguardedcallback");
-            window.addEventListener("error", handleWindowError);
-            fakeNode.addEventListener(evtType, callCallback2, false);
-            evt.initEvent(evtType, false, false);
-            fakeNode.dispatchEvent(evt);
-            if (windowEventDescriptor) {
-              Object.defineProperty(window, "event", windowEventDescriptor);
-            }
-            if (didCall && didError) {
-              if (!didSetError) {
-                error2 = new Error(`An error was thrown inside one of your components, but React doesn't know what it was. This is likely due to browser flakiness. React does its best to preserve the "Pause on exceptions" behavior of the DevTools, which requires some DEV-mode only tricks. It's possible that these don't work in your browser. Try triggering the error in production mode, or switching to a modern browser. If you suspect that this is actually an issue with React, please file an issue.`);
-              } else if (isCrossOriginError) {
-                error2 = new Error("A cross-origin error was thrown. React doesn't have access to the actual error object in development. See https://react.dev/link/crossorigin-error for more information.");
-              }
-              this.onError(error2);
-            }
-            window.removeEventListener("error", handleWindowError);
-            if (didCall) {
-              return;
-            } else {
-              restoreAfterDispatch();
-            }
-          }
-          var funcArgs = Array.prototype.slice.call(arguments, 3);
-          try {
-            func.apply(context, funcArgs);
-          } catch (error3) {
-            this.onError(error3);
-          }
-        }
-      }
-      var hasError = false;
-      var caughtError = null;
-      var hasRethrowError = false;
-      var rethrowError = null;
-      var reporter = {
-        onError: function(error2) {
-          hasError = true;
-          caughtError = error2;
-        }
-      };
-      function invokeGuardedCallback(name, func, context, a, b, c, d, e, f) {
-        hasError = false;
-        caughtError = null;
-        invokeGuardedCallbackImpl.apply(reporter, arguments);
-      }
-      function invokeGuardedCallbackAndCatchFirstError(name, func, context, a, b, c, d, e, f) {
-        invokeGuardedCallback.apply(this, arguments);
-        if (hasError) {
-          var error2 = clearCaughtError();
-          if (!hasRethrowError) {
-            hasRethrowError = true;
-            rethrowError = error2;
-          }
-        }
-      }
-      function rethrowCaughtError() {
-        if (hasRethrowError) {
-          var error2 = rethrowError;
-          hasRethrowError = false;
-          rethrowError = null;
-          throw error2;
-        }
-      }
-      function hasCaughtError() {
-        return hasError;
-      }
-      function clearCaughtError() {
-        if (hasError) {
-          var error2 = caughtError;
-          hasError = false;
-          caughtError = null;
-          return error2;
-        } else {
-          throw new Error("clearCaughtError was called but no error was captured. This error is likely caused by a bug in React. Please file an issue.");
-        }
-      }
       var didWarnAboutUndefinedSnapshotBeforeUpdate = null;
       {
         didWarnAboutUndefinedSnapshotBeforeUpdate = new Set;
@@ -16512,14 +16378,6 @@ var require_react_dom_development = __commonJS((exports) => {
       var inProgressRoot = null;
       function shouldProfile(current2) {
         return (current2.mode & ProfileMode) !== NoMode && (getExecutionContext() & CommitContext) !== NoContext;
-      }
-      function reportUncaughtErrorInDEV(error2) {
-        {
-          invokeGuardedCallback(null, function() {
-            throw error2;
-          });
-          clearCaughtError();
-        }
       }
       function callComponentWillUnmountWithTimer(current2, instance) {
         instance.props = current2.memoizedProps;
@@ -20256,7 +20114,6 @@ var require_react_dom_development = __commonJS((exports) => {
       }
       function captureCommitPhaseError(sourceFiber, nearestMountedAncestor, error$1) {
         {
-          reportUncaughtErrorInDEV(error$1);
           setIsRunningInsertionEffect(false);
         }
         if (sourceFiber.tag === HostRoot) {
@@ -20528,34 +20385,6 @@ var require_react_dom_development = __commonJS((exports) => {
             }
           }
         }
-      }
-      var beginWork;
-      {
-        var dummyFiber = null;
-        beginWork = function(current2, unitOfWork, lanes) {
-          var originalWorkInProgressCopy = assignFiberPropertiesInDEV(dummyFiber, unitOfWork);
-          try {
-            return beginWork$1(current2, unitOfWork, lanes);
-          } catch (originalError) {
-            if (didSuspendOrErrorWhileHydratingDEV() || originalError === SuspenseException || originalError === SelectiveHydrationException || originalError !== null && typeof originalError === "object" && typeof originalError.then === "function") {
-              throw originalError;
-            }
-            resetSuspendedWorkLoopOnUnwind(unitOfWork);
-            unwindInterruptedWork(current2, unitOfWork);
-            assignFiberPropertiesInDEV(unitOfWork, originalWorkInProgressCopy);
-            if (unitOfWork.mode & ProfileMode) {
-              startProfilerTimer(unitOfWork);
-            }
-            invokeGuardedCallback(null, beginWork$1, null, current2, unitOfWork, lanes);
-            if (hasCaughtError()) {
-              var replayError = clearCaughtError();
-              if (typeof replayError === "object" && replayError !== null && replayError._suppressLogging && typeof originalError === "object" && originalError !== null && !originalError._suppressLogging) {
-                originalError._suppressLogging = true;
-              }
-            }
-            throw originalError;
-          }
-        };
       }
       var didWarnAboutUpdateInRender = false;
       var didWarnAboutUpdateInRenderForAnotherComponent;
@@ -21340,45 +21169,6 @@ var require_react_dom_development = __commonJS((exports) => {
         };
         return fiber;
       }
-      function assignFiberPropertiesInDEV(target, source) {
-        if (target === null) {
-          target = createFiber(IndeterminateComponent, null, null, NoMode);
-        }
-        target.tag = source.tag;
-        target.key = source.key;
-        target.elementType = source.elementType;
-        target.type = source.type;
-        target.stateNode = source.stateNode;
-        target.return = source.return;
-        target.child = source.child;
-        target.sibling = source.sibling;
-        target.index = source.index;
-        target.ref = source.ref;
-        target.refCleanup = source.refCleanup;
-        target.pendingProps = source.pendingProps;
-        target.memoizedProps = source.memoizedProps;
-        target.updateQueue = source.updateQueue;
-        target.memoizedState = source.memoizedState;
-        target.dependencies = source.dependencies;
-        target.mode = source.mode;
-        target.flags = source.flags;
-        target.subtreeFlags = source.subtreeFlags;
-        target.deletions = source.deletions;
-        target.lanes = source.lanes;
-        target.childLanes = source.childLanes;
-        target.alternate = source.alternate;
-        {
-          target.actualDuration = source.actualDuration;
-          target.actualStartTime = source.actualStartTime;
-          target.selfBaseDuration = source.selfBaseDuration;
-          target.treeBaseDuration = source.treeBaseDuration;
-        }
-        target._debugInfo = source._debugInfo;
-        target._debugOwner = source._debugOwner;
-        target._debugNeedsRemount = source._debugNeedsRemount;
-        target._debugHookTypes = source._debugHookTypes;
-        return target;
-      }
       function FiberRootNode(containerInfo, tag, hydrate, identifierPrefix, onRecoverableError, formState) {
         this.tag = tag;
         this.containerInfo = containerInfo;
@@ -21454,7 +21244,7 @@ var require_react_dom_development = __commonJS((exports) => {
         initializeUpdateQueue(uninitializedFiber);
         return root2;
       }
-      var ReactVersion = "18.3.0-experimental-56e20051c-20240311";
+      var ReactVersion = "18.3.0-experimental-eb33bd747-20240312";
       function createPortal$1(children, containerInfo, implementation) {
         var key = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
         {
@@ -23885,10 +23675,18 @@ var require_react_dom_development = __commonJS((exports) => {
       }
       var mediaEventTypes = ["abort", "canplay", "canplaythrough", "durationchange", "emptied", "encrypted", "ended", "error", "loadeddata", "loadedmetadata", "loadstart", "pause", "play", "playing", "progress", "ratechange", "resize", "seeked", "seeking", "stalled", "suspend", "timeupdate", "volumechange", "waiting"];
       var nonDelegatedEvents = new Set(["cancel", "close", "invalid", "load", "scroll", "scrollend", "toggle"].concat(mediaEventTypes));
+      var hasError = false;
+      var caughtError = null;
       function executeDispatch(event, listener, currentTarget) {
-        var type = event.type || "unknown-event";
         event.currentTarget = currentTarget;
-        invokeGuardedCallbackAndCatchFirstError(type, listener, undefined, event);
+        try {
+          listener(event);
+        } catch (error2) {
+          if (!hasError) {
+            hasError = true;
+            caughtError = error2;
+          }
+        }
         event.currentTarget = null;
       }
       function processDispatchQueueItemsInOrder(event, dispatchListeners, inCapturePhase) {
@@ -23919,7 +23717,12 @@ var require_react_dom_development = __commonJS((exports) => {
           var _dispatchQueue$i = dispatchQueue[i], event = _dispatchQueue$i.event, listeners = _dispatchQueue$i.listeners;
           processDispatchQueueItemsInOrder(event, listeners, inCapturePhase);
         }
-        rethrowCaughtError();
+        if (hasError) {
+          var error2 = caughtError;
+          hasError = false;
+          caughtError = null;
+          throw error2;
+        }
       }
       function dispatchEventsForPlugins(domEventName, eventSystemFlags, nativeEvent, targetInst, targetContainer) {
         var nativeEventTarget = getEventTarget(nativeEvent);
