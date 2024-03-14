@@ -1,0 +1,9 @@
+export { Wrapper as default } from "@/components/content/Wrapper"
+
+# Rendering Strategies
+
+## Server
+
+To accommodate React Server Components, Kotekan runs two servers, which we‘ll call JSX server and SSR server. The JSX server is responsible for providing the JSX (i.e. serialized virtual DOM) output. In a production setup, this server should be central and located close to the data source. It will only ever be called by the SSR server and therefore does not need to be exposed publicly. The SSR server is responsible for delivering the HTML response as well as assets like JavaScript bundles, CSS, and static assets (images, …) to the client. It also passes through the JSX responses from the JSX server. Note that despite its name, this server also plays a role when choosing client side rendering (CSR) as a strategy, because in this scenario it will render the initial HTML shell and still deliver the client side JavaScript.
+
+The SSR server can talk to the JSX server via HTTP or UNIX Socket. When both servers are deployed on the same machine, it makes sense to have them communicate via socket. This mode is also used during development.

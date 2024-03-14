@@ -27,7 +27,8 @@
 
 		// Custom
 		"paths": {
-			"@/components/*": ["./src/components/*"]
+			"@/components/*": ["./src/components/*"],
+			"@mdx-components": ["./src/mdx-components.ts"]
 		}
 	},
 	"exclude": ["build"]

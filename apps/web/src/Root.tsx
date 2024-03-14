@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 import { Layout } from "./components/layout/Layout";
 
-export default function Root({ children }: { children?: ReactNode }) {
+export default async function Root({ children }: { children?: ReactNode }) {
 	return (
 		<html lang="en" className="h-full">
 			<head>

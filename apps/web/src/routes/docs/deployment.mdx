@@ -1,0 +1,11 @@
+export { Wrapper as default } from "@/components/content/Wrapper"
+
+# Deployment
+
+Most React frameworks have in common that in the end, any application built with them can be bundled to pure JavaScript and can then be deployed through many different means and on different hosting platforms (Vercel, Cloudflare Pages, …). This approach makes a lot of sense and while in practice it’s a bit more complicated then it says on the label (mainly due to different JS runtimes like Node, Workerd, …), it gives developers a lot of deployment choices.
+
+While I appreciate the benefits of this approach, it is in fact a stated anti-goal for Kotekan. Kotekan is built on the premise of leveraging the Bun runtime to its fullest, which naturally implies deploying with this runtime as well. Applications built with Kotekan can therefor not be deployed to the usual serverless platforms (at least for now) and need to be deployed using other approaches. The easiest and most common approach is to Deploy using Docker.
+
+Docker
+
+It is super easy to deploy Kotekan apps using a Docker container, which gives developers an enormous amount of hosting options. Two approaches we‘ve tested and will describe further in this documentation are Deployment via Fly and Deployment via Kamal.
