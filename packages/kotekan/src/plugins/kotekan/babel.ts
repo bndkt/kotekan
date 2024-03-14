@@ -48,7 +48,6 @@ export const babel = async (
 		metadata.stylex !== null &&
 		metadata.stylex.length > 0
 	) {
-		console.log("StyleX", metadata.stylex);
 		stylexRules[args.path] = metadata.stylex;
 	}
 

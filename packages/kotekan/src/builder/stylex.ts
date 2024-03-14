@@ -7,8 +7,6 @@ export const stylex = async ({
 }: { stylexRules: Record<string, Rule[]>; buildPath?: string }) => {
 	const rules: Array<Rule> = Object.values(stylexRules).flat();
 
-	console.log("StyleX", rules.length);
-
 	if (rules.length === 0) {
 		return;
 	}

@@ -5,14 +5,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import type { NavGroup } from "./navItems";
 import { NavLink } from "./NavLink";
 import { ActivePageMarker } from "./ActivePageMarker";
-import { VisibleSectionHighlight } from "./VisibleSectionHighlight";
-
-interface Section {
-	id: string;
-	href: string;
-	tag: string;
-	title: string;
-}
+import {
+	VisibleSectionHighlight,
+	useInitialValue,
+} from "../sections/VisibleSectionHighlight";
+import { useSectionStore } from "../sections/SectionProvider";
+import { usePathname } from "../usePathname";
 
 export const NavigationGroup = ({
 	group,
@@ -26,17 +24,20 @@ export const NavigationGroup = ({
 	// The state will still update when we re-open (re-render) the navigation.
 	// let isInsideMobileNavigation = useIsInsideMobileNavigation();
 	const isInsideMobileNavigation = false;
-	// let [pathname, sections] = useInitialValue(
-	// 	[usePathname(), useSectionStore((s) => s.sections)],
-	// 	isInsideMobileNavigation,
-	// );
-	const sections: Section[] = [
-		{ id: "test", href: "test", tag: "test", title: "test" },
-	]; // @todo
-	const pathname = ""; // @todo
+	const [pathname, sections] = useInitialValue(
+		[usePathname(), useSectionStore((s) => s.sections)],
+		// ["/about", useSectionStore((s) => s.sections)],
+		isInsideMobileNavigation,
+	);
+	console.log({ sections });
+	// const sections: Section[] = [
+	// 	{ id: "test", href: "test", tag: "test", title: "test" },
+	// ]; // @todo
+	// const pathname = ""; // @todo
 
-	// let isActiveGroup = group.links.findIndex((link) => link.href === pathname) !== -1;
-	const isActiveGroup = false; // @todo
+	const isActiveGroup =
+		group.links.findIndex((link) => link.href === pathname) !== -1;
+	// const isActiveGroup = false; // @todo
 
 	return (
 		<li className={clsx("relative mt-6", className)}>

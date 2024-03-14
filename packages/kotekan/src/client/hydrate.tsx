@@ -9,10 +9,10 @@ import {
 	type FunctionComponent,
 } from "react";
 import { hydrateRoot } from "react-dom/client";
-// @ts-expect-error Untyped import
 import {
 	createFromFetch,
 	encodeReply,
+	// @ts-expect-error Untyped import
 } from "@physis/react-server-dom-esm/client";
 
 import { moduleBaseURL } from "./config";

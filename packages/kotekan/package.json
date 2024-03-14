@@ -63,7 +63,6 @@
     "@physis/react-server-dom-esm": "0.0.0-experimental-89021fb4e-20240311",
     "@react-native/babel-preset": "0.73.21",
     "@react-native/metro-config": "0.74.2",
-    "@shikijs/rehype": "1.1.7",
     "@stylexjs/babel-plugin": "0.5.1",
     "@tailwindcss/cli": "4.0.0-alpha.8",
     "isbot": "5.1.1",
@@ -83,7 +82,7 @@
     "@types/babel__core": "7.20.5",
     "@types/bun": "1.0.8",
     "@types/react": "18.2.65",
-    "@types/react-dom": "18.2.21",
+    "@types/react-dom": "18.2.22",
     "@types/react-refresh": "0.14.5",
     "@types/yargs": "17.0.32"
   }
