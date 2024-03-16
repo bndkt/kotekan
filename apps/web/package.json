@@ -27,7 +27,7 @@
     "@sindresorhus/slugify": "2.2.1",
     "acorn": "8.11.3",
     "clsx": "2.1.0",
-    "framer-motion": "11.0.12",
+    "framer-motion": "11.0.14",
     "kotekan": "workspace:*",
     "mdast-util-to-string": "4.0.0",
     "mdx-annotations": "0.1.4",
@@ -46,7 +46,7 @@
     "@stylexjs/stylex": "0.5.1",
     "@tailwindcss/cli": "4.0.0-alpha.8",
     "@types/bun": "1.0.8",
-    "@types/react": "18.2.65",
+    "@types/react": "18.2.66",
     "@types/react-dom": "18.2.22",
     "tailwindcss": "4.0.0-alpha.8",
     "typescript": "5.4.2"
