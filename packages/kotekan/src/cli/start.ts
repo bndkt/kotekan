@@ -11,20 +11,20 @@ export const startCommand = async (development = false) => {
 		console.log("🚀 Running Kotekan in dev mode ...");
 	}
 
-	Bun.spawn(
-		[
-			"bunx",
-			"tailwindcss",
-			"-i",
-			"src/styles.css",
-			"-o",
-			"build/client/styles.css",
-			development ? "-w" : "-m",
-		],
-		{
-			stdout: "inherit",
-		},
-	);
+	// Bun.spawn(
+	// 	[
+	// 		"bunx",
+	// 		"tailwindcss",
+	// 		"-i",
+	// 		"src/styles.css",
+	// 		"-o",
+	// 		"build/client/styles.css",
+	// 		development ? "-w" : "-m",
+	// 	],
+	// 	{
+	// 		stdout: "inherit",
+	// 	},
+	// );
 
 	const jsxPreloadPath = path.join(import.meta.dir, "jsxPreload.ts");
 	const jsxServerPath = path.join(import.meta.dir, "jsxServer.ts");
@@ -40,7 +40,8 @@ export const startCommand = async (development = false) => {
 		jsxPreloadPath,
 		jsxServerPath,
 	];
-	console.log(jsxServerCommand.join(" "));
+
+	// console.log(jsxServerCommand.join(" "));
 
 	const jsxServer = Bun.spawn(jsxServerCommand, {
 		stdout: "inherit",
@@ -59,7 +60,7 @@ export const startCommand = async (development = false) => {
 		ssrServerPath,
 	];
 
-	console.log(ssrServerCommand.join(" "));
+	// console.log(ssrServerCommand.join(" "));
 
 	const ssrServer = Bun.spawn(ssrServerCommand, {
 		stdout: "inherit",
