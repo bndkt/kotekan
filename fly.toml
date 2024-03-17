@@ -24,6 +24,6 @@ primary_region = 'sin'
   path = "/up"
 
 [[vm]]
-  memory = '1gb'
+  memory = '2gb'
   cpu_kind = 'shared'
   cpus = 1
