@@ -8,7 +8,6 @@ export default function Pokemon() {
 		<Wrapper>
 			<title>Pokémon - Kotekan</title>
 			<h1>Kotekan - Pokémon</h1>
-			<a href="/">Home</a>
 			<Suspense fallback={<div>Loading Pokémon &hellip;</div>}>
 				{/* @ts-expect-error Async component */}
 				<PokemonList />

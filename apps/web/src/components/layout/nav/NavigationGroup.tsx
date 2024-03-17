@@ -29,7 +29,7 @@ export const NavigationGroup = ({
 		// ["/about", useSectionStore((s) => s.sections)],
 		isInsideMobileNavigation,
 	);
-	console.log({ sections });
+	// console.log({ sections });
 	// const sections: Section[] = [
 	// 	{ id: "test", href: "test", tag: "test", title: "test" },
 	// ]; // @todo
@@ -38,6 +38,8 @@ export const NavigationGroup = ({
 	const isActiveGroup =
 		group.links.findIndex((link) => link.href === pathname) !== -1;
 	// const isActiveGroup = false; // @todo
+
+	// console.log({ isActiveGroup });
 
 	return (
 		<li className={clsx("relative mt-6", className)}>
@@ -68,7 +70,7 @@ export const NavigationGroup = ({
 							<NavLink href={link.href} active={link.href === pathname}>
 								{link.title}
 							</NavLink>
-							<AnimatePresence mode="popLayout" initial={false}>
+							{/* <AnimatePresence mode="popLayout" initial={false}>
 								{link.href === pathname && sections.length > 0 && (
 									<motion.ul
 										role="list"
@@ -95,7 +97,7 @@ export const NavigationGroup = ({
 										))}
 									</motion.ul>
 								)}
-							</AnimatePresence>
+							</AnimatePresence> */}
 						</motion.li>
 					))}
 				</ul>

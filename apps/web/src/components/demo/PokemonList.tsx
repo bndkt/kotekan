@@ -11,7 +11,6 @@ export const PokemonList = async () => {
 
 	return (
 		<>
-			<div>Hello from the server!</div>
 			<ul>
 				{pokemon.map((pokemon) => {
 					return (

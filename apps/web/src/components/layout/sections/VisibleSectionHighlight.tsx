@@ -34,6 +34,7 @@ export const VisibleSectionHighlight = ({
 			(section) => section.id === visibleSections[0],
 		),
 	);
+	console.log({ firstVisibleSectionIndex });
 	const itemHeight = remToPx(2);
 	const height = isPresent
 		? Math.max(1, visibleSections.length) * itemHeight

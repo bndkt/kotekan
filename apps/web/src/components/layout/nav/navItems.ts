@@ -12,6 +12,7 @@ export const navItems: Array<NavGroup> = [
 		links: [
 			{ title: "Home", href: "/" },
 			{ title: "About", href: "/about" },
+			{ title: "Blog", href: "/blog" },
 			{ title: "Docs", href: "/docs" },
 		],
 	},

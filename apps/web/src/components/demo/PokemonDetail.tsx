@@ -16,9 +16,12 @@ export const PokemonDetail = async () => {
 
 	return (
 		<>
-			<div>Hello from the server!</div>
 			<ul>
-				<li>Name: {pokemon.identifier}</li>
+				<li>
+					Name:{" "}
+					{pokemon.identifier.slice(0, 1).toUpperCase() +
+						pokemon.identifier.slice(1)}
+				</li>
 				<li>Base experience: {pokemon.base_experience}</li>
 			</ul>
 		</>
