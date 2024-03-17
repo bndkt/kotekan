@@ -17,7 +17,7 @@
     "rn:info": "react-native info",
     "rn:run-ios": "react-native run-ios --no-packager",
     "rn:start": "react-native start --config ./build/mobile/metro.config.cjs",
-    "start": "NODE_ENV=production kotekan start",
+    "start": "kotekan start",
     "test": "npx playwright test",
     "tailwind3": "npx tailwindcss -i ./src/tailwind3.css -o ./build/client/tailwind.css"
   },

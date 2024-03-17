@@ -1,4 +1,3 @@
-#!/usr/bin/env bun
 import path from "node:path";
 
 const socket = "/tmp/kotekan.sock";
