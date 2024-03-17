@@ -14,9 +14,9 @@ export const HeroPattern = () => {
 						"to-[#fda4af]",
 						"opacity-40 [mask-image:radial-gradient(farthest-side_at_top,white,transparent)]",
 						// "dark:from-[#36b49f]/30",
-						"dark:from-[#36b49f]/30",
+						"dark:from-[#9f1239]/30",
 						// "dark:to-[#DBFF75]/30",
-						"dark:to-[#DBFF75]/30",
+						"dark:to-[#fda4af]/30",
 						"dark:opacity-100",
 					)}
 				>

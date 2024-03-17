@@ -18,6 +18,7 @@ export const navItems: Array<NavGroup> = [
 	{
 		title: "Demo",
 		links: [
+			{ title: "Overview", href: "/demo" },
 			{ title: "Timestamp", href: "/demo/timestamp" },
 			{ title: "Pokemon", href: "/demo/pokemon" },
 		],

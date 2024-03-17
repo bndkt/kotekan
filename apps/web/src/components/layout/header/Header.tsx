@@ -59,15 +59,15 @@ export const Header = forwardRef<
 			<div className="flex items-center gap-5">
 				<nav className="hidden md:block">
 					<ul className="flex items-center gap-8">
-						<TopLevelNavItem href="/">API</TopLevelNavItem>
-						<TopLevelNavItem href="/docs">Documentation</TopLevelNavItem>
-						<TopLevelNavItem href="/support">Support</TopLevelNavItem>
+						<TopLevelNavItem href="/about">About</TopLevelNavItem>
+						<TopLevelNavItem href="/docs">Docs</TopLevelNavItem>
+						<TopLevelNavItem href="/demo">Demo</TopLevelNavItem>
 					</ul>
 				</nav>
 				<div className="hidden md:block md:h-5 md:w-px md:bg-zinc-900/10 md:dark:bg-white/15" />
 				<div className="flex gap-4">
-					<MobileSearch />
-					<ThemeToggle />
+					{/* <MobileSearch /> */}
+					{/* <ThemeToggle /> */}
 				</div>
 				<div className="hidden min-[416px]:contents">
 					<Button href="/quickstart">Try it</Button>

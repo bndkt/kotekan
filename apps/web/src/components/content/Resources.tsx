@@ -116,7 +116,9 @@ const ResourcePattern = ({
 					// "to-[#F4FBDF]",
 					"to-[#ffe4e6]",
 					"opacity-0 transition duration-300 group-hover:opacity-100",
+					// "dark:from-[#202D2E]",
 					"dark:from-[#202D2E]",
+					// "dark:to-[#303428]",
 					"dark:to-[#303428]",
 				)}
 				style={style}
