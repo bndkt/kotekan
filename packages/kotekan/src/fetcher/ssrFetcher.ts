@@ -21,7 +21,7 @@ export const ssrFetcher = async (
 		development,
 	}: SsrFetcherProps,
 ): Promise<Response> => {
-	jsxServer ??= { hostname: "0.0.0.0", port: "3001" };
+	jsxServer ??= { hostname: "localhost", port: "3001" };
 
 	const userAgent = request.headers.get("user-agent");
 	const bot = isbot(userAgent); // @todo
