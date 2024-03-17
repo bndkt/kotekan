@@ -69,7 +69,7 @@ export const server = async (props: ServerProps = {}): Promise<Server> => {
 			? {
 					unix: socket,
 			  }
-			: { port, reusePort: true };
+			: { port };
 
 	return Bun.serve({
 		...listenerConfig,
