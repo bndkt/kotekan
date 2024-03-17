@@ -46,7 +46,7 @@ export const createDocumentElement = async ({
 
 	// Document element
 	const DocumentElement = createElement(RootComponent, {}, [
-		TailwindStylesheetElement,
+		// TailwindStylesheetElement,
 		RouteComponentElement,
 	]);
 

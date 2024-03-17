@@ -18,6 +18,8 @@ export default async function Root({ children }: { children?: ReactNode }) {
 					rel="stylesheet"
 					href="https://fonts.googleapis.com/css?family=Inter&display=swap"
 				/>
+				{/* @ts-expect-error Precedence */}
+				<link rel="stylesheet" href="/_build/tailwind.css" precedence="high" />
 				<meta
 					property="og:title"
 					content="Kotekan - React Server Components framework built on Bun"
