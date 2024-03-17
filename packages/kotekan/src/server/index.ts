@@ -8,6 +8,7 @@ import { builder } from "../builder";
 export const server = async (props: ServerProps = {}): Promise<Server> => {
 	// Defaults
 	const mode = props.mode ?? "ssr";
+	const hostname = props.hostname ?? "0.0.0.0";
 	const port = props.port ?? 3000;
 	const socket = props.socket;
 	const buildDir = props.buildDir ?? "./build";
@@ -69,7 +70,7 @@ export const server = async (props: ServerProps = {}): Promise<Server> => {
 			? {
 					unix: socket,
 			  }
-			: { port };
+			: { hostname, port };
 
 	return Bun.serve({
 		...listenerConfig,
