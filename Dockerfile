@@ -1,7 +1,7 @@
 # Adapted from https://bun.sh/guides/ecosystem/docker
 # use the official Bun image
 # see all versions at https://hub.docker.com/r/oven/bun/tags
-FROM oven/bun:1.0.30 as base
+FROM oven/bun:canary as base
 WORKDIR /usr/src/app
 
 # install dependencies into temp directory
@@ -50,4 +50,3 @@ WORKDIR /usr/src/app/apps/web
 USER bun
 EXPOSE 3000/tcp
 ENTRYPOINT [ "bun", "start" ]
-# ENTRYPOINT [ "kotekan", "start" ]
