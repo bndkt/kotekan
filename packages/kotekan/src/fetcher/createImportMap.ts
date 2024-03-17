@@ -1,9 +1,11 @@
-export const createImportMap = (development?: boolean) => {
+import type { ImportMap } from "./types";
+
+export const createImportMap = (development?: boolean): ImportMap => {
 	const jsxRuntimeImport = development ? "jsx-dev-runtime" : "jsx-runtime";
 	const reactVersion = "0.0.0-experimental-eb33bd747-20240312";
 	const queryString = `?pin=v135${development ? "&dev" : ""}`;
 
-	const importMap = {
+	const importMap: ImportMap = {
 		imports: {
 			react: `https://esm.sh/react@${reactVersion}?pin=v135${
 				development ? "&dev" : ""

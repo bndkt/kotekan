@@ -1,30 +1,11 @@
 import path from "node:path";
-import { resolveSync, type BuildConfig, type BuildArtifact } from "bun";
+import { resolveSync, type BuildConfig } from "bun";
 import type { Rule } from "@stylexjs/babel-plugin";
 
+import type { BuildOutput, BuildResult, BuilderProps } from "./types";
 import { mdxPlugin } from "../plugins/mdx";
 import { kotekanPlugin } from "../plugins/kotekan";
 import { stylex } from "./stylex";
-
-interface BuilderProps {
-	routes: Record<string, string>;
-	buildPath?: string;
-	development: boolean;
-}
-
-interface BuildOutput {
-	name: string;
-	// path?: string;
-	artifact?: BuildArtifact;
-	contents?: string;
-}
-
-export interface BuildResult {
-	// clientComponents: Record<string, BuildOutputFile>;
-	renderScript: BuildOutput;
-	hydrateScript: BuildOutput;
-	clientBuildOutputs: Map<string, BuildOutput>;
-}
 
 export const builder = async ({
 	routes,

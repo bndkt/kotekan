@@ -1,9 +1,8 @@
-interface RouterProps {
-	dir: string;
-	mdxEnabled: boolean;
-}
+import type { FileSystemRouter } from "bun";
 
-export const router = ({ dir, mdxEnabled }: RouterProps) => {
+import type { RouterProps } from "./types";
+
+export const router = ({ dir, mdxEnabled }: RouterProps): FileSystemRouter => {
 	const fileExtensions = [".ts", ".tsx"];
 
 	if (mdxEnabled) {

@@ -1,7 +1,6 @@
 import path from "node:path";
 import { createElement, type FunctionComponent } from "react";
 
-import type { BuildResult } from "../builder";
 import { resolveSync } from "bun";
 
 interface CreateDocumentElementProps {

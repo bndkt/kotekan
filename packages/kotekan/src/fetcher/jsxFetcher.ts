@@ -1,26 +1,16 @@
 import path from "node:path";
 import { PassThrough } from "node:stream";
-import { pathToFileURL, type FileSystemRouter } from "bun";
+import { pathToFileURL } from "bun";
 import type { FunctionComponent } from "react";
 // @ts-expect-error Untyped import
 import { renderToPipeableStream } from "@physis/react-server-dom-esm/server.node";
 
-import type { RenderingStrategy } from "../server";
-import type { BuildResult } from "../builder";
+import type { JsxFetcherProps } from "./types";
 import { createDocumentElement } from "./createDocumentElement";
-
-interface FetchProps {
-	mode: RenderingStrategy;
-	build: BuildResult;
-	router: FileSystemRouter;
-	buildPath: string;
-	buildUrlSegment: string;
-	development?: boolean;
-}
 
 export const jsxFetcher = async (
 	request: Request,
-	{ mode, router, buildPath, buildUrlSegment, development }: FetchProps,
+	{ mode, router, buildPath, buildUrlSegment, development }: JsxFetcherProps,
 ): Promise<Response> => {
 	const url = new URL(request.url);
 

@@ -31,41 +31,42 @@ export const startCommand = async (development = false) => {
 	const ssrPreloadPath = path.join(import.meta.dir, "ssrPreload.ts");
 	const ssrServerPath = path.join(import.meta.dir, "ssrServer.ts");
 
-	const jsxServer = Bun.spawn(
-		[
-			"bun",
-			"--conditions",
-			"react-server",
-			"--preload",
-			jsxPreloadPath,
-			development ? "--hot" : "",
-			jsxServerPath,
-		],
-		{
-			stdout: "inherit",
-			env: {
-				JSX_PORT: jsxServerPort.toString(),
-				JSX_SOCKET: socket,
-				...Bun.env,
-			},
-		},
-	);
+	const jsxServerCommand = [
+		"bun",
+		development ? "--hot" : "",
+		"--conditions",
+		"react-server",
+		"--preload",
+		jsxPreloadPath,
+		jsxServerPath,
+	];
+	console.log(jsxServerCommand.join(" "));
 
-	const ssrServer = Bun.spawn(
-		[
-			"bun",
-			"--preload",
-			ssrPreloadPath,
-			development ? "--hot" : "",
-			ssrServerPath,
-		],
-		{
-			stdout: "inherit",
-			env: {
-				SSR_PORT: ssrServerPort.toString(),
-				SSR_SOCKET: socket,
-				...Bun.env,
-			},
+	const jsxServer = Bun.spawn(jsxServerCommand, {
+		stdout: "inherit",
+		env: {
+			JSX_PORT: jsxServerPort.toString(),
+			JSX_SOCKET: socket,
+			...Bun.env,
 		},
-	);
+	});
+
+	const ssrServerCommand = [
+		"bun",
+		development ? "--hot" : "",
+		"--preload",
+		ssrPreloadPath,
+		ssrServerPath,
+	];
+
+	console.log(ssrServerCommand.join(" "));
+
+	const ssrServer = Bun.spawn(ssrServerCommand, {
+		stdout: "inherit",
+		env: {
+			SSR_PORT: ssrServerPort.toString(),
+			SSR_SOCKET: socket,
+			...Bun.env,
+		},
+	});
 };

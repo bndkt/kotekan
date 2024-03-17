@@ -34,9 +34,6 @@
     },
     "./client/hydrate": {
       "import": "./src/client/hydrate.tsx"
-    },
-    "./ui": {
-      "import": "./src/ui/index.ts"
     }
   },
   "bin": {

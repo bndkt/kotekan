@@ -1,28 +1,12 @@
 import path from "node:path";
-import type { FileSystemRouter } from "bun";
 import { isbot } from "isbot";
 // @ts-expect-error Untyped import
 import { renderToReadableStream } from "react-dom/server.edge";
 
-import type { RenderingStrategy } from "../server";
-import type { BuildResult } from "../builder";
+import type { SsrFetcherProps } from "./types";
 import { createDocumentElement } from "./createDocumentElement";
 import { createFromJsx } from "./createFromJsx";
 import { createImportMap } from "./createImportMap";
-
-interface FetchProps {
-	mode: RenderingStrategy;
-	build: BuildResult;
-	router: FileSystemRouter;
-	buildPath: string;
-	buildUrlSegment: string;
-	jsxServer?: {
-		hostname: string;
-		port: string;
-	};
-	jsxSocket?: string;
-	development?: boolean;
-}
 
 export const ssrFetcher = async (
 	request: Request,
@@ -35,7 +19,7 @@ export const ssrFetcher = async (
 		jsxServer,
 		jsxSocket,
 		development,
-	}: FetchProps,
+	}: SsrFetcherProps,
 ): Promise<Response> => {
 	jsxServer ??= { hostname: "0.0.0.0", port: "3001" };
 

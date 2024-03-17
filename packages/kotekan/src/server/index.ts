@@ -1,21 +1,11 @@
 import path from "node:path";
+import type { Server } from "bun";
 
+import type { ServerProps } from "./types";
 import { router as routerFn } from "./router";
 import { builder } from "../builder";
 
-export type RenderingStrategy = "csr" | "ssr" | "jsx";
-
-type ServerProps = {
-	mode?: RenderingStrategy;
-	buildDir?: string;
-	hostname?: string;
-	port?: number;
-	socket?: string;
-	mdxEnabled?: boolean;
-	development?: boolean;
-};
-
-export const server = async (props: ServerProps = {}) => {
+export const server = async (props: ServerProps = {}): Promise<Server> => {
 	// Defaults
 	const mode = props.mode ?? "ssr";
 	const hostname = props.hostname ?? "0.0.0.0";
@@ -49,7 +39,7 @@ export const server = async (props: ServerProps = {}) => {
 		development,
 	});
 
-	const fetch = async (request: Request) => {
+	const fetch = async (request: Request): Promise<Response> => {
 		if (mode === "jsx") {
 			const { jsxFetcher } = await import("../fetcher/jsxFetcher");
 			return jsxFetcher(request, {
