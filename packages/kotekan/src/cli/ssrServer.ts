@@ -1,4 +1,4 @@
-#!/usr/bin/env bun --preload ../../packages/kotekan/src/cli/preload-ssr.ts
+#!/usr/bin/env bun --preload ../../packages/kotekan/src/cli/ssrPreload.ts
 import { server } from "../server";
 
 const development = Bun.env.NODE_ENV === "development";

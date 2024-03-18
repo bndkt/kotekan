@@ -47,7 +47,7 @@
     "tsconfig.json"
   ],
   "scripts": {
-    "compile": "bun build --compile --minify --sourcemap ./src/cli/index.ts --outfile ./bin/kotekan",
+    "compile": "bun build --compile --minify --sourcemap ./src/cli/cli.ts --outfile ./bin/kotekan",
     "lint": "biome lint ./src",
     "publish-dry": "npm publish --dry-run",
     "vendor": "bun ./src/scripts/vendor.ts"

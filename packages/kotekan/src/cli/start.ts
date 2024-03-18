@@ -51,8 +51,6 @@ export const startCommand = async (development = false) => {
 		},
 	});
 
-	Bun.sleep(1000);
-
 	const ssrServerCommand = [
 		"bun",
 		development ? "--hot" : "",

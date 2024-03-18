@@ -156,7 +156,7 @@ export const ssrFetcher = async (
 	const publicFile = Bun.file(publicFileName);
 	return new Response(publicFile, {
 		headers: {
-			"Content-Type": "text/html; charset=utf-8",
+			// "Content-Type": "text/html; charset=utf-8",
 			"Cache-Control": `public, max-age=${3600}`,
 		},
 	});
