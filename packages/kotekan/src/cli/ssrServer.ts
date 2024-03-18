@@ -1,17 +1,21 @@
 #!/usr/bin/env bun --preload ../../packages/kotekan/src/cli/ssrPreload.ts
+
+import { boolFromEnv } from "../lib/boolFromEnv";
+import { numberFromEnv } from "../lib/numberFromEnv";
 import { server } from "../server";
 
 const development = Bun.env.NODE_ENV === "development";
-const envPort = Bun.env.SSR_PORT;
-const socket = Bun.env.SSR_SOCKET;
-
-const port = Number(envPort ?? 3000);
 
 const ssrServer = await server({
 	mode: "ssr",
-	port,
-	socket,
-	mdxEnabled: true,
+	hostname: Bun.env.SSR_HOSTNAME,
+	port: numberFromEnv("SSR_PORT"),
+	jsxServer: {
+		hostname: Bun.env.JSX_HOSTNAME,
+		port: numberFromEnv("JSX_PORT"),
+		socket: Bun.env.JSX_SOCKET,
+	},
+	mdxEnabled: boolFromEnv("MDX_ENABLED"),
 	development,
 });
 

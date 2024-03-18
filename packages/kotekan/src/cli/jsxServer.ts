@@ -1,17 +1,17 @@
 #!/usr/bin/env -S bun --conditions react-server --preload ./node_modules/kotekan/src/cli/jsxPreload.ts
+
+import { boolFromEnv } from "../lib/boolFromEnv";
+import { numberFromEnv } from "../lib/numberFromEnv";
 import { server } from "../server";
 
 const development = Bun.env.NODE_ENV === "development";
-const envPort = Bun.env.JSX_PORT;
-const socket = Bun.env.JSX_SOCKET;
-
-const port = Number(envPort ?? 3001);
 
 const jsxServer = await server({
 	mode: "jsx",
-	port,
-	socket,
-	mdxEnabled: true,
+	hostname: Bun.env.JSX_HOSTNAME,
+	port: numberFromEnv("JSX_PORT"),
+	socket: Bun.env.JSX_SOCKET,
+	mdxEnabled: boolFromEnv("MDX_ENABLED"),
 	development,
 });
 

@@ -13,11 +13,11 @@ export interface SsrFetcherProps {
 	router: FileSystemRouter;
 	buildPath: string;
 	buildUrlSegment: string;
-	jsxServer?: {
+	jsxServer: {
 		hostname: string;
-		port: string;
+		port: number;
+		socket?: string;
 	};
-	jsxSocket?: string;
 	development?: boolean;
 }
 

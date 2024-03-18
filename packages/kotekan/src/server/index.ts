@@ -8,12 +8,16 @@ import { builder } from "../builder";
 export const server = async (props: ServerProps = {}): Promise<Server> => {
 	// Defaults
 	const mode = props.mode ?? "ssr";
-	const hostname = props.hostname ?? "localhost";
+	const hostname = props.hostname ?? "0.0.0.0";
 	const port = props.port ?? 3000;
-	const socket = props.socket;
 	const buildDir = props.buildDir ?? "./build";
 	const mdxEnabled = props.mdxEnabled ?? true;
 	const development = props.development ?? false;
+	const jsxServer = {
+		hostname: props.jsxServer?.hostname ?? "0.0.0.0",
+		port: props.jsxServer?.port ?? 3001,
+		socket: props.jsxServer?.socket,
+	};
 
 	// Paths
 	const buildPath = path.join(process.cwd(), buildDir);
@@ -59,18 +63,18 @@ export const server = async (props: ServerProps = {}): Promise<Server> => {
 			router,
 			buildPath,
 			buildUrlSegment,
-			jsxSocket: socket,
+			jsxServer,
 			development,
 		});
 	};
 
 	// JSX server can optionally listen on unix socket
 	const listenerConfig =
-		mode === "jsx" && socket
+		mode === "jsx" && jsxServer.socket
 			? {
-					unix: socket,
+					unix: jsxServer.socket,
 			  }
-			: { port, reusePort: true };
+			: { hostname, port, reusePort: true };
 
 	return Bun.serve({
 		...listenerConfig,

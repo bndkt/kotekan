@@ -17,12 +17,9 @@ export const ssrFetcher = async (
 		buildPath,
 		buildUrlSegment,
 		jsxServer,
-		jsxSocket,
 		development,
 	}: SsrFetcherProps,
 ): Promise<Response> => {
-	jsxServer ??= { hostname: "localhost", port: "3001" };
-
 	const userAgent = request.headers.get("user-agent");
 	const bot = isbot(userAgent); // @todo
 
@@ -99,12 +96,12 @@ export const ssrFetcher = async (
 		// JSX Fetch
 		const jsxUrl = url; // @todo
 		url.hostname = jsxServer.hostname;
-		url.port = jsxServer.port;
+		url.port = jsxServer.port.toString();
 		const method = request.method;
 
 		const jsxFetch = fetch(jsxUrl, {
 			// @ts-expect-error Untyped, should be fixed with next stable Bun release // @todo
-			unix: jsxSocket,
+			unix: jsxServer.socket,
 			method,
 		});
 
