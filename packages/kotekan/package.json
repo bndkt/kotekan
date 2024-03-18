@@ -58,7 +58,7 @@
     "@babel/runtime": "7.24.0",
     "@mdx-js/mdx": "3.0.1",
     "@physis/react-server-dom-esm": "0.0.0-experimental-d46989150-20240312",
-    "@react-native/babel-preset": "0.73.21",
+    "@react-native/babel-preset": "0.74.2",
     "@react-native/metro-config": "0.74.2",
     "@stylexjs/babel-plugin": "0.5.1",
     "@tailwindcss/cli": "4.0.0-alpha.8",

@@ -7,8 +7,6 @@
   "scripts": {
     "css": "tailwindcss -m -i src/styles.css -o build/client/styles.css",
     "dev": "DOCKER_BUILD_TIMESTAMP=1709948626 kotekan dev",
-    "kotekan-jsx": "kotekan-jsx",
-    "kotekan-ssr": "kotekan-ssr",
     "lint": "biome lint ./src",
     "native": "kotekan native",
     "rn:build-ios": "react-native build-ios",
@@ -18,6 +16,8 @@
     "rn:run-ios": "react-native run-ios --no-packager",
     "rn:start": "react-native start --config ./build/mobile/metro.config.cjs",
     "start": "kotekan start",
+    "start-jsx": "kotekan jsx",
+    "start-ssr": "kotekan ssr",
     "tailwind3": "npx tailwindcss -m -i ./src/tailwind3.css -o ./public/tailwind.css",
     "test": "npx playwright test"
   },
