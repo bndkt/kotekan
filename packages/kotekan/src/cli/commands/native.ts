@@ -1,8 +1,8 @@
 import path from "node:path";
 
-import { metro } from "../native/metro";
-import { install } from "../native/install";
-import { generate } from "../native/generate";
+import { metro } from "../../native/metro";
+import { install } from "../../native/install";
+import { generate } from "../../native/generate";
 
 const development = Bun.env.NODE_ENV === "development";
 

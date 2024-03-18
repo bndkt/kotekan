@@ -1,8 +1,6 @@
-#!/usr/bin/env bun --preload ../../packages/kotekan/src/cli/ssrPreload.ts
-
-import { boolFromEnv } from "../lib/boolFromEnv";
-import { numberFromEnv } from "../lib/numberFromEnv";
-import { server } from "../server";
+import { boolFromEnv } from "../../lib/boolFromEnv";
+import { numberFromEnv } from "../../lib/numberFromEnv";
+import { server } from "../../server";
 
 const development = Bun.env.NODE_ENV === "development";
 

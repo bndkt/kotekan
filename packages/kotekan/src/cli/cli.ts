@@ -3,8 +3,8 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
 import { createCommand } from "./create";
-import { startCommand } from "./start";
-import { nativeCommand } from "./native";
+import { startCommand } from "./commands/start";
+import { nativeCommand } from "./commands/native";
 
 yargs(hideBin(process.argv))
 	.scriptName("kotekan")

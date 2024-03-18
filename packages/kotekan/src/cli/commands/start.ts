@@ -25,10 +25,30 @@ export const startCommand = async (development = false) => {
 	// 	},
 	// );
 
-	const jsxPreloadPath = path.join(import.meta.dir, "jsxPreload.ts");
-	const jsxServerPath = path.join(import.meta.dir, "jsxServer.ts");
-	const ssrPreloadPath = path.join(import.meta.dir, "ssrPreload.ts");
-	const ssrServerPath = path.join(import.meta.dir, "ssrServer.ts");
+	const jsxPreloadPath = path.join(
+		import.meta.dir,
+		"..",
+		"scripts",
+		"jsxPreload.ts",
+	);
+	const jsxServerPath = path.join(
+		import.meta.dir,
+		"..",
+		"scripts",
+		"jsxServer.ts",
+	);
+	const ssrPreloadPath = path.join(
+		import.meta.dir,
+		"..",
+		"scripts",
+		"ssrPreload.ts",
+	);
+	const ssrServerPath = path.join(
+		import.meta.dir,
+		"..",
+		"scripts",
+		"ssrServer.ts",
+	);
 
 	const jsxServerCommand = [
 		"bun",
@@ -49,6 +69,9 @@ export const startCommand = async (development = false) => {
 			JSX_SOCKET: socket,
 			...Bun.env,
 		},
+		onExit: () => {
+			ssrServer.kill();
+		},
 	});
 
 	const ssrServerCommand = [
@@ -67,6 +90,9 @@ export const startCommand = async (development = false) => {
 			SSR_PORT: ssrServerPort.toString(),
 			SSR_SOCKET: socket,
 			...Bun.env,
+		},
+		onExit: () => {
+			jsxServer.kill();
 		},
 	});
 };
