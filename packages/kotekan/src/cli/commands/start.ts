@@ -3,13 +3,13 @@ import path from "node:path";
 const socket = "/tmp/kotekan.sock";
 
 export const startCommand = async (development = false) => {
-	const ssrServerPort = 3000;
 	const jsxServerPort = 3001;
 
 	if (development) {
 		console.log("🚀 Running Kotekan in dev mode ...");
 	}
 
+	// Tailwind
 	// Bun.spawn(
 	// 	[
 	// 		"bunx",
@@ -25,6 +25,7 @@ export const startCommand = async (development = false) => {
 	// 	},
 	// );
 
+	// JSX
 	const jsxPreloadPath = path.join(
 		import.meta.dir,
 		"..",
@@ -36,18 +37,6 @@ export const startCommand = async (development = false) => {
 		"..",
 		"scripts",
 		"jsxServer.ts",
-	);
-	const ssrPreloadPath = path.join(
-		import.meta.dir,
-		"..",
-		"scripts",
-		"ssrPreload.ts",
-	);
-	const ssrServerPath = path.join(
-		import.meta.dir,
-		"..",
-		"scripts",
-		"ssrServer.ts",
 	);
 
 	const jsxServerCommand = [
@@ -73,6 +62,21 @@ export const startCommand = async (development = false) => {
 			ssrServer.kill();
 		},
 	});
+
+	// SSR
+	const ssrServerPort = 3000;
+	const ssrPreloadPath = path.join(
+		import.meta.dir,
+		"..",
+		"scripts",
+		"ssrPreload.ts",
+	);
+	const ssrServerPath = path.join(
+		import.meta.dir,
+		"..",
+		"scripts",
+		"ssrServer.ts",
+	);
 
 	const ssrServerCommand = [
 		"bun",

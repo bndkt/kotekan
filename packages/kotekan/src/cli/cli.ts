@@ -5,6 +5,8 @@ import { hideBin } from "yargs/helpers";
 import { createCommand } from "./create";
 import { startCommand } from "./commands/start";
 import { nativeCommand } from "./commands/native";
+import { jsxCommand } from "./commands/jsx";
+import { ssrCommand } from "./commands/ssr";
 
 yargs(hideBin(process.argv))
 	.scriptName("kotekan")
@@ -17,16 +19,30 @@ yargs(hideBin(process.argv))
 	})
 	.command({
 		command: "dev",
-		describe: "Run the development script",
+		describe: "Run the development server",
 		handler: () => {
 			startCommand(true);
 		},
 	})
 	.command({
 		command: "start",
-		describe: "Run the production script",
+		describe: "Run the production server",
 		handler: () => {
 			startCommand();
+		},
+	})
+	.command({
+		command: "jsx",
+		describe: "Run the jsx server",
+		handler: () => {
+			jsxCommand();
+		},
+	})
+	.command({
+		command: "ssr",
+		describe: "Run the ssr server",
+		handler: () => {
+			ssrCommand();
 		},
 	})
 	.command({

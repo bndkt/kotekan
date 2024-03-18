@@ -3,28 +3,46 @@
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'kotekan'
-primary_region = 'sin'
+app = "kotekan"
+primary_region = "sin"
 swap_size_mb = 512
 
-[build]
+[env]
+JSX_HOSTNAME = "jsx.process.kotekan.internal"
 
 [http_service]
-  internal_port = 3000
-  force_https = true
-  auto_stop_machines = false
-  auto_start_machines = true
-  min_machines_running = 1
-  processes = ['app']
+internal_port = 3000
+force_https = true
+auto_stop_machines = false
+auto_start_machines = true
+min_machines_running = 1
+processes = ["ssr"]
 
-[[http_service.checks]]
-  grace_period = "10s"
-  interval = "30s"
-  method = "GET"
-  timeout = "5s"
-  path = "/up"
+# [[http_service.checks]]
+# grace_period = "10s"
+# interval = "30s"
+# method = "GET"
+# timeout = "5s"
+# path = "/up"
+
+[[services]]
+internal_port = 3001
+protocol = "tcp"
+auto_stop_machines = false
+auto_start_machines = true
+min_machines_running = 1
+processes = ["jsx"]
+
+[[services.ports]]
+handlers = ["http"]
+port = 80
+force_https = true
 
 [[vm]]
-  memory = '1gb'
-  cpu_kind = 'shared'
-  cpus = 1
+memory = "1gb"
+cpu_kind = "shared"
+cpus = 1
+
+[processes]
+jsx = "start-jsx"
+ssr = "start-ssr"

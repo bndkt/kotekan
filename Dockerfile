@@ -42,11 +42,11 @@ FROM base AS release
 COPY --from=install /temp/prod/node_modules node_modules
 COPY --from=prerelease /usr/src/app .
 
-ARG BUILD_TIMESTAMP
-ENV DOCKER_BUILD_TIMESTAMP=${BUILD_TIMESTAMP}
+# ARG BUILD_TIMESTAMP
+# ENV DOCKER_BUILD_TIMESTAMP=${BUILD_TIMESTAMP}
 
 # run the app
 WORKDIR /usr/src/app/apps/web
 USER bun
 EXPOSE 3000/tcp
-ENTRYPOINT [ "bun", "start" ]
+ENTRYPOINT [ "bun" ]
