@@ -5,6 +5,7 @@
 
 app = 'kotekan'
 primary_region = 'sin'
+swap_size_mb = 512
 
 [build]
 
