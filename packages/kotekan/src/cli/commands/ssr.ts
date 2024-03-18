@@ -1,10 +1,6 @@
 import path from "node:path";
 
-const socket = "/tmp/kotekan.sock";
-
 export const ssrCommand = async (development = false) => {
-	const ssrServerPort = 3000;
-
 	if (development) {
 		console.log("🚀 Running Kotekan in dev mode ...");
 	}
@@ -21,7 +17,6 @@ export const ssrCommand = async (development = false) => {
 		"scripts",
 		"ssrServer.ts",
 	);
-
 	const ssrServerCommand = [
 		"bun",
 		development ? "--hot" : "",
@@ -35,8 +30,6 @@ export const ssrCommand = async (development = false) => {
 	const ssrServer = Bun.spawnSync(ssrServerCommand, {
 		stdout: "inherit",
 		env: {
-			SSR_PORT: ssrServerPort.toString(),
-			SSR_SOCKET: socket,
 			...Bun.env,
 		},
 	});

@@ -9,7 +9,7 @@ export const server = async (props: ServerProps = {}): Promise<Server> => {
 	// Defaults
 	const mode = props.mode ?? "ssr";
 	const hostname = props.hostname ?? "0.0.0.0";
-	const port = props.port ?? 3000;
+	const port = props.port ?? (mode === "jsx" ? 3001 : 3000);
 	const buildDir = props.buildDir ?? "./build";
 	const mdxEnabled = props.mdxEnabled ?? true;
 	const development = props.development ?? false;

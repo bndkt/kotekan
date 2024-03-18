@@ -3,8 +3,6 @@ import path from "node:path";
 const socket = "/tmp/kotekan.sock";
 
 export const jsxCommand = async (development = false) => {
-	const jsxServerPort = 3001;
-
 	if (development) {
 		console.log("🚀 Running Kotekan in dev mode ...");
 	}
@@ -21,7 +19,6 @@ export const jsxCommand = async (development = false) => {
 		"scripts",
 		"jsxServer.ts",
 	);
-
 	const jsxServerCommand = [
 		"bun",
 		development ? "--hot" : "",
@@ -35,8 +32,6 @@ export const jsxCommand = async (development = false) => {
 	const jsxServer = Bun.spawnSync(jsxServerCommand, {
 		stdout: "inherit",
 		env: {
-			JSX_PORT: jsxServerPort.toString(),
-			JSX_SOCKET: socket,
 			...Bun.env,
 		},
 	});

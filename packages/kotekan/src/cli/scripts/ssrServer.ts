@@ -9,9 +9,9 @@ const ssrServer = await server({
 	hostname: Bun.env.SSR_HOSTNAME,
 	port: numberFromEnv("SSR_PORT"),
 	jsxServer: {
-		hostname: Bun.env.JSX_HOSTNAME,
-		port: numberFromEnv("JSX_PORT"),
-		socket: Bun.env.JSX_SOCKET,
+		hostname: Bun.env.SSR_JSX_SERVER_HOSTNAME,
+		port: numberFromEnv("SSR_JSX_SERVER_PORT"),
+		socket: Bun.env.SSR_JSX_SERVER_SOCKET,
 	},
 	mdxEnabled: boolFromEnv("MDX_ENABLED"),
 	development,
