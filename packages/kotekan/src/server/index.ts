@@ -13,6 +13,7 @@ export const server = async (props: ServerProps = {}): Promise<Server> => {
 	const buildDir = props.buildDir ?? "./build";
 	const mdxEnabled = props.mdxEnabled ?? true;
 	const development = props.development ?? false;
+	const socket = props.socket;
 	const jsxServer = {
 		hostname: props.jsxServer?.hostname ?? "0.0.0.0",
 		port: props.jsxServer?.port ?? 3001,
@@ -27,14 +28,6 @@ export const server = async (props: ServerProps = {}): Promise<Server> => {
 	const dir = path.join(process.cwd(), "src", "routes");
 	const router = routerFn({ dir, mdxEnabled });
 	const { routes } = router;
-
-	if (development) {
-		Promise.all(
-			Object.values(routes).map(async (route) => {
-				import(route);
-			}),
-		);
-	}
 
 	// Build
 	const build = await builder({
@@ -70,9 +63,9 @@ export const server = async (props: ServerProps = {}): Promise<Server> => {
 
 	// JSX server can optionally listen on unix socket
 	const listenerConfig =
-		mode === "jsx" && jsxServer.socket
+		mode === "jsx" && socket
 			? {
-					unix: jsxServer.socket,
+					unix: socket,
 			  }
 			: { hostname, port, reusePort: true };
 

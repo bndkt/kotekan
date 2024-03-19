@@ -13,8 +13,8 @@ const jsxServer = await server({
 	development,
 });
 
-const listening = jsxServer.hostname
-	? `at http://${jsxServer.hostname}:${jsxServer.port}`
-	: "on a socket";
+const listening = Bun.env.JSX_SOCKET
+	? "on a socket"
+	: `at http://${jsxServer.hostname}:${jsxServer.port}`;
 
 console.log(`🥁 Kotekan JSX server listening ${listening}`);

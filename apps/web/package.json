@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "css": "tailwindcss -m -i src/styles.css -o build/client/styles.css",
-    "dev": "DOCKER_BUILD_TIMESTAMP=1709948626 kotekan dev",
+    "dev": "DOCKER_BUILD_TIMESTAMP=1709948626 kotekan-dev",
     "lint": "biome lint ./src",
     "native": "kotekan native",
     "rn:build-ios": "react-native build-ios",
