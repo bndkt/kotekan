@@ -15,7 +15,7 @@ SSR_JSX_SERVER_PORT = "3000"
 processes = ["ssr"]
 internal_port = 3000
 protocol = "tcp"
-auto_stop_machines = false
+auto_stop_machines = true
 auto_start_machines = true
 min_machines_running = 1
 
@@ -40,7 +40,7 @@ protocol = "http"
 processes = ["jsx"]
 internal_port = 3000
 protocol = "tcp"
-auto_stop_machines = false
+auto_stop_machines = true
 auto_start_machines = true
 min_machines_running = 1
 
