@@ -19,16 +19,6 @@ export const server = async (props: ServerProps = {}): Promise<Server> => {
 		socket: props.jsxServer?.socket,
 	};
 
-	console.log("server()", {
-		mode,
-		hostname,
-		port,
-		buildDir,
-		mdxEnabled,
-		development,
-		jsxServer,
-	});
-
 	// Paths
 	const buildPath = path.join(process.cwd(), buildDir);
 	const buildUrlSegment = "_build";
@@ -85,8 +75,6 @@ export const server = async (props: ServerProps = {}): Promise<Server> => {
 					unix: jsxServer.socket,
 			  }
 			: { hostname, port, reusePort: true };
-
-	console.log({ listenerConfig });
 
 	return Bun.serve({
 		...listenerConfig,

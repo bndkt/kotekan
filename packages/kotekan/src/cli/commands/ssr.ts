@@ -25,8 +25,6 @@ export const ssrCommand = async (development = false) => {
 		ssrServerPath,
 	];
 
-	console.log("SSR server command", ssrServerCommand.join(" "));
-
 	Bun.spawn(ssrServerCommand, {
 		stdout: "inherit",
 		env: {
