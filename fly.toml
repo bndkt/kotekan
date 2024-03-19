@@ -37,7 +37,6 @@ path = "/up"
 protocol = "http"
 
 [[services]]
-http_checks = []
 processes = ["jsx"]
 internal_port = 3000
 protocol = "tcp"
@@ -45,14 +44,14 @@ auto_stop_machines = false
 auto_start_machines = true
 min_machines_running = 1
 
-# [[services.http_checks]]
-# port = 3001
-# grace_period = "5s"
-# interval = "30s"
-# timeout = "5s"
-# method = "get"
-# path = "/up"
-# protocol = "http"
+[[services.http_checks]]
+port = 3000
+grace_period = "5s"
+interval = "30s"
+timeout = "5s"
+method = "get"
+path = "/up"
+protocol = "http"
 
 [[vm]]
 memory = "1gb"

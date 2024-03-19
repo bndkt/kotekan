@@ -45,6 +45,8 @@ COPY --from=prerelease /usr/src/app .
 # ARG BUILD_TIMESTAMP
 # ENV DOCKER_BUILD_TIMESTAMP=${BUILD_TIMESTAMP}
 
+ENV NODE_ENV=production
+
 # run the app
 WORKDIR /usr/src/app/apps/web
 USER bun
