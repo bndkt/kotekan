@@ -9,39 +9,50 @@ swap_size_mb = 512
 
 [env]
 SSR_JSX_SERVER_HOSTNAME = "jsx.process.kotekan.internal"
+SSR_JSX_SERVER_PORT = "3000"
 
-[http_service]
+[[services]]
+processes = ["ssr"]
 internal_port = 3000
-force_https = true
+protocol = "tcp"
 auto_stop_machines = false
 auto_start_machines = true
 min_machines_running = 1
-processes = ["ssr"]
 
-[[http_service.checks]]
-grace_period = "5s"
-interval = "30s"
+[[services.ports]]
+handlers = ["http"]
+port = 80
+force_https = true
+
+[[services.ports]]
+handlers = ["tls", "http"]
+port = 443
+
+[[services.http_checks]]
+grace_period = "10s"
+interval = "60s"
 timeout = "5s"
 method = "get"
 path = "/up"
 protocol = "http"
 
 [[services]]
-internal_port = 3001
+http_checks = []
+processes = ["jsx"]
+internal_port = 3000
 protocol = "tcp"
 auto_stop_machines = false
 auto_start_machines = true
 min_machines_running = 1
-processes = ["jsx"]
 
-[[services.http_checks]]
-port = 3001
-grace_period = "5s"
-interval = "30s"
-timeout = "5s"
-method = "get"
-path = "/up"
-protocol = "http"
+# [[services.http_checks]]
+# port = 3001
+# grace_period = "5s"
+# interval = "30s"
+# timeout = "5s"
+# method = "get"
+# path = "/up"
+# protocol = "http"
 
 [[vm]]
 memory = "1gb"

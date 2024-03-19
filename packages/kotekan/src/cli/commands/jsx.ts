@@ -1,7 +1,5 @@
 import path from "node:path";
 
-const socket = "/tmp/kotekan.sock";
-
 export const jsxCommand = async (development = false) => {
 	if (development) {
 		console.log("🚀 Running Kotekan in dev mode ...");
@@ -29,7 +27,9 @@ export const jsxCommand = async (development = false) => {
 		jsxServerPath,
 	];
 
-	const jsxServer = Bun.spawnSync(jsxServerCommand, {
+	console.log("JSX server command", jsxServerCommand.join(" "));
+
+	Bun.spawnSync(jsxServerCommand, {
 		stdout: "inherit",
 		env: {
 			...Bun.env,

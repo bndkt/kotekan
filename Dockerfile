@@ -1,7 +1,7 @@
 # Adapted from https://bun.sh/guides/ecosystem/docker
 # use the official Bun image
 # see all versions at https://hub.docker.com/r/oven/bun/tags
-FROM oven/bun:1.0.33-alpine as base
+FROM oven/bun:1.0.33-slim as base
 WORKDIR /usr/src/app
 
 # install dependencies into temp directory
@@ -49,4 +49,4 @@ COPY --from=prerelease /usr/src/app .
 WORKDIR /usr/src/app/apps/web
 USER bun
 EXPOSE 3000/tcp
-ENTRYPOINT [ "bun" ]
+# ENTRYPOINT [ "bun" ]
