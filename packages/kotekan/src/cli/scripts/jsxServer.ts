@@ -4,8 +4,6 @@ import { server } from "../../server";
 
 const development = Bun.env.NODE_ENV === "development";
 
-console.log("Bun.env.NODE_ENV", Bun.env.NODE_ENV);
-
 console.log("🥁 Kotekan JSX server", {
 	mode: "jsx",
 	hostname: Bun.env.JSX_HOSTNAME,

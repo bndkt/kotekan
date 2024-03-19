@@ -29,7 +29,7 @@ export const jsxCommand = async (development = false) => {
 
 	console.log("JSX server command", jsxServerCommand.join(" "));
 
-	Bun.spawnSync(jsxServerCommand, {
+	Bun.spawn(jsxServerCommand, {
 		stdout: "inherit",
 		env: {
 			...Bun.env,
