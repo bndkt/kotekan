@@ -1,9 +1,20 @@
 #!/usr/bin/env bun --hot
 import path from "node:path";
 
+import { router as routerFn } from "../server/router";
+
 const socket = "/tmp/kotekan.sock";
 
 console.log("🚀 Running Kotekan in dev mode ...");
+
+// Import all routes for hot reloading
+import(path.join(process.cwd(), "src", "Root.tsx"));
+const dir = path.join(process.cwd(), "src", "routes");
+const router = routerFn({ dir, mdxEnabled: true });
+const { routes } = router;
+for (const route of Object.values(routes)) {
+	import(route);
+}
 
 // Tailwind
 // Bun.spawn(
@@ -27,7 +38,6 @@ const jsxServerPath = path.join(import.meta.dir, "scripts", "jsxServer.ts");
 
 const jsxServerCommand = [
 	"bun",
-	"--hot",
 	"--conditions",
 	"react-server",
 	"--preload",
@@ -52,13 +62,7 @@ const jsxServer = Bun.spawn(jsxServerCommand, {
 const ssrPreloadPath = path.join(import.meta.dir, "scripts", "ssrPreload.ts");
 const ssrServerPath = path.join(import.meta.dir, "scripts", "ssrServer.ts");
 
-const ssrServerCommand = [
-	"bun",
-	"--hot",
-	"--preload",
-	ssrPreloadPath,
-	ssrServerPath,
-];
+const ssrServerCommand = ["bun", "--preload", ssrPreloadPath, ssrServerPath];
 
 // console.log(ssrServerCommand.join(" "));
 
