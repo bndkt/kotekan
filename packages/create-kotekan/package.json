@@ -29,6 +29,6 @@
     "kotekan": "workspace:*"
   },
   "devDependencies": {
-    "@types/bun": "1.0.8"
+    "@types/bun": "1.0.10"
   }
 }

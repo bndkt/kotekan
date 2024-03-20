@@ -69,7 +69,7 @@ export const server = async (props: ServerProps = {}): Promise<Server> => {
 			  }
 			: { hostname, port, reusePort: true };
 
-	return Bun.serve({
+	const server = Bun.serve({
 		...listenerConfig,
 		development,
 		fetch,
@@ -78,4 +78,6 @@ export const server = async (props: ServerProps = {}): Promise<Server> => {
 			return new Response(null, { status: 404 });
 		},
 	});
+
+	return server;
 };
