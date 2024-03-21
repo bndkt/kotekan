@@ -26,7 +26,7 @@
   "type": "module",
   "bin": "index.ts",
   "dependencies": {
-    "kotekan": "workspace:*"
+    "kotekan": "latest"
   },
   "devDependencies": {
     "@types/bun": "1.0.10"
