@@ -1,3 +1,4 @@
+#!/usr/bin/env bun
 import { boolFromEnv } from "../../lib/boolFromEnv";
 import { numberFromEnv } from "../../lib/numberFromEnv";
 import { server } from "../../server";

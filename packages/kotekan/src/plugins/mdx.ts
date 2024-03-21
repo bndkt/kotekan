@@ -18,7 +18,7 @@ try {
 
 	options = importedOptions;
 } catch (error) {
-	console.log(error);
+	// console.log(error);
 }
 
 export const mdxPlugin: (config: MdxPluginConfig) => BunPlugin = (config) => {

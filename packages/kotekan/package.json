@@ -48,7 +48,8 @@
     "tsconfig.json"
   ],
   "scripts": {
-    "compile": "bun build --compile --minify --sourcemap ./src/cli/cli.ts --outfile ./bin/kotekan",
+    "build": "bun ./src/scripts/build.ts",
+    "compile": "bun build --compile ./src/cli/dev.ts --outfile ./bin/kotekan-dev",
     "lint": "biome lint ./src",
     "publish-dry": "npm publish --dry-run",
     "vendor": "bun ./src/scripts/vendor.ts"
@@ -63,6 +64,7 @@
     "@react-native/metro-config": "0.74.75",
     "@stylexjs/babel-plugin": "0.5.1",
     "@tailwindcss/cli": "4.0.0-alpha.8",
+    "bun": "1.0.33",
     "isbot": "5.1.2",
     "mdx-annotations": "0.1.4",
     "metro": "0.80.7",

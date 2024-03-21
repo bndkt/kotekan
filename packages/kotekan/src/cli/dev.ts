@@ -8,13 +8,15 @@ const socket = "/tmp/kotekan.sock";
 console.log("🚀 Running Kotekan in dev mode ...");
 
 // Import all routes for hot reloading
-import(path.join(process.cwd(), "src", "Root.tsx"));
-const dir = path.join(process.cwd(), "src", "routes");
-const router = routerFn({ dir, mdxEnabled: true });
-const { routes } = router;
-for (const route of Object.values(routes)) {
-	import(route);
-}
+try {
+	import(path.join(process.cwd(), "src", "Root.tsx"));
+	const dir = path.join(process.cwd(), "src", "routes");
+	const router = routerFn({ dir, mdxEnabled: true });
+	const { routes } = router;
+	for (const route of Object.values(routes)) {
+		import(route);
+	}
+} catch (error) {}
 
 // Tailwind
 // Bun.spawn(
