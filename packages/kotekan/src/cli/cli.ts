@@ -17,13 +17,13 @@ yargs(hideBin(process.argv))
 			createCommand(args.name);
 		},
 	})
-	.command({
-		command: "dev",
-		describe: "Run the development server",
-		handler: () => {
-			startCommand(true);
-		},
-	})
+	// .command({
+	// 	command: "dev",
+	// 	describe: "Run the development server",
+	// 	handler: () => {
+	// 		startCommand(true);
+	// 	},
+	// })
 	.command({
 		command: "start",
 		describe: "Run the production server",

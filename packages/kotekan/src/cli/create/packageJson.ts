@@ -42,7 +42,7 @@ export const packageJson = async (name: string) => {
 		sideEffects: false,
 		scripts: {
 			lint: "biome lint ./src",
-			dev: "kotekan dev",
+			dev: "kotekan-dev",
 			start: "kotekan start",
 		},
 		dependencies,

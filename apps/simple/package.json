@@ -1,0 +1,23 @@
+{
+  "name": "simple",
+  "version": "0.0.1",
+  "module": "index.ts",
+  "type": "module",
+  "sideEffects": false,
+  "scripts": {
+    "lint": "biome lint ./src",
+    "dev": "kotekan-dev",
+    "start": "kotekan start"
+  },
+  "dependencies": {
+    "@physis/react-server-dom-esm": "0.0.0-experimental-9c75cd5e8-20240318",
+    "kotekan": "workspace:*",
+    "react": "0.0.0-experimental-a870b2d54-20240314",
+    "react-dom": "0.0.0-experimental-a870b2d54-20240314"
+  },
+  "devDependencies": {
+    "@types/bun": "1.0.10",
+    "@types/react": "18.2.67",
+    "@types/react-dom": "18.2.22"
+  }
+}
