@@ -14,13 +14,13 @@ services:
     healthCheckPath: /up
     autoDeploy: false
     envVars:
-      key: SSR_JSX_SERVER_HOSTNAME
-      fromService:
-        type: pserv
-        name: jsx
-        property: host
-      key: SSR_JSX_SERVER_PORT
-      fromService:
-        type: pserv
-        name: jsx
-        property: port
+      - key: SSR_JSX_SERVER_HOSTNAME
+        fromService:
+          type: pserv
+          name: jsx
+          property: host
+      - key: SSR_JSX_SERVER_PORT
+        fromService:
+          type: pserv
+          name: jsx
+          property: port
