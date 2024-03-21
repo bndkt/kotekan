@@ -107,7 +107,7 @@ var require_react_development = __commonJS((exports, module) => {
           Function.prototype.apply.call(console[level], console, argsWithFormat);
         }
       }
-      var ReactVersion = "18.3.0-experimental-eb33bd747-20240312";
+      var ReactVersion = "18.3.0-experimental-a870b2d54-20240314";
       var REACT_ELEMENT_TYPE = Symbol.for("react.element");
       var REACT_PORTAL_TYPE = Symbol.for("react.portal");
       var REACT_FRAGMENT_TYPE = Symbol.for("react.fragment");
@@ -2565,7 +2565,7 @@ var require_react_dom_development = __commonJS((exports) => {
         }
         return null;
       }
-      var contextStackCursor$1 = createCursor(null);
+      var contextStackCursor = createCursor(null);
       var contextFiberStackCursor = createCursor(null);
       var rootInstanceStackCursor = createCursor(null);
       var hostTransitionProviderCursor = createCursor(null);
@@ -2595,18 +2595,18 @@ var require_react_dom_development = __commonJS((exports) => {
       function pushHostContainer(fiber, nextRootInstance) {
         push(rootInstanceStackCursor, nextRootInstance, fiber);
         push(contextFiberStackCursor, fiber, fiber);
-        push(contextStackCursor$1, null, fiber);
+        push(contextStackCursor, null, fiber);
         var nextRootContext = getRootHostContext(nextRootInstance);
-        pop(contextStackCursor$1, fiber);
-        push(contextStackCursor$1, nextRootContext, fiber);
+        pop(contextStackCursor, fiber);
+        push(contextStackCursor, nextRootContext, fiber);
       }
       function popHostContainer(fiber) {
-        pop(contextStackCursor$1, fiber);
+        pop(contextStackCursor, fiber);
         pop(contextFiberStackCursor, fiber);
         pop(rootInstanceStackCursor, fiber);
       }
       function getHostContext() {
-        var context = requiredContext(contextStackCursor$1.current);
+        var context = requiredContext(contextStackCursor.current);
         return context;
       }
       function pushHostContext(fiber) {
@@ -2616,16 +2616,16 @@ var require_react_dom_development = __commonJS((exports) => {
             push(hostTransitionProviderCursor, fiber, fiber);
           }
         }
-        var context = requiredContext(contextStackCursor$1.current);
+        var context = requiredContext(contextStackCursor.current);
         var nextContext = getChildHostContext(context, fiber.type);
         if (context !== nextContext) {
           push(contextFiberStackCursor, fiber, fiber);
-          push(contextStackCursor$1, nextContext, fiber);
+          push(contextStackCursor, nextContext, fiber);
         }
       }
       function popHostContext(fiber) {
         if (contextFiberStackCursor.current === fiber) {
-          pop(contextStackCursor$1, fiber);
+          pop(contextStackCursor, fiber);
           pop(contextFiberStackCursor, fiber);
         }
         {
@@ -6236,6 +6236,9 @@ var require_react_dom_development = __commonJS((exports) => {
         z: "z",
         zoomandpan: "zoomAndPan"
       };
+      {
+        possibleStandardNames.inert = "inert";
+      }
       var ariaProperties = {
         "aria-current": 0,
         "aria-description": 0,
@@ -6506,6 +6509,11 @@ var require_react_dom_development = __commonJS((exports) => {
                 case "download": {
                   return true;
                 }
+                case "inert": {
+                  {
+                    return true;
+                  }
+                }
                 default: {
                   var prefix2 = name.toLowerCase().slice(0, 5);
                   if (prefix2 === "data-" || prefix2 === "aria-") {
@@ -6555,6 +6563,11 @@ var require_react_dom_development = __commonJS((exports) => {
                   case "seamless":
                   case "itemScope": {
                     break;
+                  }
+                  case "inert": {
+                    {
+                      break;
+                    }
                   }
                   default: {
                     return true;
@@ -6724,9 +6737,6 @@ var require_react_dom_development = __commonJS((exports) => {
       function getContainerFromFiber(fiber) {
         return fiber.tag === HostRoot ? fiber.stateNode.containerInfo : null;
       }
-      function isFiberMounted(fiber) {
-        return getNearestMountedFiber(fiber) === fiber;
-      }
       function isMounted(component) {
         {
           var owner = ReactCurrentOwner$3.current;
@@ -6867,158 +6877,28 @@ var require_react_dom_development = __commonJS((exports) => {
         }
         return null;
       }
-      var warnedAboutMissingGetChildContext;
-      {
-        warnedAboutMissingGetChildContext = {};
-      }
       var emptyContextObject = {};
       {
         Object.freeze(emptyContextObject);
       }
-      var contextStackCursor = createCursor(emptyContextObject);
-      var didPerformWorkStackCursor = createCursor(false);
-      var previousContext = emptyContextObject;
-      function getUnmaskedContext(workInProgress2, Component, didPushOwnContextIfProvider) {
-        {
-          if (didPushOwnContextIfProvider && isContextProvider(Component)) {
-            return previousContext;
-          }
-          return contextStackCursor.current;
-        }
-      }
-      function cacheContext(workInProgress2, unmaskedContext, maskedContext) {
-        {
-          var instance = workInProgress2.stateNode;
-          instance.__reactInternalMemoizedUnmaskedChildContext = unmaskedContext;
-          instance.__reactInternalMemoizedMaskedChildContext = maskedContext;
-        }
-      }
-      function getMaskedContext(workInProgress2, unmaskedContext) {
-        {
-          var type = workInProgress2.type;
-          var contextTypes = type.contextTypes;
-          if (!contextTypes) {
-            return emptyContextObject;
-          }
-          var instance = workInProgress2.stateNode;
-          if (instance && instance.__reactInternalMemoizedUnmaskedChildContext === unmaskedContext) {
-            return instance.__reactInternalMemoizedMaskedChildContext;
-          }
-          var context = {};
-          for (var key in contextTypes) {
-            context[key] = unmaskedContext[key];
-          }
-          if (instance) {
-            cacheContext(workInProgress2, unmaskedContext, context);
-          }
-          return context;
-        }
-      }
       function hasContextChanged() {
         {
-          return didPerformWorkStackCursor.current;
+          return false;
         }
       }
       function isContextProvider(type) {
         {
-          var childContextTypes = type.childContextTypes;
-          return childContextTypes !== null && childContextTypes !== undefined;
-        }
-      }
-      function popContext(fiber) {
-        {
-          pop(didPerformWorkStackCursor, fiber);
-          pop(contextStackCursor, fiber);
-        }
-      }
-      function popTopLevelContextObject(fiber) {
-        {
-          pop(didPerformWorkStackCursor, fiber);
-          pop(contextStackCursor, fiber);
-        }
-      }
-      function pushTopLevelContextObject(fiber, context, didChange) {
-        {
-          if (contextStackCursor.current !== emptyContextObject) {
-            throw new Error("Unexpected context found on stack. This error is likely caused by a bug in React. Please file an issue.");
-          }
-          push(contextStackCursor, context, fiber);
-          push(didPerformWorkStackCursor, didChange, fiber);
+          return false;
         }
       }
       function processChildContext(fiber, type, parentContext) {
         {
-          var instance = fiber.stateNode;
-          var childContextTypes = type.childContextTypes;
-          if (typeof instance.getChildContext !== "function") {
-            {
-              var componentName = getComponentNameFromFiber(fiber) || "Unknown";
-              if (!warnedAboutMissingGetChildContext[componentName]) {
-                warnedAboutMissingGetChildContext[componentName] = true;
-                error("%s.childContextTypes is specified but there is no getChildContext() method on the instance. You can either define getChildContext() on %s or remove childContextTypes from it.", componentName, componentName);
-              }
-            }
-            return parentContext;
-          }
-          var childContext = instance.getChildContext();
-          for (var contextKey in childContext) {
-            if (!(contextKey in childContextTypes)) {
-              throw new Error((getComponentNameFromFiber(fiber) || "Unknown") + ".getChildContext(): key \"" + contextKey + "\" is not defined in childContextTypes.");
-            }
-          }
-          return assign({}, parentContext, childContext);
-        }
-      }
-      function pushContextProvider(workInProgress2) {
-        {
-          var instance = workInProgress2.stateNode;
-          var memoizedMergedChildContext = instance && instance.__reactInternalMemoizedMergedChildContext || emptyContextObject;
-          previousContext = contextStackCursor.current;
-          push(contextStackCursor, memoizedMergedChildContext, workInProgress2);
-          push(didPerformWorkStackCursor, didPerformWorkStackCursor.current, workInProgress2);
-          return true;
-        }
-      }
-      function invalidateContextProvider(workInProgress2, type, didChange) {
-        {
-          var instance = workInProgress2.stateNode;
-          if (!instance) {
-            throw new Error("Expected to have an instance by this point. This error is likely caused by a bug in React. Please file an issue.");
-          }
-          if (didChange) {
-            var mergedContext = processChildContext(workInProgress2, type, previousContext);
-            instance.__reactInternalMemoizedMergedChildContext = mergedContext;
-            pop(didPerformWorkStackCursor, workInProgress2);
-            pop(contextStackCursor, workInProgress2);
-            push(contextStackCursor, mergedContext, workInProgress2);
-            push(didPerformWorkStackCursor, didChange, workInProgress2);
-          } else {
-            pop(didPerformWorkStackCursor, workInProgress2);
-            push(didPerformWorkStackCursor, didChange, workInProgress2);
-          }
+          return parentContext;
         }
       }
       function findCurrentUnmaskedContext(fiber) {
         {
-          if (!isFiberMounted(fiber) || fiber.tag !== ClassComponent) {
-            throw new Error("Expected subtree parent to be a mounted class component. This error is likely caused by a bug in React. Please file an issue.");
-          }
-          var node = fiber;
-          do {
-            switch (node.tag) {
-              case HostRoot:
-                return node.stateNode.context;
-              case ClassComponent: {
-                var Component = node.type;
-                if (isContextProvider(Component)) {
-                  return node.stateNode.__reactInternalMemoizedMergedChildContext;
-                }
-                break;
-              }
-            }
-            node = node.return;
-          } while (node !== null);
-          throw new Error("Found unexpected detached subtree parent. This error is likely caused by a bug in React. Please file an issue.");
+          return emptyContextObject;
         }
       }
       var LegacyRoot = 0;
@@ -9104,7 +8984,7 @@ var require_react_dom_development = __commonJS((exports) => {
             }
             if (newChild.$$typeof === REACT_CONTEXT_TYPE) {
               var context = newChild;
-              return createChild(returnFiber, readContextDuringReconcilation(returnFiber, context, lanes), lanes, debugInfo);
+              return createChild(returnFiber, readContextDuringReconciliation(returnFiber, context, lanes), lanes, debugInfo);
             }
             throwOnInvalidObjectType(returnFiber, newChild);
           }
@@ -9160,7 +9040,7 @@ var require_react_dom_development = __commonJS((exports) => {
             }
             if (newChild.$$typeof === REACT_CONTEXT_TYPE) {
               var context = newChild;
-              return updateSlot(returnFiber, oldFiber, readContextDuringReconcilation(returnFiber, context, lanes), lanes, debugInfo);
+              return updateSlot(returnFiber, oldFiber, readContextDuringReconciliation(returnFiber, context, lanes), lanes, debugInfo);
             }
             throwOnInvalidObjectType(returnFiber, newChild);
           }
@@ -9204,7 +9084,7 @@ var require_react_dom_development = __commonJS((exports) => {
             }
             if (newChild.$$typeof === REACT_CONTEXT_TYPE) {
               var context = newChild;
-              return updateFromMap(existingChildren, returnFiber, newIdx, readContextDuringReconcilation(returnFiber, context, lanes), lanes, debugInfo);
+              return updateFromMap(existingChildren, returnFiber, newIdx, readContextDuringReconciliation(returnFiber, context, lanes), lanes, debugInfo);
             }
             throwOnInvalidObjectType(returnFiber, newChild);
           }
@@ -9591,7 +9471,7 @@ var require_react_dom_development = __commonJS((exports) => {
             }
             if (newChild.$$typeof === REACT_CONTEXT_TYPE) {
               var context = newChild;
-              return reconcileChildFibersImpl(returnFiber, currentFirstChild, readContextDuringReconcilation(returnFiber, context, lanes), lanes, debugInfo);
+              return reconcileChildFibersImpl(returnFiber, currentFirstChild, readContextDuringReconciliation(returnFiber, context, lanes), lanes, debugInfo);
             }
             throwOnInvalidObjectType(returnFiber, newChild);
           }
@@ -10622,7 +10502,7 @@ var require_react_dom_development = __commonJS((exports) => {
         var dispatch = hook.queue.dispatch;
         return [passthrough, dispatch];
       }
-      function dispatchFormState(fiber, actionQueue, setState, payload) {
+      function dispatchFormState(fiber, actionQueue, setPendingState, setState, payload) {
         if (isRenderPhaseUpdate(fiber)) {
           throw new Error("Cannot update form state while rendering.");
         }
@@ -10633,7 +10513,7 @@ var require_react_dom_development = __commonJS((exports) => {
             next: null
           };
           newLast.next = actionQueue.pending = newLast;
-          runFormStateAction(actionQueue, setState, payload);
+          runFormStateAction(actionQueue, setPendingState, setState, payload);
         } else {
           var first = last.next;
           var _newLast = {
@@ -10643,7 +10523,7 @@ var require_react_dom_development = __commonJS((exports) => {
           actionQueue.pending = last.next = _newLast;
         }
       }
-      function runFormStateAction(actionQueue, setState, payload) {
+      function runFormStateAction(actionQueue, setPendingState, setState, payload) {
         var action = actionQueue.action;
         var prevState = actionQueue.state;
         var prevTransition = ReactCurrentBatchConfig$3.transition;
@@ -10654,6 +10534,7 @@ var require_react_dom_development = __commonJS((exports) => {
         {
           ReactCurrentBatchConfig$3.transition._updatedFibers = new Set;
         }
+        setPendingState(true);
         try {
           var returnValue = action(prevState, payload);
           if (returnValue !== null && typeof returnValue === "object" && typeof returnValue.then === "function") {
@@ -10661,16 +10542,16 @@ var require_react_dom_development = __commonJS((exports) => {
             notifyTransitionCallbacks(currentTransition, thenable);
             thenable.then(function(nextState2) {
               actionQueue.state = nextState2;
-              finishRunningFormStateAction(actionQueue, setState);
+              finishRunningFormStateAction(actionQueue, setPendingState, setState);
             }, function() {
-              return finishRunningFormStateAction(actionQueue, setState);
+              return finishRunningFormStateAction(actionQueue, setPendingState, setState);
             });
             setState(thenable);
           } else {
             setState(returnValue);
             var nextState = returnValue;
             actionQueue.state = nextState;
-            finishRunningFormStateAction(actionQueue, setState);
+            finishRunningFormStateAction(actionQueue, setPendingState, setState);
           }
         } catch (error2) {
           var rejectedThenable = {
@@ -10680,7 +10561,7 @@ var require_react_dom_development = __commonJS((exports) => {
             reason: error2
           };
           setState(rejectedThenable);
-          finishRunningFormStateAction(actionQueue, setState);
+          finishRunningFormStateAction(actionQueue, setPendingState, setState);
         } finally {
           ReactCurrentBatchConfig$3.transition = prevTransition;
           {
@@ -10694,7 +10575,7 @@ var require_react_dom_development = __commonJS((exports) => {
           }
         }
       }
-      function finishRunningFormStateAction(actionQueue, setState) {
+      function finishRunningFormStateAction(actionQueue, setPendingState, setState) {
         var last = actionQueue.pending;
         if (last !== null) {
           var first = last.next;
@@ -10703,7 +10584,7 @@ var require_react_dom_development = __commonJS((exports) => {
           } else {
             var next = first.next;
             last.next = next;
-            runFormStateAction(actionQueue, setState, next.payload);
+            runFormStateAction(actionQueue, setPendingState, setState, next.payload);
           }
         }
       }
@@ -10734,6 +10615,8 @@ var require_react_dom_development = __commonJS((exports) => {
         stateHook.queue = stateQueue;
         var setState = dispatchSetState.bind(null, currentlyRenderingFiber$1, stateQueue);
         stateQueue.dispatch = setState;
+        var pendingStateHook = mountStateImpl(false);
+        var setPendingState = dispatchOptimisticSetState.bind(null, currentlyRenderingFiber$1, false, pendingStateHook.queue);
         var actionQueueHook = mountWorkInProgressHook();
         var actionQueue = {
           state: initialState,
@@ -10742,10 +10625,10 @@ var require_react_dom_development = __commonJS((exports) => {
           pending: null
         };
         actionQueueHook.queue = actionQueue;
-        var dispatch = dispatchFormState.bind(null, currentlyRenderingFiber$1, actionQueue, setState);
+        var dispatch = dispatchFormState.bind(null, currentlyRenderingFiber$1, actionQueue, setPendingState, setState);
         actionQueue.dispatch = dispatch;
         actionQueueHook.memoizedState = action;
-        return [initialState, dispatch];
+        return [initialState, dispatch, false];
       }
       function updateFormState(action, initialState, permalink) {
         var stateHook = updateWorkInProgressHook();
@@ -10754,6 +10637,7 @@ var require_react_dom_development = __commonJS((exports) => {
       }
       function updateFormStateImpl(stateHook, currentStateHook, action, initialState, permalink) {
         var _updateReducerImpl = updateReducerImpl(stateHook, currentStateHook, formStateReducer), actionResult = _updateReducerImpl[0];
+        var _updateState = updateState(), isPending = _updateState[0];
         var state = typeof actionResult === "object" && actionResult !== null && typeof actionResult.then === "function" ? useThenable(actionResult) : actionResult;
         var actionQueueHook = updateWorkInProgressHook();
         var actionQueue = actionQueueHook.queue;
@@ -10763,7 +10647,7 @@ var require_react_dom_development = __commonJS((exports) => {
           currentlyRenderingFiber$1.flags |= Passive$1;
           pushEffect(HasEffect | Passive, formStateActionEffect.bind(null, actionQueue, action), createEffectInstance(), null);
         }
-        return [state, dispatch];
+        return [state, dispatch, isPending];
       }
       function formStateActionEffect(actionQueue, action) {
         actionQueue.action = action;
@@ -10779,7 +10663,7 @@ var require_react_dom_development = __commonJS((exports) => {
         var actionQueue = actionQueueHook.queue;
         var dispatch = actionQueue.dispatch;
         actionQueueHook.memoizedState = action;
-        return [state, dispatch];
+        return [state, dispatch, false];
       }
       function pushEffect(tag, create, inst, deps) {
         var effect = {
@@ -11163,7 +11047,7 @@ var require_react_dom_development = __commonJS((exports) => {
         return [false, start];
       }
       function updateTransition() {
-        var _updateState = updateState(), booleanOrThenable = _updateState[0];
+        var _updateState2 = updateState(), booleanOrThenable = _updateState2[0];
         var hook = updateWorkInProgressHook();
         var start = hook.memoizedState;
         var isPending = typeof booleanOrThenable === "boolean" ? booleanOrThenable : useThenable(booleanOrThenable);
@@ -12562,7 +12446,6 @@ var require_react_dom_development = __commonJS((exports) => {
       var didWarnAboutLegacyLifecyclesAndDerivedState;
       var didWarnAboutUndefinedDerivedState;
       var didWarnAboutDirectlyAssigningPropsToState;
-      var didWarnAboutContextTypeAndContextTypes;
       var didWarnAboutInvalidateContextType;
       var didWarnOnInvalidCallback;
       {
@@ -12572,7 +12455,6 @@ var require_react_dom_development = __commonJS((exports) => {
         didWarnAboutLegacyLifecyclesAndDerivedState = new Set;
         didWarnAboutDirectlyAssigningPropsToState = new Set;
         didWarnAboutUndefinedDerivedState = new Set;
-        didWarnAboutContextTypeAndContextTypes = new Set;
         didWarnAboutInvalidateContextType = new Set;
         didWarnOnInvalidCallback = new Set;
         Object.defineProperty(fakeInternalInstance, "_processChildContext", {
@@ -12740,12 +12622,11 @@ var require_react_dom_development = __commonJS((exports) => {
             error("contextType was defined as an instance property on %s. Use a static property to define contextType instead.", name);
           }
           {
-            if (instance.contextTypes) {
-              error("contextTypes was defined as an instance property on %s. Use a static property to define contextTypes instead.", name);
+            if (ctor.childContextTypes) {
+              error("%s uses the legacy childContextTypes API which is no longer supported. Use React.createContext() instead.", name);
             }
-            if (ctor.contextType && ctor.contextTypes && !didWarnAboutContextTypeAndContextTypes.has(ctor)) {
-              didWarnAboutContextTypeAndContextTypes.add(ctor);
-              error("%s declares both contextTypes and contextType static properties. The legacy contextTypes property will be ignored.", name);
+            if (ctor.contextTypes) {
+              error("%s uses the legacy contextTypes API which is no longer supported. Use React.createContext() with static contextType instead.", name);
             }
           }
           if (typeof instance.componentShouldUpdate === "function") {
@@ -12804,8 +12685,6 @@ var require_react_dom_development = __commonJS((exports) => {
         }
       }
       function constructClassInstance(workInProgress2, ctor, props) {
-        var isLegacyContextConsumer = false;
-        var unmaskedContext = emptyContextObject;
         var context = emptyContextObject;
         var contextType = ctor.contextType;
         {
@@ -12829,11 +12708,6 @@ var require_react_dom_development = __commonJS((exports) => {
         }
         if (typeof contextType === "object" && contextType !== null) {
           context = readContext(contextType);
-        } else {
-          unmaskedContext = getUnmaskedContext(workInProgress2, ctor, true);
-          var contextTypes = ctor.contextTypes;
-          isLegacyContextConsumer = contextTypes !== null && contextTypes !== undefined;
-          context = isLegacyContextConsumer ? getMaskedContext(workInProgress2, unmaskedContext) : emptyContextObject;
         }
         var instance = new ctor(props, context);
         {
@@ -12885,9 +12759,6 @@ var require_react_dom_development = __commonJS((exports) => {
             }
           }
         }
-        if (isLegacyContextConsumer) {
-          cacheContext(workInProgress2, unmaskedContext, context);
-        }
         return instance;
       }
       function callComponentWillMount(workInProgress2, instance) {
@@ -12937,8 +12808,7 @@ var require_react_dom_development = __commonJS((exports) => {
         if (typeof contextType === "object" && contextType !== null) {
           instance.context = readContext(contextType);
         } else {
-          var unmaskedContext = getUnmaskedContext(workInProgress2, ctor, true);
-          instance.context = getMaskedContext(workInProgress2, unmaskedContext);
+          instance.context = emptyContextObject;
         }
         {
           if (instance.state === newProps) {
@@ -12981,9 +12851,6 @@ var require_react_dom_development = __commonJS((exports) => {
         var nextContext = emptyContextObject;
         if (typeof contextType === "object" && contextType !== null) {
           nextContext = readContext(contextType);
-        } else {
-          var nextLegacyUnmaskedContext = getUnmaskedContext(workInProgress2, ctor, true);
-          nextContext = getMaskedContext(workInProgress2, nextLegacyUnmaskedContext);
         }
         var getDerivedStateFromProps = ctor.getDerivedStateFromProps;
         var hasNewLifecycles = typeof getDerivedStateFromProps === "function" || typeof instance.getSnapshotBeforeUpdate === "function";
@@ -13054,9 +12921,6 @@ var require_react_dom_development = __commonJS((exports) => {
         var nextContext = emptyContextObject;
         if (typeof contextType === "object" && contextType !== null) {
           nextContext = readContext(contextType);
-        } else {
-          var nextUnmaskedContext = getUnmaskedContext(workInProgress2, ctor, true);
-          nextContext = getMaskedContext(workInProgress2, nextUnmaskedContext);
         }
         var getDerivedStateFromProps = ctor.getDerivedStateFromProps;
         var hasNewLifecycles = typeof getDerivedStateFromProps === "function" || typeof instance.getSnapshotBeforeUpdate === "function";
@@ -13742,10 +13606,6 @@ var require_react_dom_development = __commonJS((exports) => {
       }
       function updateFunctionComponent(current2, workInProgress2, Component, nextProps, renderLanes2) {
         var context;
-        {
-          var unmaskedContext = getUnmaskedContext(workInProgress2, Component, true);
-          context = getMaskedContext(workInProgress2, unmaskedContext);
-        }
         var nextChildren;
         var hasId;
         prepareToReadContext(workInProgress2, renderLanes2);
@@ -13818,9 +13678,8 @@ var require_react_dom_development = __commonJS((exports) => {
           }
         }
         var hasContext;
-        if (isContextProvider(Component)) {
+        if (isContextProvider()) {
           hasContext = true;
-          pushContextProvider(workInProgress2);
         } else {
           hasContext = false;
         }
@@ -13853,9 +13712,6 @@ var require_react_dom_development = __commonJS((exports) => {
         markRef(current2, workInProgress2);
         var didCaptureError = (workInProgress2.flags & DidCapture) !== NoFlags$1;
         if (!shouldUpdate && !didCaptureError) {
-          if (hasContext) {
-            invalidateContextProvider(workInProgress2, Component, false);
-          }
           return bailoutOnAlreadyFinishedWork(current2, workInProgress2, renderLanes2);
         }
         var instance = workInProgress2.stateNode;
@@ -13894,18 +13750,10 @@ var require_react_dom_development = __commonJS((exports) => {
           reconcileChildren(current2, workInProgress2, nextChildren, renderLanes2);
         }
         workInProgress2.memoizedState = instance.state;
-        if (hasContext) {
-          invalidateContextProvider(workInProgress2, Component, true);
-        }
         return workInProgress2.child;
       }
       function pushHostRootContext(workInProgress2) {
         var root2 = workInProgress2.stateNode;
-        if (root2.pendingContext) {
-          pushTopLevelContextObject(workInProgress2, root2.pendingContext, root2.pendingContext !== root2.context);
-        } else if (root2.context) {
-          pushTopLevelContextObject(workInProgress2, root2.context, false);
-        }
         pushHostContainer(workInProgress2, root2.containerInfo);
       }
       function updateHostRoot(current2, workInProgress2, renderLanes2) {
@@ -14090,9 +13938,8 @@ var require_react_dom_development = __commonJS((exports) => {
         resetSuspendedCurrentOnMountInLegacyMode(_current, workInProgress2);
         workInProgress2.tag = ClassComponent;
         var hasContext;
-        if (isContextProvider(Component)) {
+        if (isContextProvider()) {
           hasContext = true;
-          pushContextProvider(workInProgress2);
         } else {
           hasContext = false;
         }
@@ -14105,10 +13952,6 @@ var require_react_dom_development = __commonJS((exports) => {
         resetSuspendedCurrentOnMountInLegacyMode(_current, workInProgress2);
         var props = workInProgress2.pendingProps;
         var context;
-        {
-          var unmaskedContext = getUnmaskedContext(workInProgress2, Component, false);
-          context = getMaskedContext(workInProgress2, unmaskedContext);
-        }
         prepareToReadContext(workInProgress2, renderLanes2);
         var value;
         var hasId;
@@ -14157,9 +14000,8 @@ var require_react_dom_development = __commonJS((exports) => {
           workInProgress2.memoizedState = null;
           workInProgress2.updateQueue = null;
           var hasContext = false;
-          if (isContextProvider(Component)) {
+          if (isContextProvider()) {
             hasContext = true;
-            pushContextProvider(workInProgress2);
           } else {
             hasContext = false;
           }
@@ -14170,6 +14012,11 @@ var require_react_dom_development = __commonJS((exports) => {
           return finishClassComponent(null, workInProgress2, Component, true, hasContext, renderLanes2);
         } else {
           workInProgress2.tag = FunctionComponent;
+          {
+            if (Component.contextTypes) {
+              error("%s uses the legacy contextTypes API which is no longer supported. Use React.createContext() with React.useContext() instead.", getComponentNameFromType(Component) || "Unknown");
+            }
+          }
           if (getIsHydrating() && hasId) {
             pushMaterializedTreeId(workInProgress2);
           }
@@ -14969,10 +14816,6 @@ var require_react_dom_development = __commonJS((exports) => {
             pushHostContext(workInProgress2);
             break;
           case ClassComponent: {
-            var Component = workInProgress2.type;
-            if (isContextProvider(Component)) {
-              pushContextProvider(workInProgress2);
-            }
             break;
           }
           case HostPortal:
@@ -15374,7 +15217,7 @@ var require_react_dom_development = __commonJS((exports) => {
         }
         return readContextForConsumer(currentlyRenderingFiber, context);
       }
-      function readContextDuringReconcilation(consumer, context, renderLanes2) {
+      function readContextDuringReconciliation(consumer, context, renderLanes2) {
         if (currentlyRenderingFiber === null) {
           prepareToReadContext(consumer, renderLanes2);
         }
@@ -15793,10 +15636,6 @@ var require_react_dom_development = __commonJS((exports) => {
             bubbleProperties(workInProgress2);
             return null;
           case ClassComponent: {
-            var Component = workInProgress2.type;
-            if (isContextProvider(Component)) {
-              popContext(workInProgress2);
-            }
             bubbleProperties(workInProgress2);
             return null;
           }
@@ -15814,7 +15653,6 @@ var require_react_dom_development = __commonJS((exports) => {
               popCacheProvider(workInProgress2);
             }
             popHostContainer(workInProgress2);
-            popTopLevelContextObject(workInProgress2);
             if (fiberRoot.pendingContext) {
               fiberRoot.context = fiberRoot.pendingContext;
               fiberRoot.pendingContext = null;
@@ -16044,10 +15882,6 @@ var require_react_dom_development = __commonJS((exports) => {
             bubbleProperties(workInProgress2);
             return null;
           case IncompleteClassComponent: {
-            var _Component = workInProgress2.type;
-            if (isContextProvider(_Component)) {
-              popContext(workInProgress2);
-            }
             bubbleProperties(workInProgress2);
             return null;
           }
@@ -16221,10 +16055,6 @@ var require_react_dom_development = __commonJS((exports) => {
         popTreeContext(workInProgress2);
         switch (workInProgress2.tag) {
           case ClassComponent: {
-            var Component = workInProgress2.type;
-            if (isContextProvider(Component)) {
-              popContext(workInProgress2);
-            }
             var flags = workInProgress2.flags;
             if (flags & ShouldCapture) {
               workInProgress2.flags = flags & ~ShouldCapture | DidCapture;
@@ -16240,7 +16070,6 @@ var require_react_dom_development = __commonJS((exports) => {
               popCacheProvider(workInProgress2);
             }
             popHostContainer(workInProgress2);
-            popTopLevelContextObject(workInProgress2);
             var _flags = workInProgress2.flags;
             if ((_flags & ShouldCapture) !== NoFlags$1 && (_flags & DidCapture) === NoFlags$1) {
               workInProgress2.flags = _flags & ~ShouldCapture | DidCapture;
@@ -16317,10 +16146,6 @@ var require_react_dom_development = __commonJS((exports) => {
         popTreeContext(interruptedWork);
         switch (interruptedWork.tag) {
           case ClassComponent: {
-            var childContextTypes = interruptedWork.type.childContextTypes;
-            if (childContextTypes !== null && childContextTypes !== undefined) {
-              popContext(interruptedWork);
-            }
             break;
           }
           case HostRoot: {
@@ -16328,7 +16153,6 @@ var require_react_dom_development = __commonJS((exports) => {
               popCacheProvider(interruptedWork);
             }
             popHostContainer(interruptedWork);
-            popTopLevelContextObject(interruptedWork);
             break;
           }
           case HostHoistable:
@@ -19660,10 +19484,6 @@ var require_react_dom_development = __commonJS((exports) => {
             var unresolvedProps = unitOfWork.pendingProps;
             var resolvedProps = unitOfWork.elementType === Component ? unresolvedProps : resolveDefaultProps(Component, unresolvedProps);
             var context;
-            {
-              var unmaskedContext = getUnmaskedContext(unitOfWork, Component, true);
-              context = getMaskedContext(unitOfWork, unmaskedContext);
-            }
             next = replayFunctionComponent(current2, unitOfWork, resolvedProps, Component, context, workInProgressRootRenderLanes);
             break;
           }
@@ -21244,7 +21064,7 @@ var require_react_dom_development = __commonJS((exports) => {
         initializeUpdateQueue(uninitializedFiber);
         return root2;
       }
-      var ReactVersion = "18.3.0-experimental-eb33bd747-20240312";
+      var ReactVersion = "18.3.0-experimental-a870b2d54-20240314";
       function createPortal$1(children, containerInfo, implementation) {
         var key = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
         {
@@ -21269,10 +21089,10 @@ var require_react_dom_development = __commonJS((exports) => {
           return emptyContextObject;
         }
         var fiber = get(parentComponent);
-        var parentContext = findCurrentUnmaskedContext(fiber);
+        var parentContext = findCurrentUnmaskedContext();
         if (fiber.tag === ClassComponent) {
           var Component = fiber.type;
-          if (isContextProvider(Component)) {
+          if (isContextProvider()) {
             return processChildContext(fiber, Component, parentContext);
           }
         }
@@ -24001,8 +23821,10 @@ var require_react_dom_development = __commonJS((exports) => {
       var didWarnFormActionName = false;
       var didWarnFormActionTarget = false;
       var didWarnFormActionMethod = false;
+      var didWarnForNewBooleanPropsWithEmptyValue;
       var canDiffStyleForHydrationWarning;
       {
+        didWarnForNewBooleanPropsWithEmptyValue = {};
         canDiffStyleForHydrationWarning = disableIEWorkarounds;
       }
       function validatePropertiesInDevelopment(type, props) {
@@ -24341,6 +24163,14 @@ var require_react_dom_development = __commonJS((exports) => {
               domElement.removeAttribute(key);
             }
             break;
+          }
+          case "inert": {
+            {
+              if (value === "" && !didWarnForNewBooleanPropsWithEmptyValue[key]) {
+                didWarnForNewBooleanPropsWithEmptyValue[key] = true;
+                error("Received an empty string for a boolean attribute `%s`. This will treat the attribute as if it were false. Either pass `false` to silence this warning, or pass `true` if you used an empty string in earlier versions of React to indicate this attribute is true.", key);
+              }
+            }
           }
           case "allowFullScreen":
           case "async":
@@ -25660,6 +25490,16 @@ var require_react_dom_development = __commonJS((exports) => {
             case "xmlSpace":
               hydrateAttribute(domElement, propKey, "xml:space", value, extraAttributes);
               continue;
+            case "inert": {
+              {
+                if (value === "" && !didWarnForNewBooleanPropsWithEmptyValue[propKey]) {
+                  didWarnForNewBooleanPropsWithEmptyValue[propKey] = true;
+                  error("Received an empty string for a boolean attribute `%s`. This will treat the attribute as if it were false. Either pass `false` to silence this warning, or pass `true` if you used an empty string in earlier versions of React to indicate this attribute is true.", propKey);
+                }
+              }
+              hydrateBooleanAttribute(domElement, propKey, propKey, value, extraAttributes);
+              continue;
+            }
             default: {
               if (propKey.length > 2 && (propKey[0] === "o" || propKey[0] === "O") && (propKey[1] === "n" || propKey[1] === "N")) {
                 continue;
