@@ -1,6 +1,6 @@
 {
   "name": "kotekan",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A modern React Server Components framework built on Bun.",
   "bin": {
     "kotekan": "./src/cli/cli.ts",
@@ -32,8 +32,8 @@
   "sideEffects": false,
   "type": "module",
   "exports": {
-    "./cli": {
-      "import": "./src/cli/index.ts"
+    "./create": {
+      "import": "./src/cli/commands/create.ts"
     },
     "./client/render": {
       "import": "./src/client/render.tsx"

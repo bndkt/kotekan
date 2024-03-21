@@ -1,6 +1,19 @@
 import path from "node:path";
+import type { ArgumentsCamelCase } from "yargs";
 
-export const jsxCommand = async (development = false) => {
+export const command = "jsx [--development]";
+
+export const describe = "Start a Kotekan JSX server";
+
+export const builder = {
+	development: {
+		default: false,
+	},
+};
+
+export const handler = async ({
+	development,
+}: ArgumentsCamelCase<{ development: boolean }>) => {
 	if (development) {
 		console.log("🚀 Running Kotekan in dev mode ...");
 	}

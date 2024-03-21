@@ -1,12 +1,23 @@
 import path from "node:path";
+import type { ArgumentsCamelCase } from "yargs";
 
 import { metro } from "../../native/metro";
 import { install } from "../../native/install";
 import { generate } from "../../native/generate";
 
-const development = Bun.env.NODE_ENV === "development";
+export const command = "native [--development]";
 
-export const nativeCommand = async () => {
+export const describe = "Start a Kotekan native server";
+
+export const builder = {
+	development: {
+		default: false,
+	},
+};
+
+export const handler = async ({
+	development,
+}: ArgumentsCamelCase<{ development: boolean }>) => {
 	const buildDir = "./build";
 	const targetName = "KotekanApp";
 	const displayName = "Kotekan";

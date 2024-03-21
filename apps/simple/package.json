@@ -1,12 +1,12 @@
 {
   "name": "simple",
   "version": "0.0.1",
-  "module": "index.ts",
-  "type": "module",
   "sideEffects": false,
+  "type": "module",
+  "module": "index.ts",
   "scripts": {
-    "lint": "biome lint ./src",
     "dev": "kotekan-dev",
+    "lint": "biome lint ./src",
     "start": "kotekan start"
   },
   "dependencies": {

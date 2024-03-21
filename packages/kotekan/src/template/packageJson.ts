@@ -1,4 +1,4 @@
-import pkg from "../../../package.json";
+import pkg from "../../package.json";
 
 const dependenciesArray = [
 	"@physis/react-server-dom-esm",
@@ -37,12 +37,12 @@ export const packageJson = async (name: string) => {
 	const packageJson = {
 		name: name,
 		version: "0.0.1",
-		module: "index.ts",
-		type: "module",
 		sideEffects: false,
+		type: "module",
+		module: "index.ts",
 		scripts: {
-			lint: "biome lint ./src",
 			dev: "kotekan-dev",
+			lint: "biome lint ./src",
 			start: "kotekan start",
 		},
 		dependencies,

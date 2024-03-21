@@ -2,15 +2,20 @@
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
-import { createCommand } from "./create";
-import { startCommand } from "./commands/start";
-import { nativeCommand } from "./commands/native";
-import { jsxCommand } from "./commands/jsx";
-import { ssrCommand } from "./commands/ssr";
+import * as createCommand from "./commands/create";
+import * as startCommand from "./commands/start";
+import * as nativeCommand from "./commands/native";
+import * as jsxCommand from "./commands/jsx";
+import * as ssrCommand from "./commands/ssr";
 
 yargs(hideBin(process.argv))
 	.scriptName("kotekan")
-	.commandDir("commands")
+	// .commandDir("commands")
+	.command([createCommand])
+	.command([startCommand])
+	.command([jsxCommand])
+	.command([ssrCommand])
+	// .command([nativeCommand])
 	// .command({
 	// 	command: "create [name] --minimal",
 	// 	describe: "Create a new Kotekan app",
