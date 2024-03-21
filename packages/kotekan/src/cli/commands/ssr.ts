@@ -1,19 +1,23 @@
 import path from "node:path";
-import type { ArgumentsCamelCase } from "yargs";
+import type { ArgumentsCamelCase, BuilderCallback } from "yargs";
 
 export const command = "ssr [--development]";
 
 export const describe = "Start a Kotekan SSR server";
 
-export const builder = {
-	development: {
+interface Args {
+	development?: boolean;
+}
+
+export const builder: BuilderCallback<Args, Args> = (yargs) => {
+	return yargs.option("development", {
+		type: "boolean",
 		default: false,
-	},
+		alias: "d",
+	});
 };
 
-export const handler = async ({
-	development,
-}: ArgumentsCamelCase<{ development: boolean }>) => {
+export const handler = async ({ development }: ArgumentsCamelCase<Args>) => {
 	if (development) {
 		console.log("🚀 Running Kotekan in dev mode ...");
 	}

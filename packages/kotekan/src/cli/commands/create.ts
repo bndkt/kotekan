@@ -1,26 +1,28 @@
 import path from "node:path";
-import type { ArgumentsCamelCase } from "yargs";
+import type { ArgumentsCamelCase, BuilderCallback } from "yargs";
 
 import { packageJson } from "../../template/packageJson";
 import { tsconfigJson } from "../../template/tsconfigJson";
 
-export const command = "create [name] [--minimal]";
+export const command = "create [name]";
 
 export const describe = "Create a new Kotekan app";
 
-export const builder = {
-	name: {
-		default: "kotekan-app",
-	},
-	minimal: {
+interface Args {
+	name?: string;
+	minimal?: boolean;
+}
+
+export const builder: BuilderCallback<Args, Args> = (yargs) => {
+	return yargs.option("minimal", {
+		type: "boolean",
 		default: false,
-	},
+		alias: "m",
+	});
 };
 
-export const handler = async ({
-	name,
-	minimal,
-}: ArgumentsCamelCase<{ name?: string; minimal: boolean }>) => {
+export const handler = async ({ name, minimal }: ArgumentsCamelCase<Args>) => {
+	console.log({ name, minimal });
 	const templatePath = path.join(import.meta.dir, "..", "..", "template");
 	const createPath = path.join(process.cwd(), name ?? "");
 

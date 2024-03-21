@@ -5,6 +5,6 @@ import * as createCommand from "kotekan/create";
 
 yargs(hideBin(process.argv))
 	.scriptName("create-kotekan")
-	.command("* [name] [--minimal]", "Create a new Kotekan app", createCommand)
+	.command("* [name]", "Create a new Kotekan app", createCommand)
 	.help()
 	.parse();

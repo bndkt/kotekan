@@ -1,5 +1,5 @@
 import path from "node:path";
-import type { ArgumentsCamelCase } from "yargs";
+import type { ArgumentsCamelCase, BuilderCallback } from "yargs";
 
 import { metro } from "../../native/metro";
 import { install } from "../../native/install";
@@ -9,15 +9,19 @@ export const command = "native [--development]";
 
 export const describe = "Start a Kotekan native server";
 
-export const builder = {
-	development: {
+interface Args {
+	development?: boolean;
+}
+
+export const builder: BuilderCallback<Args, Args> = (yargs) => {
+	return yargs.option("development", {
+		type: "boolean",
 		default: false,
-	},
+		alias: "d",
+	});
 };
 
-export const handler = async ({
-	development,
-}: ArgumentsCamelCase<{ development: boolean }>) => {
+export const handler = async ({ development }: ArgumentsCamelCase<Args>) => {
 	const buildDir = "./build";
 	const targetName = "KotekanApp";
 	const displayName = "Kotekan";

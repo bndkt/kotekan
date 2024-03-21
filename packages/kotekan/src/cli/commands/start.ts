@@ -1,21 +1,25 @@
 import path from "node:path";
-import type { ArgumentsCamelCase } from "yargs";
+import type { ArgumentsCamelCase, BuilderCallback } from "yargs";
 
 export const command = "start [--development]";
 
 export const describe = "Start a Kotekan app";
 
-export const builder = {
-	development: {
+interface Args {
+	development?: boolean;
+}
+
+export const builder: BuilderCallback<Args, Args> = (yargs) => {
+	return yargs.option("development", {
+		type: "boolean",
 		default: false,
-	},
+		alias: "d",
+	});
 };
 
 const socket = "/tmp/kotekan.sock";
 
-export const handler = async ({
-	development,
-}: ArgumentsCamelCase<{ development: boolean }>) => {
+export const handler = async ({ development }: ArgumentsCamelCase<Args>) => {
 	const jsxServerPort = 3001;
 
 	if (development) {
