@@ -4,7 +4,6 @@ services:
     env: docker
     repo: https://github.com/bndkt/kotekan
     plan: free
-    healthCheckPath: /up
     autoDeploy: false
   - type: web
     name: ssr
