@@ -13,8 +13,8 @@ yargs(hideBin(process.argv))
 	// .commandDir("commands")
 	.command([createCommand])
 	.command([startCommand])
-	// .command([jsxCommand])
-	// .command([ssrCommand])
+	.command([jsxCommand])
+	.command([ssrCommand])
 	// .command([nativeCommand])
 	// .command({
 	// 	command: "create [name] --minimal",
