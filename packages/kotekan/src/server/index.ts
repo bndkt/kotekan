@@ -32,7 +32,7 @@ export const server = async (props: ServerProps = {}): Promise<Server> => {
 	// Build
 	const build = await builder({
 		routes,
-		buildPath,
+		// buildPath,
 		development,
 	});
 
