@@ -1,5 +1,5 @@
 import path from "node:path";
-import type { ArgumentsCamelCase, BuilderCallback } from "yargs";
+import type { ArgumentsCamelCase, Argv } from "yargs";
 
 import { metro } from "../../native/metro";
 import { install } from "../../native/install";
@@ -13,7 +13,7 @@ interface Args {
 	development?: boolean;
 }
 
-export const builder: BuilderCallback<Args, Args> = (yargs) => {
+export const builder = (yargs: Argv) => {
 	return yargs.option("development", {
 		type: "boolean",
 		default: false,
