@@ -1,9 +1,25 @@
 import path from "node:path";
 
-import { packageJson } from "./packageJson";
+import { packageJson } from "../packageJson";
 import { tsconfigJson } from "./tsconfigJson";
 
-export const createCommand = async (name?: string) => {
+export const command = "create [name] --minimal";
+
+export const describe = "Create a new Kotekan app";
+
+export const builder = {
+	name: {
+		default: "kotekan-app",
+	},
+	minimal: {
+		default: false,
+	},
+};
+
+export const createCommand = async ({
+	name,
+	minimal,
+}: { name?: string; minimal?: boolean }) => {
 	const createPath = path.join(process.cwd(), name ?? "");
 
 	const projectName = name ?? "kotekan-app";
