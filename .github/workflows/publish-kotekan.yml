@@ -20,7 +20,7 @@ jobs:
           node-version: "20"
           registry-url: "https://registry.npmjs.org"
       - name: Publish
-        run: npm publish --dry-run --provenance --access public
+        run: npm publish --provenance --access public
         working-directory: ./packages/kotekan
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
