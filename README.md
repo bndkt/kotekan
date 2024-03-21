@@ -33,6 +33,7 @@ A minimal React framework based on the [Bun](https://bun.sh/) runtime, with buil
 ## Smaller dependencies:
 - [react-error-boundary](https://github.com/bvaughn/react-error-boundary)
 - [isbot](https://github.com/omrilotan/isbot)
+- [@mdx-js/mdx](https://github.com/mdx-js/mdx/)
 
 ## Goals
 - As simple as possible
