@@ -1,6 +1,6 @@
 {
   "name": "kotekan",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "A modern React Server Components framework built on Bun.",
   "bin": {
     "kotekan": "./src/cli/cli.ts",

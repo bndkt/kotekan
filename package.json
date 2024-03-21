@@ -11,7 +11,7 @@
     "docker": "bun run docker:build && bun run docker:remove && bun run docker:run",
     "docker:build": "docker build -t kotekan .",
     "docker:remove": "docker rm -f kotekan",
-    "docker:run": "docker run -d -p 3000:3000 --name kotekan kotekan",
+    "docker:run": "docker run -d -p 3000:3000 --name kotekan kotekan start",
     "docker:stop": "docker stop kotekan",
     "manypkg": "manypkg check",
     "ncu": "ncu"

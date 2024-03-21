@@ -81,7 +81,6 @@ export const handler = async ({ development }: ArgumentsCamelCase<Args>) => {
 	});
 
 	// SSR
-	const ssrServerPort = 3000;
 	const ssrPreloadPath = path.join(
 		import.meta.dir,
 		"..",
@@ -108,8 +107,8 @@ export const handler = async ({ development }: ArgumentsCamelCase<Args>) => {
 	const ssrServer = Bun.spawn(ssrServerCommand, {
 		stdout: "inherit",
 		env: {
-			SSR_PORT: ssrServerPort.toString(),
-			SSR_SOCKET: socket,
+			SSR_JSX_SERVER_SOCKET: socket,
+			SSR_JSX_SERVER_PORT: jsxServerPort.toString(),
 			...Bun.env,
 		},
 		onExit: () => {
