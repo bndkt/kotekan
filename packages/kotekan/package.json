@@ -54,7 +54,7 @@
     "vendor": "bun ./src/scripts/vendor.ts"
   },
   "dependencies": {
-    "@babel/core": "7.24.1",
+    "@babel/core": "7.24.3",
     "@babel/plugin-syntax-typescript": "7.24.1",
     "@babel/runtime": "7.24.1",
     "@mdx-js/mdx": "3.0.1",
@@ -73,7 +73,7 @@
     "react-native": "0.74.0-rc.4",
     "react-refresh": "0.14.0",
     "tailwindcss": "4.0.0-alpha.8",
-    "typescript": "5.4.2",
+    "typescript": "5.4.3",
     "yargs": "17.7.2"
   },
   "devDependencies": {

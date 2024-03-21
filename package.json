@@ -22,6 +22,6 @@
     "@manypkg/cli": "0.21.3",
     "@types/bun": "1.0.10",
     "npm-check-updates": "16.14.17",
-    "typescript": "5.4.2"
+    "typescript": "5.4.3"
   }
 }
