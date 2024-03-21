@@ -1,4 +1,4 @@
-name: Publish Package to npmjs
+name: Publish create-kotekan
 
 on:
   workflow_dispatch
