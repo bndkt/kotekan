@@ -1,0 +1,26 @@
+services:
+  - type: pserv
+    name: jsx
+    env: docker
+    repo: https://github.com/bndkt/kotekan
+    plan: free
+    healthCheckPath: /up
+    autoDeploy: false
+  - type: web
+    name: ssr
+    env: docker
+    repo: https://github.com/bndkt/kotekan
+    plan: free
+    healthCheckPath: /up
+    autoDeploy: false
+    envVars:
+      key: SSR_JSX_SERVER_HOSTNAME
+      fromService:
+        type: pserv
+        name: jsx
+        property: host
+      key: SSR_JSX_SERVER_PORT
+      fromService:
+        type: pserv
+        name: jsx
+        property: port
