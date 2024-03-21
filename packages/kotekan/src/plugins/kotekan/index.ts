@@ -28,9 +28,9 @@ export const kotekanPlugin: (config: RscPluginConfig) => BunPlugin = ({
 			build.onLoad({ filter: PLUGIN_FILTER }, async (args) => {
 				let contents = await Bun.file(args.path).text();
 
-				if (args.path.includes("node_modules")) {
-					return;
-				}
+				// if (args.path.includes("node_modules")) {
+				// 	return;
+				// }
 
 				// console.log("🥁 RSC PLUGIN ON LOAD", args.path);
 

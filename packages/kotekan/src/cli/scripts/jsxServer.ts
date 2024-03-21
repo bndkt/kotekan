@@ -1,4 +1,4 @@
-#!/usr/bin/env bun
+#!/usr/bin/env bun --conditions react-server
 import { boolFromEnv } from "../../lib/boolFromEnv";
 import { numberFromEnv } from "../../lib/numberFromEnv";
 import { server } from "../../server";
