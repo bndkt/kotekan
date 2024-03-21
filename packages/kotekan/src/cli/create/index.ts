@@ -43,7 +43,7 @@ export const createCommand = async (name?: string) => {
 	// Copy files in src
 	const srcTemplateFiles = [
 		"styles.css",
-		"root.tsx",
+		"Root.tsx",
 		"routes/index.tsx",
 		"components/ServerTime.tsx",
 		"components/Counter.tsx",
