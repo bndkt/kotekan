@@ -22,7 +22,6 @@ export const builder: BuilderCallback<Args, Args> = (yargs) => {
 };
 
 export const handler = async ({ name, minimal }: ArgumentsCamelCase<Args>) => {
-	console.log({ name, minimal });
 	const templatePath = path.join(import.meta.dir, "..", "..", "template");
 	const createPath = path.join(process.cwd(), name ?? "");
 
