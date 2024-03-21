@@ -1,7 +1,13 @@
 {
   "name": "kotekan",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A modern React Server Components framework built on Bun.",
+  "bin": {
+    "kotekan": "./src/cli/cli.ts",
+    "kotekan-dev": "./src/cli/dev.ts",
+    "kotekan-jsx": "./src/cli/jsxServer.ts",
+    "kotekan-ssr": "./src/cli/ssrServer.ts"
+  },
   "keywords": [
     "react",
     "bun",
@@ -35,12 +41,6 @@
     "./client/hydrate": {
       "import": "./src/client/hydrate.tsx"
     }
-  },
-  "bin": {
-    "kotekan": "./src/cli/cli.ts",
-    "kotekan-dev": "./src/cli/dev.ts",
-    "kotekan-jsx": "./src/cli/jsxServer.ts",
-    "kotekan-ssr": "./src/cli/ssrServer.ts"
   },
   "files": [
     "src/",
