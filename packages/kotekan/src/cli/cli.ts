@@ -15,7 +15,7 @@ yargs(hideBin(process.argv))
 	.command([startCommand])
 	.command([jsxCommand])
 	.command([ssrCommand])
-	// .command([nativeCommand])
+	.command([nativeCommand])
 	// .command({
 	// 	command: "create [name] --minimal",
 	// 	describe: "Create a new Kotekan app",
