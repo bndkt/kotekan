@@ -1,0 +1,32 @@
+{
+  "name": "mobile",
+  "version": "0.0.1",
+  "sideEffects": false,
+  "type": "module",
+  "module": "index.ts",
+  "scripts": {
+    "dev": "kotekan-dev",
+    "lint": "biome lint ./src",
+    "native": "kotekan native",
+    "rn:build-ios": "react-native build-ios",
+    "rn:clean": "react-native clean",
+    "rn:doctor": "react-native doctor",
+    "rn:info": "react-native info",
+    "rn:run-ios": "react-native run-ios --no-packager",
+    "rn:start": "react-native start --config ./build/mobile/metro.config.cjs",
+    "start": "kotekan start"
+  },
+  "dependencies": {
+    "@physis/react-server-dom-esm": "0.0.0-experimental-9c75cd5e8-20240318",
+    "kotekan": "workspace:*",
+    "react": "0.0.0-experimental-a870b2d54-20240314",
+    "react-dom": "0.0.0-experimental-a870b2d54-20240314",
+    "react-native": "0.74.0-rc.4",
+    "react-strict-dom": "0.0.3"
+  },
+  "devDependencies": {
+    "@types/bun": "1.0.10",
+    "@types/react": "18.2.67",
+    "@types/react-dom": "18.2.22"
+  }
+}
