@@ -35,18 +35,17 @@ export const handler = async ({ development }: ArgumentsCamelCase<Args>) => {
 
 	await install({ buildPath });
 
-	// await metro();
+	await metro();
 
-	Bun.spawn(
-		["react-native", "start", "--config", "./build/mobile/metro.config.cjs"],
-		{
-			stdout: "inherit",
-			env: {
-				// PORT: ssrServerPort.toString(),
-				...process.env,
-			},
-		},
-	);
+	// Bun.spawn(
+	// 	["react-native", "start", "--config", "./build/mobile/metro.config.cjs"],
+	// 	{
+	// 		stdout: "inherit",
+	// 		env: {
+	// 			...Bun.env,
+	// 		},
+	// 	},
+	// );
 
 	console.log("Native");
 };

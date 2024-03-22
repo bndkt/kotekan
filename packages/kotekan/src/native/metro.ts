@@ -1,5 +1,4 @@
 import path from "node:path";
-import { $ } from "bun";
 import { getDefaultConfig, mergeConfig } from "@react-native/metro-config";
 import {
 	type MetroConfig,
@@ -38,12 +37,12 @@ export const metro = async () => {
 			useWatchman: true,
 			// unstable_enablePackageExports: true,
 		},
-		transformer: {},
+		// transformer: {},
 		server: {
 			port: 8081,
 		},
-		watcher: {},
-		cacheStores: [],
+		// watcher: {},
+		// cacheStores: [],
 	};
 	const mergedConfig = mergeConfig(rnDefaultConfig, config);
 	// console.log({ mergedConfig });
@@ -89,8 +88,17 @@ export const metro = async () => {
 	// console.log({ metroBundlerServer });
 
 	// RN Start
-	await $`react-native start --config ./build/mobile/metro.config.cjs`.cwd(
-		process.cwd(),
+	// await $`react-native start --config ./build/mobile/metro.config.cjs`.cwd(
+	// 	process.cwd(),
+	// );
+	Bun.spawn(
+		["react-native", "start", "--config", "./build/mobile/metro.config.cjs"],
+		{
+			stdout: "inherit",
+			env: {
+				...Bun.env,
+			},
+		},
 	);
 
 	// Doctor

@@ -1,6 +1,6 @@
 "use client";
-
 import { useState } from "react";
+// import { css, html as h } from "react-strict-dom";
 
 export const Counter = () => {
 	const [counter, setCounter] = useState(0);

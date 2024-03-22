@@ -4,6 +4,8 @@ import stylexBabelPlugin, { type Rule } from "@stylexjs/babel-plugin";
 // @ts-expect-error Missing types
 import typescriptSyntaxPlugin from "@babel/plugin-syntax-typescript";
 // @ts-expect-error Missing types
+import jsxSyntaxPlugin from "@babel/plugin-syntax-jsx";
+// @ts-expect-error Missing types
 import rsdPlugin from "react-strict-dom/babel";
 
 export const babel = async (
@@ -27,6 +29,7 @@ export const babel = async (
 		filename: args.path,
 		plugins: [
 			[typescriptSyntaxPlugin, { isTSX: true }],
+			jsxSyntaxPlugin,
 			rsdPlugin,
 			stylexBabelPlugin.withOptions({
 				treeshakeCompensation: true,
