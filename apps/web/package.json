@@ -28,7 +28,7 @@
     "@sindresorhus/slugify": "2.2.1",
     "acorn": "8.11.3",
     "clsx": "2.1.0",
-    "framer-motion": "11.0.18",
+    "framer-motion": "11.0.20",
     "kotekan": "workspace:*",
     "mdast-util-to-string": "4.0.0",
     "mdx-annotations": "0.1.4",
