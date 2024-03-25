@@ -23,7 +23,7 @@ export const jsxFetcher = async (
 	// Router
 	const match = router.match(request.url);
 	if (match) {
-		console.log("🥁 Matched route:", match);
+		// console.log("🥁 Matched route:", match);
 
 		// Route component
 		const routeComponentFilePath = match.filePath; // build.routeComponentPaths.get(match.name);
