@@ -4,6 +4,8 @@
 FROM oven/bun:1.0.35-alpine as base
 WORKDIR /usr/src/app
 
+RUN apk add coreutils
+
 # install dependencies into temp directory
 # this will cache them and speed up future builds
 FROM base AS install

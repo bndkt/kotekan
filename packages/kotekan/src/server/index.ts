@@ -18,7 +18,7 @@ export const server = async (props: ServerProps = {}): Promise<Server> => {
 	const development = props.development ?? false;
 	const socket = props.socket;
 	const jsxServer = {
-		hostname: props.jsxServer?.hostname ?? "0.0.0.0",
+		hostname: props.jsxServer?.hostname ?? "localhost",
 		port: props.jsxServer?.port ?? 3001,
 		socket: props.jsxServer?.socket,
 	};
