@@ -29,8 +29,18 @@ export const createDocumentElement = async ({
 	// });
 
 	// Root component
-	const rootComponentFilePath = resolveSync("./src/Root", process.cwd()); // build.rootComponentFilePath
-	const rootComponentFile = await import(rootComponentFilePath);
+	// const rootComponentFilePath = resolveSync("./src/Root", process.cwd()); // build.rootComponentFilePath
+	const routeBuildOutput = build.serverBuildOutputs.get(
+		resolveSync("./src/Root", process.cwd()),
+	);
+	if (
+		!routeBuildOutput ||
+		!routeBuildOutput.artifact ||
+		!("path" in routeBuildOutput.artifact)
+	) {
+		throw new Error("🥁 Root component file not found");
+	}
+	const rootComponentFile = await import(routeBuildOutput.artifact.path);
 	const RootComponent = rootComponentFile.default as FunctionComponent;
 
 	// Route component element

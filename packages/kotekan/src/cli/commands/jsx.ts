@@ -22,12 +22,12 @@ export const handler = async ({ development }: ArgumentsCamelCase<Args>) => {
 		console.log("🚀 Running Kotekan in dev mode ...");
 	}
 
-	const jsxPreloadPath = path.join(
-		import.meta.dir,
-		"..",
-		"scripts",
-		"jsxPreload.ts",
-	);
+	// const jsxPreloadPath = path.join(
+	// 	import.meta.dir,
+	// 	"..",
+	// 	"scripts",
+	// 	"jsxPreload.ts",
+	// );
 	const jsxServerPath = path.join(
 		import.meta.dir,
 		"..",
@@ -36,11 +36,10 @@ export const handler = async ({ development }: ArgumentsCamelCase<Args>) => {
 	);
 	const jsxServerCommand = [
 		"bun",
-		development ? "--hot" : "",
 		"--conditions",
 		"react-server",
-		"--preload",
-		jsxPreloadPath,
+		// "--preload",
+		// jsxPreloadPath,
 		jsxServerPath,
 	];
 

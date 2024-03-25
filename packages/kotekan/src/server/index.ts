@@ -10,7 +10,7 @@ export const server = async (props: ServerProps = {}): Promise<Server> => {
 	// Defaults
 	const mode = props.mode ?? "ssr";
 	const hostname = props.hostname ?? "0.0.0.0";
-	const port = props.port ?? 3000;
+	const port = props.port ?? (props.mode === "jsx" ? 3001 : 3000);
 	const buildDir = props.buildDir ?? config.buildDir;
 	const buildUrlSegment = props.buildUrlSegment ?? config.buildUrlSegment;
 	const stylexFilename = props.stylexFilename ?? config.stylexFilename;

@@ -6,7 +6,7 @@
   "module": "index.ts",
   "scripts": {
     "dev": "kotekan-dev",
-    "jsx": "kotekan jsx",
+    "jsx": "kotekan-jsx",
     "lint": "biome lint ./src",
     "native": "kotekan native",
     "rn:build-ios": "react-native build-ios",

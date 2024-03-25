@@ -9,8 +9,8 @@
     "dev": "DOCKER_BUILD_TIMESTAMP=1709948626 kotekan-dev",
     "lint": "biome lint ./src",
     "start": "kotekan start",
-    "start-jsx": "kotekan jsx",
-    "start-ssr": "kotekan ssr",
+    "start-jsx": "kotekan-jsx",
+    "start-ssr": "kotekan-ssr",
     "tailwind3": "npx tailwindcss -m -i ./src/tailwind3.css -o ./public/tailwind.css",
     "test": "npx playwright test"
   },

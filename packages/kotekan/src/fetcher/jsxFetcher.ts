@@ -26,11 +26,17 @@ export const jsxFetcher = async (
 		// console.log("🥁 Matched route:", match);
 
 		// Route component
-		const routeComponentFilePath = match.filePath; // build.routeComponentPaths.get(match.name);
-		if (!routeComponentFilePath) {
-			throw new Error(`🥁 Route component file not found: ${match.name}`);
+		// const routeComponentFilePath = match.filePath;
+		const routeBuildOutput = build.serverBuildOutputs.get(match.filePath);
+		if (
+			!routeBuildOutput ||
+			!routeBuildOutput.artifact ||
+			!("path" in routeBuildOutput.artifact)
+		) {
+			throw new Error(`🥁 Route component file not found: ${match.filePath}`);
 		}
-		const routeComponentFile = await import(routeComponentFilePath);
+
+		const routeComponentFile = await import(routeBuildOutput.artifact.path);
 		const RouteComponent = routeComponentFile.default as FunctionComponent;
 
 		// JSX (for RSC)
@@ -49,6 +55,7 @@ export const jsxFetcher = async (
 			onPostpone: undefined,
 			// environmentName: "Server",
 		};
+
 		// renderToPipeableStream(model, moduleBasePath, options)
 		const { pipe } = await renderToPipeableStream(
 			JsxDocumentElement,

@@ -5,8 +5,8 @@
   "bin": {
     "kotekan": "./src/cli/cli.ts",
     "kotekan-dev": "./src/cli/dev.ts",
-    "kotekan-jsx": "./src/cli/jsxServer.ts",
-    "kotekan-ssr": "./src/cli/ssrServer.ts"
+    "kotekan-jsx": "./src/cli/scripts/jsxServer.ts",
+    "kotekan-ssr": "./src/cli/scripts/ssrServer.ts"
   },
   "keywords": [
     "react",

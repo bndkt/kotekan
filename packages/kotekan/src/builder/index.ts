@@ -25,12 +25,14 @@ export const builder = async ({
 	const serverBuildOutputs: BuildOutputsMap = new Map();
 	const rootComponentPath = resolveSync("./Root", root);
 	const routeComponentPaths = Object.values(routes);
+	const entrypoints = [rootComponentPath, ...routeComponentPaths];
 	const serverBuild = await Bun.build({
-		entrypoints: [rootComponentPath, ...routeComponentPaths],
+		entrypoints,
 		target: "bun",
 		sourcemap: development ? "inline" : "none",
 		minify: development ? false : true,
-		outdir: buildPath ? `${buildPath}/server` : undefined,
+		// outdir: buildPath ? `${buildPath}/server` : undefined,
+		outdir: `${buildPath}/server`,
 		naming: "[dir]/[name].[ext]",
 		conditions: "react-server",
 		plugins: [
@@ -44,11 +46,14 @@ export const builder = async ({
 		],
 	});
 
-	for (const buildArtifact of serverBuild.outputs) {
-		serverBuildOutputs.set(buildArtifact.path, {
+	let i = 0;
+	for (const entrypoint of entrypoints) {
+		const buildArtifact = serverBuild.outputs[i];
+		serverBuildOutputs.set(entrypoint, {
 			name: path.basename(buildArtifact.path),
 			artifact: buildArtifact,
 		});
+		i++;
 	}
 
 	// console.log(`🥁 Built ${serverBuild.outputs.length} server files`);
