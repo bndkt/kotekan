@@ -10,10 +10,10 @@
     "start": "kotekan start"
   },
   "dependencies": {
-    "@physis/react-server-dom-esm": "0.0.0-experimental-9c75cd5e8-20240318",
+    "@physis/react-server-dom-esm": "0.0.0-experimental-b1c2d14c9-20240326",
     "kotekan": "workspace:*",
-    "react": "0.0.0-experimental-a870b2d54-20240314",
-    "react-dom": "0.0.0-experimental-a870b2d54-20240314"
+    "react": "0.0.0-experimental-e373190fa-20240325",
+    "react-dom": "0.0.0-experimental-e373190fa-20240325"
   },
   "devDependencies": {
     "@types/bun": "1.0.10",

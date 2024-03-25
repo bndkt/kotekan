@@ -14,7 +14,7 @@ COPY package.json bun.lockb /temp/dev/
 COPY apps/web/package.json /temp/dev/apps/web/
 COPY packages/kotekan/package.json /temp/dev/packages/kotekan/
 # TMP
-COPY packages/react-server-dom-esm/package.json /temp/dev/packages/react-server-dom-esm/
+COPY packages/react-server-dom-bun/package.json /temp/dev/packages/react-server-dom-bun/
 # RUN cd /temp/dev && bun install --frozen-lockfile
 RUN cd /temp/dev && bun install
 
@@ -24,7 +24,7 @@ COPY package.json bun.lockb /temp/prod/
 COPY apps/web/package.json /temp/prod/apps/web/
 COPY packages/kotekan/package.json /temp/prod/packages/kotekan/
 # TMP
-COPY packages/react-server-dom-esm/package.json /temp/prod/packages/react-server-dom-esm/
+COPY packages/react-server-dom-bun/package.json /temp/prod/packages/react-server-dom-bun/
 # RUN cd /temp/prod && bun install --frozen-lockfile --production
 RUN cd /temp/prod && bun install
 
@@ -48,6 +48,7 @@ COPY --from=prerelease /usr/src/app .
 # ENV DOCKER_BUILD_TIMESTAMP=${BUILD_TIMESTAMP}
 
 ENV NODE_ENV=production
+# ENV SSR_JSX_SERVER_HOSTNAME=host.docker.internal
 
 # run the app
 WORKDIR /usr/src/app/apps/web

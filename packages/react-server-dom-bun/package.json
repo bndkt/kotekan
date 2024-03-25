@@ -1,11 +1,9 @@
 {
   "name": "react-server-dom-bun",
-  "module": "index.ts",
+  "version": "0.0.1",
   "type": "module",
+  "module": "index.ts",
   "devDependencies": {
-    "@types/bun": "latest"
-  },
-  "peerDependencies": {
-    "typescript": "5.4.3"
+    "@types/bun": "1.0.10"
   }
 }
