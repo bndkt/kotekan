@@ -18,11 +18,11 @@
     "ncu": "ncu"
   },
   "dependencies": {
-    "@biomejs/biome": "1.6.2",
+    "@biomejs/biome": "1.6.3",
     "@changesets/cli": "2.27.1",
     "@manypkg/cli": "0.21.3",
     "@types/bun": "1.0.10",
-    "npm-check-updates": "16.14.17",
+    "npm-check-updates": "16.14.18",
     "typescript": "5.4.3"
   }
 }

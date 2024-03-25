@@ -62,8 +62,8 @@
     "@babel/runtime": "7.24.1",
     "@mdx-js/mdx": "3.0.1",
     "@physis/react-server-dom-esm": "0.0.0-experimental-9c75cd5e8-20240318",
-    "@react-native/babel-preset": "0.74.75",
-    "@react-native/metro-config": "0.74.75",
+    "@react-native/babel-preset": "0.74.76",
+    "@react-native/metro-config": "0.74.76",
     "@stylexjs/babel-plugin": "0.5.1",
     "@tailwindcss/cli": "4.0.0-alpha.9",
     "bun": "1.0.35",
@@ -73,9 +73,9 @@
     "react": "0.0.0-experimental-a870b2d54-20240314",
     "react-dom": "0.0.0-experimental-a870b2d54-20240314",
     "react-error-boundary": "4.0.13",
-    "react-native": "0.74.0-rc.4",
+    "react-native": "0.74.0-rc.5",
     "react-refresh": "0.14.0",
-    "react-strict-dom": "0.0.3",
+    "react-strict-dom": "0.0.4",
     "tailwindcss": "4.0.0-alpha.10",
     "typescript": "5.4.3",
     "yargs": "17.7.2"
@@ -83,7 +83,7 @@
   "devDependencies": {
     "@types/babel__core": "7.20.5",
     "@types/bun": "1.0.10",
-    "@types/react": "18.2.69",
+    "@types/react": "18.2.70",
     "@types/react-dom": "18.2.22",
     "@types/react-refresh": "0.14.5",
     "@types/yargs": "17.0.32"

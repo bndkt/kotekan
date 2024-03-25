@@ -23,11 +23,11 @@
     "react": "0.0.0-experimental-a870b2d54-20240314",
     "react-dom": "0.0.0-experimental-a870b2d54-20240314",
     "react-native": "0.74.0-rc.4",
-    "react-strict-dom": "0.0.3"
+    "react-strict-dom": "0.0.4"
   },
   "devDependencies": {
     "@types/bun": "1.0.10",
-    "@types/react": "18.2.69",
+    "@types/react": "18.2.70",
     "@types/react-dom": "18.2.22"
   }
 }
