@@ -2,7 +2,12 @@ import path from "node:path";
 import { resolveSync, type BuildConfig } from "bun";
 import type { Rule } from "@stylexjs/babel-plugin";
 
-import type { BuildOutput, BuildResult, BuilderProps } from "./types";
+import type {
+	BuildOutput,
+	BuildOutputsMap,
+	BuildResult,
+	BuilderProps,
+} from "./types";
 import { mdxPlugin } from "../plugins/mdx";
 import { kotekanPlugin } from "../plugins/kotekan";
 import { stylex } from "./stylex";
@@ -17,6 +22,7 @@ export const builder = async ({
 	const stylexRules: Record<string, Rule[]> = {};
 
 	// Server build
+	const serverBuildOutputs: BuildOutputsMap = new Map();
 	const rootComponentPath = resolveSync("./Root", root);
 	const routeComponentPaths = Object.values(routes);
 	const serverBuild = await Bun.build({
@@ -26,6 +32,7 @@ export const builder = async ({
 		minify: development ? false : true,
 		outdir: buildPath ? `${buildPath}/server` : undefined,
 		naming: "[dir]/[name].[ext]",
+		conditions: "react-server",
 		plugins: [
 			kotekanPlugin({
 				clientComponentPaths,
@@ -37,22 +44,27 @@ export const builder = async ({
 		],
 	});
 
+	for (const buildArtifact of serverBuild.outputs) {
+		serverBuildOutputs.set(buildArtifact.path, {
+			name: path.basename(buildArtifact.path),
+			artifact: buildArtifact,
+		});
+	}
+
 	// console.log(`🥁 Built ${serverBuild.outputs.length} server files`);
 
 	// Client build
-	const clientBuildOutputs: Map<string, BuildOutput> = new Map();
+	const clientBuildOutputs: BuildOutputsMap = new Map();
 	const clientDir = path.join(import.meta.dir, "..", "client");
 	const renderScriptFilePath = resolveSync("./render", clientDir);
 	const hydrateScriptFilePath = resolveSync("./hydrate", clientDir);
 
 	// StyleX
-	const stylexResult = await stylex({ stylexRules, buildPath });
-	if (stylexResult) {
-		clientBuildOutputs.set("stylex.css", {
-			name: stylexResult.stylexPath,
-			contents: stylexResult.stylexCSS,
-		});
-	}
+	await stylex({
+		clientBuildOutputs,
+		stylexRules,
+		buildPath,
+	});
 
 	const clientBuildConfig: Partial<BuildConfig> = {
 		target: "browser",
@@ -63,7 +75,12 @@ export const builder = async ({
 			"react",
 			"react-dom",
 			"react-strict-dom",
+			"react-server-dom-esm",
 			"@physis/react-server-dom-esm",
+		],
+		plugins: [
+			kotekanPlugin({ clientComponentPaths, development, stylexRules }),
+			mdxPlugin({ development }),
 		],
 	};
 
@@ -106,5 +123,10 @@ export const builder = async ({
 
 	// console.log(`🥁 Built ${clientScriptsBuild.outputs.length} client script files`);
 
-	return { renderScript, hydrateScript, clientBuildOutputs };
+	return {
+		serverBuildOutputs,
+		clientBuildOutputs,
+		renderScript,
+		hydrateScript,
+	};
 };

@@ -9,7 +9,6 @@ export const fetch = async (
 	request: Request,
 	{ rnBuild, buildPath }: FetchProps,
 ): Promise<Response> => {
-	const buildUrlSegment = "_build";
 	const url = new URL(request.url);
 	const pathSegments = url.pathname.split("/").filter(Boolean);
 	const userAgent = request.headers.get("user-agent");

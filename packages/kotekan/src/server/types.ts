@@ -2,6 +2,8 @@ export type RenderingStrategy = "csr" | "ssr" | "jsx";
 
 export type ServerProps = {
 	buildDir?: string;
+	buildUrlSegment?: string;
+	stylexFilename?: string;
 	hostname?: string;
 	port?: number;
 	mdxEnabled?: boolean;

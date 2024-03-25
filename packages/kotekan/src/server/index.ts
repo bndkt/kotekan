@@ -4,13 +4,16 @@ import type { Server } from "bun";
 import type { ServerProps } from "./types";
 import { router as routerFn } from "./router";
 import { builder } from "../builder";
+import { config } from "../config";
 
 export const server = async (props: ServerProps = {}): Promise<Server> => {
 	// Defaults
 	const mode = props.mode ?? "ssr";
 	const hostname = props.hostname ?? "0.0.0.0";
 	const port = props.port ?? 3000;
-	const buildDir = props.buildDir ?? "./build";
+	const buildDir = props.buildDir ?? config.buildDir;
+	const buildUrlSegment = props.buildUrlSegment ?? config.buildUrlSegment;
+	const stylexFilename = props.stylexFilename ?? config.stylexFilename;
 	const mdxEnabled = props.mdxEnabled ?? true;
 	const development = props.development ?? false;
 	const socket = props.socket;
@@ -22,7 +25,6 @@ export const server = async (props: ServerProps = {}): Promise<Server> => {
 
 	// Paths
 	const buildPath = path.join(process.cwd(), buildDir);
-	const buildUrlSegment = "_build";
 
 	// Router
 	const dir = path.join(process.cwd(), "src", "routes");
@@ -32,7 +34,7 @@ export const server = async (props: ServerProps = {}): Promise<Server> => {
 	// Build
 	const build = await builder({
 		routes,
-		// buildPath,
+		buildPath,
 		development,
 	});
 
@@ -40,12 +42,10 @@ export const server = async (props: ServerProps = {}): Promise<Server> => {
 		if (mode === "jsx") {
 			const { jsxFetcher } = await import("../fetcher/jsxFetcher");
 			return jsxFetcher(request, {
-				mode,
 				build,
 				router,
-				buildPath,
 				buildUrlSegment,
-				development,
+				stylexFilename,
 			});
 		}
 
@@ -56,6 +56,7 @@ export const server = async (props: ServerProps = {}): Promise<Server> => {
 			router,
 			buildPath,
 			buildUrlSegment,
+			stylexFilename,
 			jsxServer,
 			development,
 		});
@@ -66,7 +67,7 @@ export const server = async (props: ServerProps = {}): Promise<Server> => {
 		mode === "jsx" && socket
 			? {
 					unix: socket,
-			  }
+				}
 			: { hostname, port, reusePort: true };
 
 	const server = Bun.serve({

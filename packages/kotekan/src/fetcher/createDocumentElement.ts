@@ -1,36 +1,32 @@
-import path from "node:path";
 import { createElement, type FunctionComponent } from "react";
-
 import { resolveSync } from "bun";
 
-interface CreateDocumentElementProps {
-	// build: BuildResult;
-	buildUrlSegment: string;
-	RouteComponent?: FunctionComponent;
-}
+import type { CreateDocumentElementProps } from "./types";
 
 export const createDocumentElement = async ({
-	// build,
+	build,
 	buildUrlSegment,
+	stylexFilename,
 	RouteComponent,
 }: CreateDocumentElementProps) => {
 	// StyleX
-	// const href = `/${buildUrlSegment}/styles/${build.stylesheetFileName}`;
-	// const StylesheetElement = build.stylesheetFileName
-	// 	? createElement("link", {
-	// 			href,
-	// 			rel: "stylesheet",
-	// 			precedence: "default",
-	// 			key: "stylesheet",
-	// 	  })
-	// 	: null;
+	const stylesBuildResult = build.clientBuildOutputs.get(`./${stylexFilename}`);
 
-	const TailwindStylesheetElement = createElement("link", {
-		href: `/${buildUrlSegment}/styles.css`,
-		rel: "stylesheet",
-		precedence: "default",
-		key: "stylesheet",
-	});
+	const StyleXElement = stylesBuildResult
+		? createElement("link", {
+				href: `/${buildUrlSegment}/${stylexFilename}`,
+				rel: "stylesheet",
+				precedence: "default",
+				key: "stylesheet",
+			})
+		: null;
+
+	// const TailwindStylesheetElement = createElement("link", {
+	// 	href: `/${buildUrlSegment}/styles.css`,
+	// 	rel: "stylesheet",
+	// 	precedence: "default",
+	// 	key: "stylesheet",
+	// });
 
 	// Root component
 	const rootComponentFilePath = resolveSync("./src/Root", process.cwd()); // build.rootComponentFilePath
@@ -41,12 +37,13 @@ export const createDocumentElement = async ({
 	const RouteComponentElement = RouteComponent
 		? createElement(RouteComponent, {
 				key: "route",
-		  })
+			})
 		: null;
 
 	// Document element
 	const DocumentElement = createElement(RootComponent, {}, [
 		// TailwindStylesheetElement,
+		StyleXElement,
 		RouteComponentElement,
 	]);
 

@@ -6,10 +6,12 @@ import typescriptSyntaxPlugin from "@babel/plugin-syntax-typescript";
 // @ts-expect-error Missing types
 import jsxSyntaxPlugin from "@babel/plugin-syntax-jsx";
 // @ts-expect-error Missing types
+import flowSyntaxPlugin from "@babel/plugin-syntax-flow";
+// @ts-expect-error Missing types
 import rsdPlugin from "react-strict-dom/babel";
 
 export const babel = async (
-	input: string,
+	inputCode: string,
 	{
 		args,
 		stylexRules,
@@ -20,19 +22,31 @@ export const babel = async (
 		development?: boolean;
 	},
 ) => {
-	let contents = input;
+	let contents = inputCode;
 
 	const stylexImports = ["@stylexjs/stylex", "react-strict-dom"];
+
+	if (!stylexImports.some((importName) => inputCode.includes(importName))) {
+		return contents;
+	}
+
+	// if (args.path.includes("node_modules")) {
+	// 	// return contents;
+	// }
+
+	// console.log("🥁 STYLEX PLUGIN ON LOAD", args.path);
 
 	const transformResult = await transformAsync(contents, {
 		babelrc: false,
 		filename: args.path,
 		plugins: [
+			flowSyntaxPlugin,
 			[typescriptSyntaxPlugin, { isTSX: true }],
 			jsxSyntaxPlugin,
 			rsdPlugin,
 			stylexBabelPlugin.withOptions({
 				treeshakeCompensation: true,
+				runtimeInjection: false,
 				dev,
 				importSources: [{ from: "react-strict-dom", as: "css" }],
 			}),
@@ -43,7 +57,8 @@ export const babel = async (
 		return contents;
 	}
 
-	const { code, metadata } = transformResult;
+	const code = transformResult.code;
+	const metadata = transformResult.metadata as unknown as { stylex: Rule[] }; // @todo
 
 	if (
 		// !dev &&
@@ -56,6 +71,10 @@ export const babel = async (
 
 	if (code) {
 		contents = code;
+	}
+
+	if (args.path.includes("Counter")) {
+		// console.log("StyleX", args.path, code);
 	}
 
 	return contents;

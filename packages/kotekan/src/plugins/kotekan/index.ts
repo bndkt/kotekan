@@ -26,16 +26,18 @@ export const kotekanPlugin: (config: RscPluginConfig) => BunPlugin = ({
 			// console.log("🥁 RSC PLUGIN SETUP");
 
 			build.onLoad({ filter: PLUGIN_FILTER }, async (args) => {
+				const pathSegments = args.path.split("/");
 				let contents = await Bun.file(args.path).text();
-
-				// if (args.path.includes("node_modules")) {
-				// 	return;
-				// }
 
 				// console.log("🥁 RSC PLUGIN ON LOAD", args.path);
 
+				if (pathSegments.includes("node_modules")) {
+					console.log("Skipping", args.path);
+					return;
+				}
+
 				// Babel (StyleX, React Refresh)
-				// contents = await babel(contents, { args, stylexRules, development });
+				contents = await babel(contents, { args, stylexRules, development });
 
 				// RSC
 				if (server) {

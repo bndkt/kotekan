@@ -2,6 +2,7 @@ import type { FileSystemRouter } from "bun";
 
 import type { BuildResult } from "../builder/types";
 import type { RenderingStrategy } from "../server/types";
+import type { FunctionComponent } from "react";
 
 export interface ImportMap {
 	imports: Record<string, string>;
@@ -13,6 +14,7 @@ export interface SsrFetcherProps {
 	router: FileSystemRouter;
 	buildPath: string;
 	buildUrlSegment: string;
+	stylexFilename: string;
 	jsxServer: {
 		hostname: string;
 		port: number;
@@ -22,10 +24,15 @@ export interface SsrFetcherProps {
 }
 
 export interface JsxFetcherProps {
-	mode: RenderingStrategy;
 	build: BuildResult;
 	router: FileSystemRouter;
-	buildPath: string;
 	buildUrlSegment: string;
-	development?: boolean;
+	stylexFilename: string;
+}
+
+export interface CreateDocumentElementProps {
+	build: BuildResult;
+	buildUrlSegment: string;
+	stylexFilename: string;
+	RouteComponent?: FunctionComponent;
 }

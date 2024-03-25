@@ -7,6 +7,7 @@ import type { SsrFetcherProps } from "./types";
 import { createDocumentElement } from "./createDocumentElement";
 import { createFromJsx } from "./createFromJsx";
 import { createImportMap } from "./createImportMap";
+import { config } from "../config";
 
 export const ssrFetcher = async (
 	request: Request,
@@ -16,6 +17,7 @@ export const ssrFetcher = async (
 		router,
 		buildPath,
 		buildUrlSegment,
+		stylexFilename,
 		jsxServer,
 		development,
 	}: SsrFetcherProps,
@@ -122,14 +124,14 @@ export const ssrFetcher = async (
 
 		// Create HTML document
 		const DocumentElement = csr
-			? createDocumentElement({ buildUrlSegment })
+			? createDocumentElement({ build, buildUrlSegment, stylexFilename })
 			: createFromJsx(jsxFetch);
 
 		// HTML document stream
 		const bootstrapModules = hydrate
 			? csr
-				? [`/${buildUrlSegment}/${build.renderScript.name}`]
-				: [`/${buildUrlSegment}/${build.hydrateScript.name}`]
+				? [`/${config.buildUrlSegment}/${build.renderScript.name}`]
+				: [`/${config.buildUrlSegment}/${build.hydrateScript.name}`]
 			: [];
 
 		const importMap = createImportMap(development);

@@ -10,7 +10,7 @@ import { createDocumentElement } from "./createDocumentElement";
 
 export const jsxFetcher = async (
 	request: Request,
-	{ mode, router, buildPath, buildUrlSegment, development }: JsxFetcherProps,
+	{ build, router, buildUrlSegment, stylexFilename }: JsxFetcherProps,
 ): Promise<Response> => {
 	const url = new URL(request.url);
 
@@ -23,6 +23,8 @@ export const jsxFetcher = async (
 	// Router
 	const match = router.match(request.url);
 	if (match) {
+		console.log("🥁 Matched route:", match);
+
 		// Route component
 		const routeComponentFilePath = match.filePath; // build.routeComponentPaths.get(match.name);
 		if (!routeComponentFilePath) {
@@ -33,15 +35,13 @@ export const jsxFetcher = async (
 
 		// JSX (for RSC)
 		const JsxDocumentElement = createDocumentElement({
-			// build,
-			buildUrlSegment,
+			build,
 			RouteComponent,
+			buildUrlSegment,
+			stylexFilename,
 		});
 
 		// ESM
-		const moduleBasePath2 = pathToFileURL(
-			path.join(process.cwd(), "build", "client", "components"),
-		).href;
 		const moduleBasePath = pathToFileURL(path.join(process.cwd(), "src")).href;
 		const options = {
 			onError: undefined,

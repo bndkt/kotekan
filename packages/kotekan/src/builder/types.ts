@@ -1,4 +1,4 @@
-import type { BuildArtifact } from "bun";
+import type { BuildArtifact, BunFile } from "bun";
 
 export interface BuilderProps {
 	routes: Record<string, string>;
@@ -8,14 +8,14 @@ export interface BuilderProps {
 
 export interface BuildOutput {
 	name: string;
-	// path?: string;
-	artifact?: BuildArtifact;
-	contents?: string;
+	artifact?: BuildArtifact | BunFile;
 }
 
+export type BuildOutputsMap = Map<string, BuildOutput>;
+
 export interface BuildResult {
-	// clientComponents: Record<string, BuildOutputFile>;
+	serverBuildOutputs: BuildOutputsMap;
+	clientBuildOutputs: BuildOutputsMap;
 	renderScript: BuildOutput;
 	hydrateScript: BuildOutput;
-	clientBuildOutputs: Map<string, BuildOutput>;
 }
