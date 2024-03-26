@@ -2,7 +2,7 @@ import type { ImportMap } from "./types";
 
 export const createImportMap = (development?: boolean): ImportMap => {
 	const jsxRuntimeImport = development ? "jsx-dev-runtime" : "jsx-runtime";
-	const reactVersion = "0.0.0-experimental-a870b2d54-20240314";
+	const reactVersion = "0.0.0-experimental-e373190fa-20240325";
 	const queryString = `?pin=v135${development ? "&dev" : ""}`;
 
 	const importMap: ImportMap = {

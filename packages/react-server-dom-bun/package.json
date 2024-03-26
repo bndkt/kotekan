@@ -2,7 +2,17 @@
   "name": "react-server-dom-bun",
   "version": "0.0.1",
   "type": "module",
-  "module": "index.ts",
+  "exports": {
+    "client": {
+      "import": "./src/client/index.ts"
+    },
+    "server": {
+      "import": "./src/server/index.ts"
+    }
+  },
+  "dependencies": {
+    "acorn-loose": "8.4.0"
+  },
   "devDependencies": {
     "@types/bun": "1.0.10"
   }
