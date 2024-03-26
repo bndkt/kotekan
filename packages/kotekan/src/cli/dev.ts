@@ -1,4 +1,5 @@
-#!/usr/bin/env bun --hot
+#!/usr/bin/env bun
+// --hot
 import path from "node:path";
 
 import { router as routerFn } from "../server/router";
@@ -37,7 +38,7 @@ console.log("🚀 Running Kotekan in dev mode ...");
 // );
 
 // JSX
-const jsxPreloadPath = path.join(import.meta.dir, "scripts", "jsxPreload.ts");
+// const jsxPreloadPath = path.join(import.meta.dir, "scripts", "jsxPreload.ts");
 const jsxServerPath = path.join(import.meta.dir, "scripts", "jsxServer.ts");
 
 const jsxServerCommand = [
@@ -58,29 +59,32 @@ const jsxServer = Bun.spawn(jsxServerCommand, {
 		...Bun.env,
 	},
 	onExit: () => {
-		ssrServer.kill();
+		// ssrServer.kill();
 	},
 });
 
 // SSR
-const ssrPreloadPath = path.join(import.meta.dir, "scripts", "ssrPreload.ts");
-const ssrServerPath = path.join(import.meta.dir, "scripts", "ssrServer.ts");
+// const ssrPreloadPath = path.join(import.meta.dir, "scripts", "ssrPreload.ts");
+// const ssrServerPath = path.join(import.meta.dir, "scripts", "ssrServer.ts");
 
-const ssrServerCommand = [
-	"bun",
-	// "--preload", ssrPreloadPath,
-	ssrServerPath,
-];
+// const ssrServerCommand = [
+// 	"bun",
+// 	// "--preload", ssrPreloadPath,
+// 	ssrServerPath,
+// ];
 
-// console.log(ssrServerCommand.join(" "));
+// // console.log(ssrServerCommand.join(" "));
 
-const ssrServer = Bun.spawn(ssrServerCommand, {
-	stdout: "inherit",
-	env: {
-		SSR_JSX_SERVER_SOCKET: socket,
-		...Bun.env,
-	},
-	onExit: () => {
-		jsxServer.kill();
-	},
-});
+// const ssrServer = Bun.spawn(ssrServerCommand, {
+// 	stdout: "inherit",
+// 	env: {
+// 		SSR_JSX_SERVER_SOCKET: socket,
+// 		...Bun.env,
+// 	},
+// 	onExit: () => {
+// 		jsxServer.kill();
+// 	},
+// });
+
+process.env.SSR_JSX_SERVER_SOCKET = socket;
+await import("./scripts/ssrServer");

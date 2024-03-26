@@ -3,18 +3,18 @@ import { boolFromEnv } from "../../lib/boolFromEnv";
 import { numberFromEnv } from "../../lib/numberFromEnv";
 import { server } from "../../server";
 
-const development = Bun.env.NODE_ENV === "development";
+const development = process.env.NODE_ENV === "development";
 
 const jsxServer = await server({
 	mode: "jsx",
-	hostname: Bun.env.JSX_HOSTNAME,
+	hostname: process.env.JSX_HOSTNAME,
 	port: numberFromEnv("JSX_PORT"),
-	socket: Bun.env.JSX_SOCKET,
+	socket: process.env.JSX_SOCKET,
 	mdxEnabled: boolFromEnv("MDX_ENABLED"),
 	development,
 });
 
-const listening = Bun.env.JSX_SOCKET
+const listening = process.env.JSX_SOCKET
 	? "on a socket"
 	: `at http://${jsxServer.hostname}:${jsxServer.port}`;
 
