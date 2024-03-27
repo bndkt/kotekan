@@ -8,6 +8,7 @@ import { createDocumentElement } from "./createDocumentElement";
 import { createFromJsx } from "./createFromJsx";
 import { createImportMap } from "./createImportMap";
 import { config } from "../config";
+import { injectPayload } from "./injectPayload";
 
 export const ssrFetcher = async (
 	request: Request,
@@ -122,10 +123,16 @@ export const ssrFetcher = async (
 			});
 		}
 
+		const jsxResponse = await jsxFetch;
+		if (!jsxResponse.body) {
+			throw new Error("No body found in response");
+		}
+		const [jsxStreamForHtml, jsxStreamForRscPayload] = jsxResponse.body.tee();
+
 		// Create HTML document
 		const DocumentElement = csr
 			? createDocumentElement({ build, buildUrlSegment, stylexFilename })
-			: createFromJsx(jsxFetch);
+			: createFromJsx(jsxStreamForHtml);
 
 		// HTML document stream
 		const bootstrapModules = hydrate
@@ -142,7 +149,10 @@ export const ssrFetcher = async (
 			// bootstrapScriptContent: `const jsx = ${JSON.stringify(jsxStream)}`,
 		});
 
-		return new Response(stream, {
+		// Inject JSX payload into stream
+		const response = stream.pipeThrough(injectPayload(jsxStreamForRscPayload));
+
+		return new Response(response, {
 			headers: {
 				"Content-Type": "text/html; charset=utf-8",
 				"Cache-Control": "no-cache",

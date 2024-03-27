@@ -4,7 +4,7 @@ import { pathToFileURL } from "bun";
 // @ts-expect-error Untyped import
 import { createFromNodeStream } from "@physis/react-server-dom-esm/client.node";
 
-export const createFromJsx = async (jsxFetch: Promise<Response>) => {
+export const createFromJsx = async (jsxStream: ReadableStream<Uint8Array>) => {
 	// const moduleRootPath = pathToFileURL(
 	// 	path.join(process.cwd(), "build", "client", "components"),
 	// ).href;
@@ -17,13 +17,13 @@ export const createFromJsx = async (jsxFetch: Promise<Response>) => {
 
 	// >>> createFromNodeStream
 	const nodeStream = new Transform();
-	const jsxResponse = await jsxFetch;
+	// const jsxResponse = await jsxFetch;
 
-	if (!jsxResponse.body) {
-		throw new Error("No body found in response");
-	}
+	// if (!jsxResponse.body) {
+	// 	throw new Error("No body found in response");
+	// }
 
-	jsxResponse.body.pipeTo(
+	jsxStream.pipeTo(
 		new WritableStream({
 			write(value) {
 				nodeStream.push(value);
