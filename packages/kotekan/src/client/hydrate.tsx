@@ -1,4 +1,3 @@
-/// <reference lib="dom" />
 import {
 	use,
 	useState,
@@ -10,6 +9,7 @@ import {
 } from "react";
 import { hydrateRoot } from "react-dom/client";
 import {
+	createFromReadableStream,
 	createFromFetch,
 	encodeReply,
 	// @ts-expect-error Untyped import
@@ -17,6 +17,7 @@ import {
 
 import { moduleBaseURL } from "./config";
 import { setupNavigation } from "./setupNavigation";
+import { jsxPayloadStream } from "./jsxPayload";
 
 let updateRoot: Dispatch<string>;
 
@@ -42,12 +43,13 @@ async function callServer(id: string, args: string) {
 	return returnValue;
 }
 
-const data = createFromFetch(
-	fetch("?jsx", {
-		headers: {
-			Accept: "text/x-component",
-		},
-	}),
+const data = createFromReadableStream(
+	// fetch("?jsx", {
+	// 	headers: {
+	// 		Accept: "text/x-component",
+	// 	},
+	// }),
+	jsxPayloadStream,
 	{
 		callServer,
 		moduleBaseURL,
