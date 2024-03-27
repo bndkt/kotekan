@@ -14,6 +14,6 @@
     "acorn-loose": "8.4.0"
   },
   "devDependencies": {
-    "@types/bun": "1.0.10"
+    "@types/bun": "1.0.11"
   }
 }

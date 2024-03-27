@@ -6,7 +6,8 @@
   "module": "index.ts",
   "scripts": {
     "dev": "kotekan-dev",
-    "jsx": "kotekan-jsx",
+    "jsx": "kotekan jsx",
+    "ssr": "kotekan ssr",
     "lint": "biome lint ./src",
     "native": "kotekan native",
     "rn:build-ios": "react-native build-ios",
@@ -26,8 +27,8 @@
     "react-strict-dom": "0.0.4"
   },
   "devDependencies": {
-    "@types/bun": "1.0.10",
-    "@types/react": "18.2.70",
+    "@types/bun": "1.0.11",
+    "@types/react": "18.2.72",
     "@types/react-dom": "18.2.22"
   }
 }

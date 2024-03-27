@@ -29,6 +29,6 @@
     "kotekan": "0.0.12"
   },
   "devDependencies": {
-    "@types/bun": "1.0.10"
+    "@types/bun": "1.0.11"
   }
 }
