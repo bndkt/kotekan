@@ -3,6 +3,7 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
 import * as createCommand from "./commands/create";
+import * as devCommand from "./commands/dev";
 import * as startCommand from "./commands/start";
 import * as nativeCommand from "./commands/native";
 import * as jsxCommand from "./commands/jsx";
@@ -12,6 +13,7 @@ yargs(hideBin(process.argv))
 	.scriptName("kotekan")
 	// .commandDir("commands")
 	.command([createCommand])
+	.command([devCommand])
 	.command([startCommand])
 	.command([jsxCommand])
 	.command([ssrCommand])
