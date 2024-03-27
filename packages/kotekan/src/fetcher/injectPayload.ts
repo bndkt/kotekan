@@ -9,21 +9,27 @@ export const injectPayload = (jsxStream: ReadableStream<Uint8Array>) => {
 	return new TransformStream({
 		async transform(chunk, controller) {
 			let buf = decoder.decode(chunk);
+			let jsxPayloadSlot = false;
 			if (buf.endsWith(trailer)) {
 				buf = buf.slice(0, -trailer.length);
+				jsxPayloadSlot = true;
 			}
 			controller.enqueue(encoder.encode(buf));
 
-			// @ts-expect-error ReadableStream is in fact async iterable
-			for await (const chunk of jsxStream) {
-				const payload = JSON.stringify(decoder.decode(chunk, { stream: true }));
-				controller.enqueue(
-					encoder.encode(
-						`<script>${escapeScript(
-							`(self.__JSX_PAYLOAD||=[]).push(${payload})`,
-						)}</script>`,
-					),
-				);
+			if (jsxPayloadSlot) {
+				// @ts-expect-error ReadableStream is in fact async iterable
+				for await (const chunk of jsxStream) {
+					const payload = JSON.stringify(
+						decoder.decode(chunk, { stream: true }),
+					);
+					controller.enqueue(
+						encoder.encode(
+							`<script>${escapeScript(
+								`(self.__JSX_PAYLOAD||=[]).push(${payload})`,
+							)}</script>`,
+						),
+					);
+				}
 			}
 		},
 		async flush(controller) {

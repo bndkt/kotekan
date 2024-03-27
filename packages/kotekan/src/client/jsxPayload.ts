@@ -26,7 +26,7 @@ export const jsxPayloadStream = new ReadableStream({
 			return window.__JSX_PAYLOAD.length;
 		};
 
-		if (typeof document !== "undefined" && document.readyState === "loading") {
+		if (document.readyState === "loading") {
 			document.addEventListener("DOMContentLoaded", () => {
 				controller.close();
 			});
