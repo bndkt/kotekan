@@ -45,10 +45,10 @@ export const generate = async ({
 			fileName: ".xcode.env",
 			reactNativeTemplate: true,
 		},
-		{
-			path: "ios/HelloWorld.xcodeproj/project.pbxproj",
-			reactNativeTemplate: true,
-		},
+		// {
+		// 	path: "ios/HelloWorld.xcodeproj/project.pbxproj",
+		// 	reactNativeTemplate: true,
+		// },
 		{
 			path: "ios/HelloWorld.xcodeproj/xcshareddata/xcschemes/HelloWorld.xcscheme",
 			reactNativeTemplate: true,
@@ -76,6 +76,14 @@ export const generate = async ({
 		},
 		{
 			path: "ios/HelloWorld/Images.xcassets/AppIcon.appiconset/Contents.json",
+			reactNativeTemplate: true,
+		},
+		{
+			path: "ios/HelloWorldTests/HelloWorldTests.m",
+			reactNativeTemplate: true,
+		},
+		{
+			path: "ios/HelloWorldTests/Info.plist",
 			reactNativeTemplate: true,
 		},
 		{
