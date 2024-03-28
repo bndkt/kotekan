@@ -83,7 +83,7 @@
   "devDependencies": {
     "@types/babel__core": "7.20.5",
     "@types/bun": "1.0.11",
-    "@types/react": "18.2.72",
+    "@types/react": "18.2.73",
     "@types/react-dom": "18.2.22",
     "@types/react-refresh": "0.14.5",
     "@types/yargs": "17.0.32"
