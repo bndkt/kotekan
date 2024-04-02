@@ -28,10 +28,8 @@ export const stylex = async ({
 	const artifact = Bun.file(stylexPath);
 
 	if (buildPath) {
-		// const artifact = Bun.file(stylexPath);
 		Bun.write(artifact, stylexCSS);
 	} else {
-		// const artifact = Bun.file(stylexPath);
 		artifact.writer().write(stylexCSS);
 	}
 

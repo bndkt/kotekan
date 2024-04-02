@@ -1,5 +1,6 @@
 // Adapted from https://github.com/facebook/react/blob/main/fixtures/flight/src/ErrorBoundary.js
-// Yes, this is a class component, because https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary
+// Yes, this is a class component, because
+// https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary
 "use client";
 import { Component } from "react";
 
