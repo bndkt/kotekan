@@ -10,7 +10,7 @@
     "start": "kotekan start"
   },
   "dependencies": {
-    "@physis/react-server-dom-esm": "0.0.0-experimental-b1c2d14c9-20240326",
+    "@physis/react-server-dom-esm": "0.0.0-experimental-de155d1-20240404",
     "kotekan": "workspace:*",
     "react": "19.0.0-canary-7a2609eed-20240403",
     "react-dom": "19.0.0-canary-7a2609eed-20240403"

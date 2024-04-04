@@ -16,7 +16,7 @@ var __toESM = (mod, isNodeMode, target) => {
 };
 var __commonJS = (cb, mod) => () => (mod || cb((mod = { exports: {} }).exports, mod), mod.exports);
 
-// ../../node_modules/react/cjs/react.development.js
+// node_modules/react/cjs/react.development.js
 var require_react_development = __commonJS((exports, module) => {
   if (true) {
     (function() {
@@ -1931,7 +1931,7 @@ var require_react_development = __commonJS((exports, module) => {
   }
 });
 
-// ../../node_modules/react/index.js
+// node_modules/react/index.js
 var require_react = __commonJS((exports, module) => {
   if (false) {
   } else {
@@ -1939,7 +1939,7 @@ var require_react = __commonJS((exports, module) => {
   }
 });
 
-// ../../node_modules/scheduler/cjs/scheduler.development.js
+// node_modules/react-dom/node_modules/scheduler/cjs/scheduler.development.js
 var require_scheduler_development = __commonJS((exports) => {
   if (true) {
     (function() {
@@ -2370,7 +2370,7 @@ var require_scheduler_development = __commonJS((exports) => {
   }
 });
 
-// ../../node_modules/scheduler/index.js
+// node_modules/react-dom/node_modules/scheduler/index.js
 var require_scheduler = __commonJS((exports, module) => {
   var scheduler_development = __toESM(require_scheduler_development(), 1);
   if (false) {
@@ -2379,7 +2379,7 @@ var require_scheduler = __commonJS((exports, module) => {
   }
 });
 
-// ../../node_modules/react-dom/cjs/react-dom.development.js
+// node_modules/react-dom/cjs/react-dom.development.js
 var require_react_dom_development = __commonJS((exports) => {
   var React = __toESM(require_react(), 1);
   var Scheduler = __toESM(require_scheduler(), 1);
@@ -27992,7 +27992,7 @@ var require_react_dom_development = __commonJS((exports) => {
   }
 });
 
-// ../../node_modules/react-dom/index.js
+// node_modules/react-dom/index.js
 var require_react_dom = __commonJS((exports, module) => {
   if (false) {
   } else {
@@ -28000,7 +28000,7 @@ var require_react_dom = __commonJS((exports, module) => {
   }
 });
 
-// ../react-server-dom-esm/esm/react-server-dom-esm-client.browser.development.js
+// node_modules/@physis/react-server-dom-esm/esm/react-server-dom-esm-client.browser.development.js
 var ReactDOM = __toESM(require_react_dom(), 1);
 var React = __toESM(require_react(), 1);
 var createStringDecoder = function() {
@@ -28442,31 +28442,14 @@ var describeObjectForErrorMessage = function(objectOrArray, expandedName) {
   }
   return "\n  " + str;
 };
-var createTemporaryReferenceSet = function() {
-  return [];
-};
-var writeTemporaryReference = function(set, object) {
-  var newId = set.length;
-  set.push(object);
-  return newId;
-};
-var readTemporaryReference = function(set, id) {
-  if (id < 0 || id >= set.length) {
-    throw new Error("The RSC response contained a reference that doesn't exist in the temporary reference set. Always pass the matching set that was used to create the reply when parsing its response.");
-  }
-  return set[id];
-};
-var serializeByValueID = function(id) {
-  return "$" + id.toString(16);
-};
 var serializePromiseID = function(id) {
   return "$@" + id.toString(16);
 };
 var serializeServerReferenceID = function(id) {
   return "$F" + id.toString(16);
 };
-var serializeTemporaryReferenceID = function(id) {
-  return "$T" + id.toString(16);
+var serializeSymbolReference = function(name) {
+  return "$S" + name;
 };
 var serializeFormDataReference = function(id) {
   return "$K" + id.toString(16);
@@ -28510,7 +28493,7 @@ var escapeStringValue = function(value) {
     return value;
   }
 };
-var processReply = function(root, formFieldPrefix, temporaryReferences, resolve, reject) {
+var processReply = function(root, formFieldPrefix, resolve, reject) {
   var nextPartId = 1;
   var pendingParts = 0;
   var formData = null;
@@ -28530,75 +28513,20 @@ var processReply = function(root, formFieldPrefix, temporaryReferences, resolve,
       return null;
     }
     if (typeof value === "object") {
-      switch (value.$$typeof) {
-        case REACT_ELEMENT_TYPE: {
-          if (temporaryReferences === undefined) {
-            throw new Error("React Element cannot be passed to Server Functions from the Client without a temporary reference set. Pass a TemporaryReferenceSet to the options." + describeObjectForErrorMessage(parent, key));
-          }
-          return serializeTemporaryReferenceID(writeTemporaryReference(temporaryReferences, value));
-        }
-        case REACT_LAZY_TYPE: {
-          var lazy = value;
-          var payload = lazy._payload;
-          var init = lazy._init;
-          if (formData === null) {
-            formData = new FormData;
-          }
-          pendingParts++;
-          try {
-            var resolvedModel = init(payload);
-            var lazyId = nextPartId++;
-            var partJSON = JSON.stringify(resolvedModel, resolveToJSON);
-            var data = formData;
-            data.append(formFieldPrefix + lazyId, partJSON);
-            return serializeByValueID(lazyId);
-          } catch (x) {
-            if (typeof x === "object" && x !== null && typeof x.then === "function") {
-              pendingParts++;
-              var _lazyId = nextPartId++;
-              var thenable = x;
-              var retry = function() {
-                try {
-                  var _partJSON = JSON.stringify(value, resolveToJSON);
-                  var _data = formData;
-                  _data.append(formFieldPrefix + _lazyId, _partJSON);
-                  pendingParts--;
-                  if (pendingParts === 0) {
-                    resolve(_data);
-                  }
-                } catch (reason) {
-                  reject(reason);
-                }
-              };
-              thenable.then(retry, retry);
-              return serializeByValueID(_lazyId);
-            } else {
-              reject(x);
-              return null;
-            }
-          } finally {
-            pendingParts--;
-          }
-        }
-      }
       if (typeof value.then === "function") {
         if (formData === null) {
           formData = new FormData;
         }
         pendingParts++;
         var promiseId = nextPartId++;
-        var _thenable = value;
-        _thenable.then(function(partValue) {
-          try {
-            var _partJSON2 = JSON.stringify(partValue, resolveToJSON);
-            var _data2 = formData;
-            _data2.append(formFieldPrefix + promiseId, _partJSON2);
-            pendingParts--;
-            if (pendingParts === 0) {
-              resolve(_data2);
-            }
-          } catch (reason) {
-            reject(reason);
+        var thenable = value;
+        thenable.then(function(partValue) {
+          var partJSON2 = JSON.stringify(partValue, resolveToJSON);
+          var data2 = formData;
+          data2.append(formFieldPrefix + promiseId, partJSON2);
+          pendingParts--;
+          if (pendingParts === 0) {
+            resolve(data2);
           }
         }, function(reason) {
           reject(reason);
@@ -28612,30 +28540,30 @@ var processReply = function(root, formFieldPrefix, temporaryReferences, resolve,
         if (formData === null) {
           formData = new FormData;
         }
-        var _data3 = formData;
+        var data = formData;
         var refId = nextPartId++;
         var prefix = formFieldPrefix + refId + "_";
         value.forEach(function(originalValue2, originalKey) {
-          _data3.append(prefix + originalKey, originalValue2);
+          data.append(prefix + originalKey, originalValue2);
         });
         return serializeFormDataReference(refId);
       }
       if (value instanceof Map) {
-        var _partJSON3 = JSON.stringify(Array.from(value), resolveToJSON);
+        var partJSON = JSON.stringify(Array.from(value), resolveToJSON);
         if (formData === null) {
           formData = new FormData;
         }
         var mapId = nextPartId++;
-        formData.append(formFieldPrefix + mapId, _partJSON3);
+        formData.append(formFieldPrefix + mapId, partJSON);
         return serializeMapID(mapId);
       }
       if (value instanceof Set) {
-        var _partJSON4 = JSON.stringify(Array.from(value), resolveToJSON);
+        var _partJSON = JSON.stringify(Array.from(value), resolveToJSON);
         if (formData === null) {
           formData = new FormData;
         }
         var setId = nextPartId++;
-        formData.append(formFieldPrefix + setId, _partJSON4);
+        formData.append(formFieldPrefix + setId, _partJSON);
         return serializeSetID(setId);
       }
       var iteratorFn = getIteratorFn(value);
@@ -28644,13 +28572,14 @@ var processReply = function(root, formFieldPrefix, temporaryReferences, resolve,
       }
       var proto = getPrototypeOf(value);
       if (proto !== ObjectPrototype && (proto === null || getPrototypeOf(proto) !== null)) {
-        if (temporaryReferences === undefined) {
-          throw new Error("Only plain objects, and a few built-ins, can be passed to Server Actions. Classes or null prototypes are not supported.");
-        }
-        return serializeTemporaryReferenceID(writeTemporaryReference(temporaryReferences, value));
+        throw new Error("Only plain objects, and a few built-ins, can be passed to Server Actions. Classes or null prototypes are not supported.");
       }
       {
-        if (value.$$typeof === REACT_PROVIDER_TYPE) {
+        if (value.$$typeof === REACT_ELEMENT_TYPE) {
+          error("React Element cannot be passed to Server Functions from the Client.%s", describeObjectForErrorMessage(parent, key));
+        } else if (value.$$typeof === REACT_LAZY_TYPE) {
+          error("React Lazy cannot be passed to Server Functions from the Client.%s", describeObjectForErrorMessage(parent, key));
+        } else if (value.$$typeof === REACT_PROVIDER_TYPE) {
           error("React Context Providers cannot be passed to Server Functions from the Client.%s", describeObjectForErrorMessage(parent, key));
         } else if (objectName(value) !== "Object") {
           error("Only plain objects can be passed to Server Functions from the Client. %s objects are not supported.%s", objectName(value), describeObjectForErrorMessage(parent, key));
@@ -28694,16 +28623,14 @@ var processReply = function(root, formFieldPrefix, temporaryReferences, resolve,
         formData.set(formFieldPrefix + _refId, metaDataJSON);
         return serializeServerReferenceID(_refId);
       }
-      if (temporaryReferences === undefined) {
-        throw new Error("Client Functions cannot be passed directly to Server Functions. Only Functions passed from the Server can be passed back again.");
-      }
-      return serializeTemporaryReferenceID(writeTemporaryReference(temporaryReferences, value));
+      throw new Error("Client Functions cannot be passed directly to Server Functions. Only Functions passed from the Server can be passed back again.");
     }
     if (typeof value === "symbol") {
-      if (temporaryReferences === undefined) {
-        throw new Error("Symbols cannot be passed to a Server Function without a temporary reference set. Pass a TemporaryReferenceSet to the options." + describeObjectForErrorMessage(parent, key));
+      var name = value.description;
+      if (Symbol.for(name) !== value) {
+        throw new Error("Only global symbols received from Symbol.for(...) can be passed to Server Functions. " + ("The symbol Symbol.for(" + value.description + ") cannot be found among global symbols."));
       }
-      return serializeTemporaryReferenceID(writeTemporaryReference(temporaryReferences, value));
+      return serializeSymbolReference(name);
     }
     if (typeof value === "bigint") {
       return serializeBigInt(value);
@@ -29065,22 +28992,14 @@ var parseModelString = function(response, parentObject, key, value) {
         var metadata = getOutlinedModel(response, _id2);
         return createServerReferenceProxy(response, metadata);
       }
-      case "T": {
-        var _id3 = parseInt(value.slice(2), 16);
-        var temporaryReferences = response._tempRefs;
-        if (temporaryReferences == null) {
-          throw new Error("Missing a temporary reference set but the RSC response returned a temporary reference. Pass a temporaryReference option with the set that was used with the reply.");
-        }
-        return readTemporaryReference(temporaryReferences, _id3);
-      }
       case "Q": {
-        var _id4 = parseInt(value.slice(2), 16);
-        var data = getOutlinedModel(response, _id4);
+        var _id3 = parseInt(value.slice(2), 16);
+        var data = getOutlinedModel(response, _id3);
         return new Map(data);
       }
       case "W": {
-        var _id5 = parseInt(value.slice(2), 16);
-        var _data = getOutlinedModel(response, _id5);
+        var _id4 = parseInt(value.slice(2), 16);
+        var _data = getOutlinedModel(response, _id4);
         return new Set(_data);
       }
       case "I": {
@@ -29116,8 +29035,8 @@ var parseModelString = function(response, parentObject, key, value) {
         }
       }
       default: {
-        var _id6 = parseInt(value.slice(1), 16);
-        var _chunk2 = getChunk(response, _id6);
+        var _id5 = parseInt(value.slice(1), 16);
+        var _chunk2 = getChunk(response, _id5);
         switch (_chunk2.status) {
           case RESOLVED_MODEL:
             initializeModelChunk(_chunk2);
@@ -29164,7 +29083,7 @@ var parseModelTuple = function(response, value) {
 var missingCall = function() {
   throw new Error('Trying to call a function from "use server" but the callServer option was not implemented in your router runtime.');
 };
-var createResponse = function(bundlerConfig, moduleLoading, callServer, encodeFormAction, nonce, temporaryReferences) {
+var createResponse = function(bundlerConfig, moduleLoading, callServer, encodeFormAction, nonce) {
   var chunks = new Map;
   var response = {
     _bundlerConfig: bundlerConfig,
@@ -29179,8 +29098,7 @@ var createResponse = function(bundlerConfig, moduleLoading, callServer, encodeFo
     _rowID: 0,
     _rowTag: 0,
     _rowLength: 0,
-    _buffer: [],
-    _tempRefs: temporaryReferences
+    _buffer: []
   };
   response._fromJSON = createFromJSONCallback(response);
   return response;
@@ -29494,7 +29412,7 @@ var close = function(response) {
   reportGlobalError(response, new Error("Connection closed."));
 };
 var createResponseFromOptions = function(options) {
-  return createResponse(options && options.moduleBaseURL ? options.moduleBaseURL : "", null, options && options.callServer ? options.callServer : undefined, undefined, undefined, options && options.temporaryReferences ? options.temporaryReferences : undefined);
+  return createResponse(options && options.moduleBaseURL ? options.moduleBaseURL : "", null, options && options.callServer ? options.callServer : undefined, undefined, undefined);
 };
 var startReadingFromStream = function(response, stream) {
   var reader = stream.getReader();
@@ -29527,9 +29445,9 @@ var createFromFetch = function(promiseForResponse, options) {
   });
   return getRoot(response);
 };
-var encodeReply = function(value, options) {
+var encodeReply = function(value) {
   return new Promise(function(resolve, reject) {
-    processReply(value, "", options && options.temporaryReferences ? options.temporaryReferences : undefined, resolve, reject);
+    processReply(value, "", resolve, reject);
   });
 };
 var decoderOptions = {
@@ -29612,7 +29530,6 @@ var initializingChunk = null;
 var initializingChunkBlockedModel = null;
 export {
   encodeReply,
-  createTemporaryReferenceSet,
   createServerReference,
   createFromReadableStream,
   createFromFetch
