@@ -21,8 +21,8 @@
   "dependencies": {
     "@physis/react-server-dom-esm": "0.0.0-experimental-de155d1-20240404",
     "kotekan": "workspace:*",
-    "react": "19.0.0-canary-7a2609eed-20240403",
-    "react-dom": "19.0.0-canary-7a2609eed-20240403",
+    "react": "0.0.0-experimental-7a2609eed-20240403",
+    "react-dom": "0.0.0-experimental-7a2609eed-20240403",
     "react-native": "0.74.0-rc.5",
     "react-strict-dom": "0.0.4"
   },
