@@ -1,13 +1,8 @@
+import { resolveSync } from "bun";
 import path from "node:path";
 
 const outdir = path.join(import.meta.dir, "..", "vendor");
-const rsdeDir = path.join(
-	import.meta.dir,
-	"..",
-	"..",
-	"..",
-	"react-server-dom-esm",
-);
+const rsdeDir = path.dirname(resolveSync("@physis/react-server-dom-esm", "."));
 
 // Browser Dev
 await Bun.build({

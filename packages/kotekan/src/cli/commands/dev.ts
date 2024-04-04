@@ -12,7 +12,7 @@ interface Args {
 export const builder = (yargs: Argv) => {
 	return yargs.option("development", {
 		type: "boolean",
-		default: false,
+		default: true,
 		alias: "d",
 	});
 };

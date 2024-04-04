@@ -3,7 +3,7 @@ import { boolFromEnv } from "../../lib/boolFromEnv";
 import { numberFromEnv } from "../../lib/numberFromEnv";
 import { server } from "../../server";
 
-const development = process.env.NODE_ENV === "development";
+const development = process.env.NODE_ENV !== "production";
 
 const ssrServer = await server({
 	mode: "ssr",

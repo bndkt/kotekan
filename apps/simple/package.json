@@ -10,7 +10,6 @@
     "start": "kotekan start"
   },
   "dependencies": {
-    "@physis/react-server-dom-esm": "0.0.0-experimental-de155d1-20240404",
     "kotekan": "workspace:*",
     "react": "0.0.0-experimental-7a2609eed-20240403",
     "react-dom": "0.0.0-experimental-7a2609eed-20240403"
