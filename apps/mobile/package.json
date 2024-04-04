@@ -21,14 +21,14 @@
   "dependencies": {
     "@physis/react-server-dom-esm": "0.0.0-experimental-b1c2d14c9-20240326",
     "kotekan": "workspace:*",
-    "react": "0.0.0-experimental-e373190fa-20240325",
-    "react-dom": "0.0.0-experimental-e373190fa-20240325",
+    "react": "19.0.0-canary-7a2609eed-20240403",
+    "react-dom": "19.0.0-canary-7a2609eed-20240403",
     "react-native": "0.74.0-rc.5",
     "react-strict-dom": "0.0.4"
   },
   "devDependencies": {
     "@types/bun": "1.0.12",
-    "@types/react": "18.2.73",
-    "@types/react-dom": "18.2.23"
+    "@types/react": "18.2.74",
+    "@types/react-dom": "18.2.24"
   }
 }
