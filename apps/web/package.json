@@ -21,7 +21,7 @@
     "@sindresorhus/slugify": "2.2.1",
     "acorn": "8.11.3",
     "clsx": "2.1.0",
-    "framer-motion": "11.0.24",
+    "framer-motion": "11.0.25",
     "kotekan": "workspace:*",
     "mdast-util-to-string": "4.0.0",
     "mdx-annotations": "0.1.4",
@@ -34,11 +34,11 @@
     "zustand": "4.5.2"
   },
   "devDependencies": {
-    "@playwright/test": "1.42.1",
+    "@playwright/test": "1.43.0",
     "@stylexjs/stylex": "0.5.1",
     "@types/bun": "1.0.12",
     "@types/react": "18.2.74",
     "@types/react-dom": "18.2.24",
-    "typescript": "5.4.3"
+    "typescript": "5.4.4"
   }
 }

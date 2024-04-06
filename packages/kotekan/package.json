@@ -66,7 +66,7 @@
     "@react-native/metro-config": "0.74.77",
     "@stylexjs/babel-plugin": "0.5.1",
     "@tailwindcss/cli": "4.0.0-alpha.9",
-    "bun": "1.1.0",
+    "bun": "1.1.2",
     "isbot": "5.1.4",
     "metro": "0.80.8",
     "metro-core": "0.80.8",
@@ -75,9 +75,9 @@
     "react-error-boundary": "4.0.13",
     "react-native": "0.74.0-rc.5",
     "react-refresh": "0.14.0",
-    "react-strict-dom": "0.0.4",
+    "react-strict-dom": "0.0.5",
     "tailwindcss": "4.0.0-alpha.10",
-    "typescript": "5.4.3",
+    "typescript": "5.4.4",
     "yargs": "17.7.2"
   },
   "devDependencies": {
@@ -85,7 +85,7 @@
     "@types/bun": "1.0.12",
     "@types/react": "18.2.74",
     "@types/react-dom": "18.2.24",
-    "@types/react-refresh": "0.14.5",
+    "@types/react-refresh": "0.14.6",
     "@types/yargs": "17.0.32"
   }
 }
