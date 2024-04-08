@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "kotekan": "workspace:*",
-    "react": "0.0.0-experimental-7a2609eed-20240403",
-    "react-dom": "0.0.0-experimental-7a2609eed-20240403"
+    "react": "0.0.0-experimental-e3ebcd54b-20240405",
+    "react-dom": "0.0.0-experimental-e3ebcd54b-20240405"
   },
   "devDependencies": {
     "@types/bun": "1.0.12",
