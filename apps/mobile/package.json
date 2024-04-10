@@ -20,8 +20,8 @@
   },
   "dependencies": {
     "kotekan": "workspace:*",
-    "react": "0.0.0-experimental-e3ebcd54b-20240405",
-    "react-dom": "0.0.0-experimental-e3ebcd54b-20240405",
+    "react": "0.0.0-experimental-4c12339ce-20240408",
+    "react-dom": "0.0.0-experimental-4c12339ce-20240408",
     "react-native": "0.74.0-rc.8",
     "react-strict-dom": "0.0.5"
   },

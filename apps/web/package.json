@@ -20,8 +20,8 @@
     "clsx": "2.1.0",
     "framer-motion": "11.0.27",
     "kotekan": "workspace:*",
-    "react": "0.0.0-experimental-e3ebcd54b-20240405",
-    "react-dom": "0.0.0-experimental-e3ebcd54b-20240405",
+    "react": "0.0.0-experimental-4c12339ce-20240408",
+    "react-dom": "0.0.0-experimental-4c12339ce-20240408",
     "zustand": "4.5.2"
   },
   "devDependencies": {
