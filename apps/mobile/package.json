@@ -22,12 +22,12 @@
     "kotekan": "workspace:*",
     "react": "0.0.0-experimental-e3ebcd54b-20240405",
     "react-dom": "0.0.0-experimental-e3ebcd54b-20240405",
-    "react-native": "0.74.0-rc.7",
+    "react-native": "0.74.0-rc.8",
     "react-strict-dom": "0.0.5"
   },
   "devDependencies": {
     "@types/bun": "1.0.12",
-    "@types/react": "18.2.74",
+    "@types/react": "18.2.75",
     "@types/react-dom": "18.2.24"
   }
 }

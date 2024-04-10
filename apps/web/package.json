@@ -15,30 +15,21 @@
     "test": "npx playwright test"
   },
   "dependencies": {
-    "@algolia/autocomplete-core": "1.17.0",
     "@headlessui/react": "1.7.18",
     "@mdx-js/mdx": "3.0.1",
-    "@sindresorhus/slugify": "2.2.1",
-    "acorn": "8.11.3",
     "clsx": "2.1.0",
-    "framer-motion": "11.0.25",
+    "framer-motion": "11.0.27",
     "kotekan": "workspace:*",
-    "mdast-util-to-string": "4.0.0",
-    "mdx-annotations": "0.1.4",
     "react": "0.0.0-experimental-e3ebcd54b-20240405",
     "react-dom": "0.0.0-experimental-e3ebcd54b-20240405",
-    "react-highlight-words": "0.20.0",
-    "remark-gfm": "4.0.0",
-    "shiki": "0.14.7",
-    "unist-util-visit": "5.0.0",
     "zustand": "4.5.2"
   },
   "devDependencies": {
     "@playwright/test": "1.43.0",
     "@stylexjs/stylex": "0.5.1",
     "@types/bun": "1.0.12",
-    "@types/react": "18.2.74",
+    "@types/react": "18.2.75",
     "@types/react-dom": "18.2.24",
-    "typescript": "5.4.4"
+    "typescript": "5.4.5"
   }
 }
