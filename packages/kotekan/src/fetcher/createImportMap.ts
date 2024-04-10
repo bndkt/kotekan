@@ -3,7 +3,7 @@ import type { ImportMap } from "./types";
 export const createImportMap = (development?: boolean): ImportMap => {
 	console.log("createImportMap", { development });
 	const jsxRuntimeImport = development ? "jsx-dev-runtime" : "jsx-runtime";
-	const reactVersion = "0.0.0-experimental-7a2609eed-20240403";
+	const reactVersion = "0.0.0-experimental-4c12339ce-20240408";
 	const queryString = `?pin=v135${development ? "&dev" : ""}`;
 
 	const importMap: ImportMap = {
