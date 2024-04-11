@@ -61,7 +61,7 @@
     "@babel/plugin-syntax-typescript": "7.24.1",
     "@babel/runtime": "7.24.4",
     "@mdx-js/mdx": "3.0.1",
-    "@physis/react-server-dom-esm": "0.0.0-experimental-de155d1-20240404",
+    "@physis/react-server-dom-esm": "0.0.0-experimental-69217a6-20240406",
     "@react-native/babel-preset": "0.74.79",
     "@react-native/metro-config": "0.74.79",
     "@stylexjs/babel-plugin": "0.5.1",

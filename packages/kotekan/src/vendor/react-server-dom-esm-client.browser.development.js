@@ -28699,7 +28699,7 @@ var nullRefGetter = function() {
     return null;
   }
 };
-var createElement = function(type, key, props) {
+var createElement = function(type, key, props, owner) {
   var element;
   {
     element = {
@@ -28707,7 +28707,7 @@ var createElement = function(type, key, props) {
       type,
       key,
       props,
-      _owner: null
+      _owner: owner
     };
     Object.defineProperty(element, "ref", {
       enumerable: false,
@@ -28873,6 +28873,24 @@ var parseModelString = function(response, parentObject, key, value) {
         var _data = getOutlinedModel(response, _id5);
         return new Set(_data);
       }
+      case "B": {
+        {
+          var _id6 = parseInt(value.slice(2), 16);
+          var _data2 = getOutlinedModel(response, _id6);
+          return new Blob(_data2.slice(1), {
+            type: _data2[0]
+          });
+        }
+      }
+      case "K": {
+        var _id7 = parseInt(value.slice(2), 16);
+        var _data3 = getOutlinedModel(response, _id7);
+        var formData = new FormData;
+        for (var i = 0;i < _data3.length; i++) {
+          formData.append(_data3[i][0], _data3[i][1]);
+        }
+        return formData;
+      }
       case "I": {
         return Infinity;
       }
@@ -28906,8 +28924,8 @@ var parseModelString = function(response, parentObject, key, value) {
         }
       }
       default: {
-        var _id6 = parseInt(value.slice(1), 16);
-        var _chunk2 = getChunk(response, _id6);
+        var _id8 = parseInt(value.slice(1), 16);
+        var _chunk2 = getChunk(response, _id8);
         switch (_chunk2.status) {
           case RESOLVED_MODEL:
             initializeModelChunk(_chunk2);
@@ -28947,7 +28965,7 @@ var parseModelString = function(response, parentObject, key, value) {
 var parseModelTuple = function(response, value) {
   var tuple = value;
   if (tuple[0] === REACT_ELEMENT_TYPE) {
-    return createElement(tuple[1], tuple[2], tuple[3]);
+    return createElement(tuple[1], tuple[2], tuple[3], tuple[4]);
   }
   return value;
 };
@@ -29058,8 +29076,8 @@ var resolveDebugInfo = function(response, id, debugInfo) {
 var resolveConsoleEntry = function(response, value) {
   var payload = parseModel(response, value);
   var methodName = payload[0];
-  var env = payload[2];
-  var args = payload.slice(3);
+  var env = payload[3];
+  var args = payload.slice(4);
   printToConsole(methodName, args, env);
 };
 var mergeBuffer = function(buffer, lastChunk) {
@@ -29156,7 +29174,7 @@ var processFullRow = function(response, id, tag, buffer, chunk) {
     }
     case 68: {
       {
-        var debugInfo = JSON.parse(row);
+        var debugInfo = parseModel(response, row);
         resolveDebugInfo(response, id, debugInfo);
         return;
       }
